@@ -3,4 +3,4 @@
 # 1 truco
 # 3. Simulador de Tienda Online
 # 4. Simulador de Juego de Estrategia por Turnos/generala
-
+def main
