@@ -51,16 +51,6 @@ Como: jugador
 Quiero: que al finalizar la partida se muestre un mensaje personalizado dependiendo si gane o perdi
 Para: añadir diversion
 
-
-Como jugador
-Quiero
-Para 
-
-
-Como jugador
-Quiero
-Para 
-
 —————————
 
 Dado: que el jugador quiere realizar un envido 
