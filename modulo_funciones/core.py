@@ -1,4 +1,6 @@
 import random
+import os
+import time
 
 #Variables
 jugadores = []
@@ -27,7 +29,7 @@ def mezclarMazo():
 # Función para crear jugadores
 def creandoJugadores():
     for i in range(2):
-        jugador = {'nombre': f'Jugador {i+1}', 'cartas': []}
+        jugador = {'Nombre': f'Jugador {i+1}', 'cartas': []}
         jugadores.append(jugador)
 
 # Función para repartir cartas alternadamente
@@ -40,4 +42,56 @@ def repartir_cartas_alternadamente(jugadores):
             jugador_index = 1
         else:
             jugador_index = 0
-        cont += 1
+        cont += 1   
+
+def ejecutar():
+    creandoJugadores() # Crear los jugadores
+    mezclarMazo() # Mezclar el mazo
+    repartir_cartas_alternadamente(jugadores)  # Repartir las cartas
+
+    print("Mezclando el mazo y repartiendo", end="", flush=True)
+    time.sleep(1)
+    print(".", end="", flush=True)
+    time.sleep(1)
+    print(".", end="", flush=True)
+    time.sleep(1)
+    print(".", flush=True)
+
+    cartas = jugadores[0]['cartas']
+    cartas_formateadas = [f"{numero} de {palo}" for numero, palo, _ in cartas]
+    print("\nTus cartas son las siguientes:", " | ".join(cartas_formateadas))
+
+def menu():
+    repetir = True
+    while repetir:
+        os.system("cls") #limpia la pantalla
+        print("1- Equipo")
+        print("2- Instrucciones")
+        print("3- Ejecutar")
+        print("4- Salir")
+        try:
+            op = int(input("Ingrese una opción: "))
+            print()
+            if op == 1:
+                os.system("cls")
+                print("Programa desarollado por Juliana Galiano, Agustín Fernandéz Durán, Christopher Hess y Valentino Ferretti")
+                print("\nPresione ENTER para volver al menú...")
+            elif op == 2:
+                os.system("cls")
+                print("""El Truco se juega con una baraja española de 40 cartas (sin ningún 8, 9 o 10). \nParticipan 2, 4 o 6 jugadores, organizados en 2 equipos donde cada jugador recibe 3 cartas y el objetivo es alcanzar 15 o 30 puntos, según la modalidad. \nEl juego se desarrolla por manos donde se lleva puntos quien gane 2 de 3 enfrentamientos. \nLos jugadores pueden cantar "truco"  para desafiar al adversario, aumentando la apuesta de puntos; el rival puede aceptar, rechazar, o subir la apuesta con "re-truco" o "vale-cuatro". \nTambién se puede "Cantar Envido" antes de usar la primer carta, apostando por el mejor par de cartas del mismo palo. \nAdemás, si un jugador tiene las tres cartas del mismo palo, puede "Cantar Flor" para \nganar puntos extras (aunque se debe aclarar si está permitida al comienzo de la partida). \nPor último, los puntos se otorgan según el resultado de las manos y las apuestas realizadas.""")
+                print("\nPresione ENTER para volver al menú...")
+            elif op == 3:
+                os.system("cls")
+                ejecutar()
+                print("\nPresione ENTER para volver al menú...")
+            elif op == 4:
+                os.system("cls")
+                repetir = False
+                print("Gracias por jugar.")
+            else: print("error")
+            input()
+        except:
+            print("error")
+            input()
+    
+        

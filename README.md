@@ -5,10 +5,10 @@ Este es el proyecto integrados que vamos a desarrollar en la materia Programacio
 Backlog:
 
 Semana 1-2: Mazo y repartija
-  * Armar mazo
-  * Repartir por turnos
-  * Guardar cartas de NPC sin mostrarlas
-  * Obviar repeticiones
+  * Armar mazo ✓ 
+  * Repartir por turnos ✓
+  * Guardar cartas de NPC sin mostrarlas ✓
+  * Obviar repeticiones ✓
 
 Semana 3-4: Lógica de una mano
   * Comparación de cartas en juego
