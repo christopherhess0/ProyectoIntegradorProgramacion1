@@ -2,9 +2,6 @@ import random
 import os
 import time
 
-#Variables
-jugadores = []
-
 #Armado de mazo:
 cartas = [
     ('1', 'Espada', 14), ('1', 'Basto', 13), 
@@ -24,10 +21,14 @@ cartas = [
 
 # Función para mezclar el mazo
 def mezclarMazo():
-    random.shuffle(cartas)
+    global mazo
+    mazo = cartas.copy()
+    random.shuffle(mazo)
 
 # Función para crear jugadores
 def creandoJugadores():
+    global jugadores
+    jugadores = []
     for i in range(2):
         jugador = {'Nombre': f'Jugador {i+1}', 'cartas': []}
         jugadores.append(jugador)
@@ -37,17 +38,23 @@ def repartir_cartas_alternadamente(jugadores):
     jugador_index = 0  # Comienza con el primer jugador
     cont = 0
     while cont < 6:
-        jugadores[jugador_index]['cartas'].append(cartas[cont])
+        jugadores[jugador_index]['cartas'].append(mazo[cont])
         if jugador_index == 0:
             jugador_index = 1
         else:
             jugador_index = 0
-        cont += 1   
-
-def ejecutar():
-    creandoJugadores() # Crear los jugadores
-    mezclarMazo() # Mezclar el mazo
-    repartir_cartas_alternadamente(jugadores)  # Repartir las cartas
+        cont += 1 
+        
+def config():
+    print("CONFIGURACIÓN DE LA PARTIDA.\n")
+    flor = int(input("¿Activar flor? (SI = 1 | NO = 2) "))
+    while flor < 1 or flor > 2:
+        flor = int(input("Respuesta no válida. Intente denuevo. ¿Activar flor? (SI = 1 | NO = 2) "))
+    pMax = int(input("\nIndique la puntuación máxima. (15 | 30) "))
+    while pMax != 15 and pMax != 30:
+        pMax = int(input("Respuesta no válida. Intente denuevo. Indique la puntuación máxima. (15 | 30) "))
+    
+    os.system("cls")
 
     print("Mezclando el mazo y repartiendo", end="", flush=True)
     time.sleep(1)
@@ -57,9 +64,15 @@ def ejecutar():
     time.sleep(1)
     print(".", flush=True)
 
+def ejecutar():
+    creandoJugadores() # Crear los jugadores
+    mezclarMazo() # Mezclar el mazo
+    repartir_cartas_alternadamente(jugadores)  # Repartir las cartas  
+    config()
+
     cartas = jugadores[0]['cartas']
     cartas_formateadas = [f"{numero} de {palo}" for numero, palo, _ in cartas]
-    print("\nTus cartas son las siguientes:", " | ".join(cartas_formateadas))
+    print("\nTus cartas son las siguientes:", " | ".join(cartas_formateadas))  
 
 def menu():
     repetir = True
@@ -92,6 +105,4 @@ def menu():
             input()
         except:
             print("error")
-            input()
-    
-        
+            input()  
