@@ -21,7 +21,6 @@ cartas = [
     ('4', 'Espada', 1), ('4', 'Basto', 1), ('4', 'Oro', 1), ('4', 'Copa', 1),
     ]
 
-
 # Función para mezclar el mazo
 def mezclarMazo():
     random.shuffle(cartas)
@@ -88,10 +87,12 @@ def menu():
                 os.system("cls")
                 repetir = False
                 print("Gracias por jugar.")
-            else: print("error")
-            input()
+            else: 
+                os.system("cls")
+                print("Parece que ingresaste una opción no válida. ¡Cerrá la consola y volvé a intentarlo!")
+                input()
         except:
-            print("error")
+            print("Error")
             input()
     
         
