@@ -32,6 +32,7 @@ def creandoJugadores():
         jugador = {'Nombre': f'Jugador {i+1}', 'cartas': []}
         jugadores.append(jugador)
 
+
 # Función para repartir cartas alternadamente
 def repartir_cartas_alternadamente(jugadores):
     jugador_index = 0  # Comienza con el primer jugador
@@ -43,7 +44,9 @@ def repartir_cartas_alternadamente(jugadores):
         else:
             jugador_index = 0
         cont += 1 
-        
+    
+   
+
 def config():
     print("CONFIGURACIÓN DE LA PARTIDA.\n")
     flor = int(input("¿Activar flor? (SI = 1 | NO = 2) "))
@@ -69,8 +72,24 @@ def config():
 def tusCartas():
     cartas = jugadores[0]['cartas']
     cartas_formateadas = [f"{numero} de {palo}" for numero, palo, _ in cartas]
-    print("\nTus cartas son las siguientes:", " | ".join(cartas_formateadas))  
+    ancho_carta = 14
 
+    carta1 = cartas_formateadas[0].center(ancho_carta)
+    carta2 = cartas_formateadas[1].center(ancho_carta)
+    carta3 = cartas_formateadas[2].center(ancho_carta)
+    
+    print("    ________________     ________________     ________________ ")
+    print("   |Carta 1         |   |Carta 2         |   |Carta 3         |")
+    print("   |                |   |                |   |                |")
+    print("   |                |   |                |   |                |")
+    print(f"   | {carta1} |   | {carta2} |   | {carta3} |")
+    print("   |                |   |                |   |                |")
+    print("   |                |   |                |   |                |")
+    print("   |                |   |                |   |                |")
+    print("   |________________|   |________________|   |________________|")
+    print(" ")
+
+    
 def ejecutar():
     creandoJugadores() # Crear los jugadores
     mezclarMazo() # Mezclar el mazo
@@ -82,20 +101,83 @@ def menu():
     repetir = True
     while repetir:
         os.system("cls") #limpia la pantalla
-        print("1- Equipo")
-        print("2- Instrucciones")
-        print("3- Ejecutar")
-        print("4- Salir")
+        print("   ■■■■■■■■■■■■■■■■■■■■■■■     ■■■■■■■■■■■■■■■■■■■■■■■■      ■■■■■■■■■■■■■■■■■■■■■■■     ■■■■■■■■■■■■■■■■■■■■■■■        ")
+        print("   █      1. Equipo      █     █  2. introducciones   █      █     3. Ejecutar     █     █      4. Salir       █        ")
+        print("   ■■■■■■■■■■■■■■■■■■■■■■■     ■■■■■■■■■■■■■■■■■■■■■■■■      ■■■■■■■■■■■■■■■■■■■■■■■     ■■■■■■■■■■■■■■■■■■■■■■■        ")
+        print("")
         try:
             op = int(input("Ingrese una opción: "))
             print()
             if op == 1:
                 os.system("cls")
-                print("Programa desarollado por Juliana Galiano, Agustín Fernandéz Durán, Christopher Hess y Valentino Ferretti")
+                print("Programa desarollado por: ")
+                print(" ")
+                print("   _____________        ")
+                print("  |Carta 1      |       ")
+                print("  |             |       ")
+                print("  |             |       ")
+                print("  |   Juliana   |       ")
+                print("  |   Galiano   |       ")
+                print("  |             |       ")
+                print("  |             |       ")
+                print("  |_____________|       ")
+                time.sleep(1)
+                os.system("cls")
+                print("Programa desarollado por: ")
+                print(" ")
+                print("   _____________      _____________         ")
+                print("  |Carta 1      |    |Carta 2      |        ")
+                print("  |             |    |             |        ")
+                print("  |             |    |             |        ")
+                print("  |   Juliana   |    |  Agustín    |        ")
+                print("  |   Galiano   |    |  Fernandéz  |        ")
+                print("  |             |    |  Durán      |        ")
+                print("  |             |    |             |        ")
+                print("  |_____________|    |_____________|        ")
+                time.sleep(1)
+                os.system("cls")
+                print("Programa desarollado por: ")
+                print(" ")
+                print("   _____________      _____________      _____________    ")
+                print("  |Carta 1      |    |Carta 2      |    |Carta 3      |   ")
+                print("  |             |    |             |    |             |   ")
+                print("  |             |    |             |    |             |   ")
+                print("  |   Juliana   |    |  Agustín    |    | Christopher |   ")
+                print("  |   Galiano   |    |  Fernandéz  |    | Hess        |   ")
+                print("  |             |    |  Durán      |    |             |   ")
+                print("  |             |    |             |    |             |   ")
+                print("  |_____________|    |_____________|    |_____________|   ")
+                time.sleep(1)
+                os.system("cls")
+                print("Programa desarollado por: ")
+                print(" ")
+                print("   _____________      _____________      _____________      _____________     ")
+                print("  |Carta 1      |    |Carta 2      |    |Carta 3      |    |Carta 4      |    ")
+                print("  |             |    |             |    |             |    |             |    ")
+                print("  |             |    |             |    |             |    |             |    ")
+                print("  |   Juliana   |    |  Agustín    |    | Christopher |    |  Valentino  |    ")
+                print("  |   Galiano   |    |  Fernandéz  |    | Hess        |    |  Ferretti   |    ")
+                print("  |             |    |  Durán      |    |             |    |             |    ")
+                print("  |             |    |             |    |             |    |             |    ")
+                print("  |_____________|    |_____________|    |_____________|    |_____________|    ")
+                print(" ")
                 tecla = input("\nPresione 'ENTER' para volver al menú...")
             elif op == 2:
                 os.system("cls")
-                print("""El Truco se juega con una baraja española de 40 cartas (sin ningún 8, 9 o 10).\nParticipan 2, 4 o 6 jugadores, organizados en 2 equipos donde cada jugador recibe 3 cartas y el objetivo es alcanzar 15 o 30 puntos, según la modalidad.\nEl juego se desarrolla por manos donde se lleva puntos quien gane 2 de 3 enfrentamientos.\nLos jugadores pueden cantar "truco"  para desafiar al adversario, aumentando la apuesta de puntos; el rival puede aceptar, rechazar, o subir la apuesta con "re-truco" o "vale-cuatro".\nTambién se puede "Cantar Envido" antes de usar la primer carta, apostando por el mejor par de cartas del mismo palo.\nAdemás, si un jugador tiene las tres cartas del mismo palo, puede "Cantar Flor" para \nganar puntos extras (aunque se debe aclarar si está permitida al comienzo de la partida).\nPor último, los puntos se otorgan según el resultado de las manos y las apuestas realizadas.""")
+                print("   ═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════       ")
+                print("   ║                                                                                                                                                                                       ║       ")
+                print("   ║    • El Truco se juega con una baraja española de 40 cartas (sin ningún 8, 9 o 10).                                                                                                   ║       ")
+                print("   ║    • Participan 2, 4 o 6 jugadores, organizados en 2 equipos donde cada jugador recibe 3 cartas y el objetivo es alcanzar 15 o 30 puntos, según la modalidad                          ║       ")
+                print("   ║    • El juego se desarrolla por manos donde se lleva puntos quien gane 2 de 3 enfrentamientos.                                                                                        ║       ")
+                print("""   ║    • Los jugadores pueden cantar "truco"  para desafiar al adversario, aumentando la apuesta de puntos;                                                                               ║   """)
+                print("""   ║      el rival puede aceptar, rechazar, o subir la apuesta con "re-truco" o "vale cuatro"                                                                                              ║   """)
+                print("""   ║    • También se puede "Cantar Envido" antes de usar la primer carta, apostando por el mejor par de cartas del mismo palo.                                                             ║   """)
+                print("""   ║    • Además, si un jugador tiene las tres cartas del mismo palo, puede "Cantar Flor" para ganar puntos extras (aunque se debe aclarar si está permitida al comienzo de la partida)    ║   """)
+                print("   ║    • Por último, los puntos se otorgan según el resultado de las manos y las apuestas realizadas.                                                                                     ║       ")
+                print("   ║                                                                                                                                                                                       ║       ")
+                print("   ═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════       ")
+                print("")
+    
                 tecla = input("\nPresione 'ENTER' para volver al menú...")
             elif op == 3:
                 os.system("cls")
@@ -111,3 +193,4 @@ def menu():
         except:
             print("Error")
             input()
+menu()
