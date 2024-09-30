@@ -29,7 +29,7 @@ def creandoJugadores():
     global jugadores
     jugadores = []
     for i in range(2):
-        jugador = {'Nombre': f'Jugador {i+1}', 'cartas': []}
+        jugador = {'Nombre': f'Jugador {i+1}', 'cartas': [], 'puntos': 0}
         jugadores.append(jugador)
 
 
