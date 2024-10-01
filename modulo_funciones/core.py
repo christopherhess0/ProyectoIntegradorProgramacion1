@@ -2,7 +2,7 @@ import random
 import os
 import time
 
-#Armado de mazo:
+# Armado de mazo:
 cartas = [
     ('1', 'Espada', 14), ('1', 'Basto', 13), 
     ('7', 'Espada', 12), ('7', 'Oro', 11),
@@ -32,20 +32,30 @@ def creandoJugadores():
         jugador = {'Nombre': f'Jugador {i+1}', 'cartas': []}
         jugadores.append(jugador)
 
+tuTurno = True
 
 # Función para repartir cartas alternadamente
 def repartir_cartas_alternadamente(jugadores):
-    jugador_index = 0  # Comienza con el primer jugador
-    cont = 0
-    while cont < 6:
-        jugadores[jugador_index]['cartas'].append(mazo[cont])
-        if jugador_index == 0:
-            jugador_index = 1
-        else:
-            jugador_index = 0
-        cont += 1 
-    
-   
+    if tuTurno:
+        jugador_index = 0  # Comienza con el primer jugador
+        cont = 0
+        while cont < 6:
+            jugadores[jugador_index]['cartas'].append(mazo[cont])
+            if jugador_index == 0:
+                jugador_index = 1
+            else:
+                jugador_index = 0
+            cont += 1
+    else:
+        jugador_index = 1  # Comienza con el segundo jugador
+        cont = 0
+        while cont < 6:
+            jugadores[jugador_index]['cartas'].append(mazo[cont])
+            if jugador_index == 0:
+                jugador_index = 1
+            else:
+                jugador_index = 0
+            cont += 1
 
 def config():
     print("CONFIGURACIÓN DE LA PARTIDA.\n")
@@ -102,7 +112,7 @@ def menu():
     while repetir:
         os.system("cls") #limpia la pantalla
         print("   ■■■■■■■■■■■■■■■■■■■■■■■     ■■■■■■■■■■■■■■■■■■■■■■■■      ■■■■■■■■■■■■■■■■■■■■■■■     ■■■■■■■■■■■■■■■■■■■■■■■        ")
-        print("   █      1. Equipo      █     █  2. introducciones   █      █     3. Ejecutar     █     █      4. Salir       █        ")
+        print("   █      1. Equipo      █     █  2. Instrucciones    █      █     3. Ejecutar     █     █      4. Salir       █        ")
         print("   ■■■■■■■■■■■■■■■■■■■■■■■     ■■■■■■■■■■■■■■■■■■■■■■■■      ■■■■■■■■■■■■■■■■■■■■■■■     ■■■■■■■■■■■■■■■■■■■■■■■        ")
         print("")
         try:
