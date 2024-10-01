@@ -24,13 +24,13 @@ def mezclarMazo():
     mazo = cartas.copy()
     random.shuffle(mazo)
 
-# Función para crear jugadores
-def creandoJugadores():
-    global jugadores
-    jugadores = []
-    for i in range(2):
-        jugador = {'Nombre': f'Jugador {i+1}', 'cartas': [], 'puntos': 0}
-        jugadores.append(jugador)
+# crear jugadores
+jugadores = {
+    'Jugador': {'Nombre': 'Jugador', 'cartas': [], 'puntos': 0},
+    'Máquina': {'Nombre': 'Máquina', 'cartas': [], 'puntos': 0}
+}
+
+
 
 
 # Función para repartir cartas alternadamente
