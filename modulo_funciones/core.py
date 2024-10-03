@@ -326,7 +326,7 @@ def envido(flor):
 
     
 def ejecutar():
-     nos = 0
+    nos = 0
     ellos = 0
     creandoJugadores() # Crear los jugadores
     juego(nos, ellos)
