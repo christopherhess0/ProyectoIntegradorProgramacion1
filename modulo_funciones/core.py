@@ -423,7 +423,8 @@ def menu():
             else: 
                 os.system("cls")
                 input("Parece que ingresaste una opción no válida. ¡Presiona 'ENTER' y volvé a intentarlo!")
-        except:
+                
+        except ValueError ():
               os.system("cls")                                                                                                   
               print("                                                                                                    ")
               print("EEEEEEEEEEEEEEEEEEEEEE                                                                              ")
