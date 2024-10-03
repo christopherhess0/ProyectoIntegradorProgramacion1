@@ -11,7 +11,7 @@ Semana 1-2: Mazo y repartija
   * Obviar repeticiones ✓
 
 Semana 3-4: Lógica de una mano
-  * Comparación de cartas en juego
+  * Comparación de cartas en juego ✓
   * Sistema de turnos
   * Elección de juegos
   * Truco, re-truco, vale-cuatro
@@ -29,14 +29,14 @@ Semana 7-8: Comportamiento del NPC
   * Agresividad
 
 Semana 9-10: Configuración de una partida
-  * Puntuación máxima
-  * Juego con "flor" o sin
+  * Puntuación máxima ✓
+  * Juego con "flor" o sin ✓
   * Modos de juego (1v1/2v2/3v3)
 
 Semana 11-12: Partida completa
-  * Tablero
-  * Suma de puntos
-  * Manos indefinidas hasta puntuación limite
+  * Tablero ✓
+  * Suma de puntos ✓
+  * Manos indefinidas hasta puntuación limite ✓
 
 La duracion por cada tarea es estimada y puede variar a medida que se vayan completando.
 ---------------------------------------
