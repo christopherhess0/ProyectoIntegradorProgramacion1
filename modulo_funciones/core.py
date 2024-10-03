@@ -2,7 +2,10 @@ import random
 import os
 import time
 
-# Armado de mazo:
+########
+# Mazo #
+########
+
 cartas = [
     ('1', 'Espada', 14), ('1', 'Basto', 13), 
     ('7', 'Espada', 12), ('7', 'Oro', 11),
@@ -18,13 +21,19 @@ cartas = [
     ('4', 'Espada', 1), ('4', 'Basto', 1), ('4', 'Oro', 1), ('4', 'Copa', 1),
     ]
 
-# Función para mezclar el mazo
+###################
+# Mezclar el mazo #
+###################
+
 def mezclarMazo():
     global mazo
     mazo = cartas.copy()
     random.shuffle(mazo)
 
-# Función para crear jugadores
+###################
+# Crear jugadores #
+###################
+
 def creandoJugadores():
     global jugadores
     jugadores = []
@@ -34,8 +43,13 @@ def creandoJugadores():
 
 tuTurno = True
 
-# Función para repartir cartas alternadamente
+##################################
+# Repartir cartas alternadamente #
+##################################
+
 def repartir_cartas_alternadamente(jugadores):
+    for i in range(2):
+        jugadores[i]['cartas'].clear()
     if tuTurno:
         jugador_index = 0  # Comienza con el primer jugador
         cont = 0
@@ -69,16 +83,11 @@ def config():
     
     os.system("cls")
 
-    print("Mezclando el mazo y repartiendo", end="", flush=True)
-    time.sleep(1)
-    print(".", end="", flush=True)
-    time.sleep(1)
-    print(".", end="", flush=True)
-    time.sleep(1)
-    print(".", flush=True)
-    time.sleep(1)
-
     return flor, pMax
+    
+##############################################
+# Funciones que muestran tus cartas (visual) #
+##############################################
 
 def tusCartas():
     cartas = jugadores[0]['cartas']
@@ -121,22 +130,10 @@ def tusCartas2(cartas):
 
     return jugadores[0]['cartas']
 
-def tusCartas3(carta):
-    cartas_formateadas = [f"{numero} de {palo}" for numero, palo, _ in carta]
-    ancho_carta = 14
 
-    carta1 = cartas_formateadas[0].center(ancho_carta)
-
-    print("    ________________ ")
-    print("   |Carta 1         |")
-    print("   |                |")
-    print("   |                |")
-    print(f"   | {carta1} |")
-    print("   |                |")
-    print("   |                |")
-    print("   |                |")
-    print("   |________________|")
-    print(" ")
+############################    
+# Número de ronda (visual) #
+############################
 
 def rondArt(ronda):
     if ronda == 1:
@@ -196,8 +193,62 @@ def rondArt(ronda):
         print("R::::::R     R:::::Ro:::::::::::::::o  n::::n    n::::n d:::::::::::::::::da:::::aaaa::::::a      3::::::33333::::::3 ")
         print("R::::::R     R:::::R oo:::::::::::oo   n::::n    n::::n  d:::::::::ddd::::d a::::::::::aa:::a     3:::::::::::::::33  ")
         print("RRRRRRRR     RRRRRRR   ooooooooooo     nnnnnn    nnnnnn   ddddddddd   ddddd  aaaaaaaaaa  aaaa      333333333333333    ")
-def cartaMaquina():
-    pass
+
+##############################
+# Carta que juega la máquina #
+##############################
+
+def cartaMaquina(jugador):
+    cAlta = 0
+    carta = 0 
+    for i in range(len(jugadores[1]['cartas'])):
+        if jugadores[1]['cartas'][i][2] > cAlta:
+            cAlta = jugadores[1]['cartas'][i][2]
+            carta = i
+    eleccion = jugadores[1]['cartas'][carta]
+    cartasVersus(jugador, eleccion)
+    jugadores[1]['cartas'].pop(carta)
+    return cAlta
+
+def cartasVersus(jugador, maquina):
+    carta_jugador = f"{jugador[0]} de {jugador[1]}"
+    carta_maquina = f"{maquina[0]} de {maquina[1]}"
+    ancho_carta = 14
+
+    carta1 = carta_jugador.center(ancho_carta)
+    carta2 = carta_maquina.center(ancho_carta)
+
+    print("    ________________    |    ________________ ")
+    print("   |Carta Jugador   |   |   |Carta Máquina   |")
+    print("   |                |   |   |                |")
+    print("   |                |   |   |                |")
+    print(f"   | {carta1} |   |   | {carta2} |")
+    print("   |                |   |   |                |")
+    print("   |                |   |   |                |")
+    print("   |                |   |   |                |")
+    print("   |________________|   |   |________________|")
+    print("                        |")
+    time.sleep(1.5)
+
+#########################
+# Mezclando... (visual) #
+#########################
+
+def printsMezclando():
+    print("Mezclando el mazo y repartiendo", end="", flush=True)
+    time.sleep(1)
+    print(".", end="", flush=True)
+    time.sleep(1)
+    print(".", end="", flush=True)
+    time.sleep(1)
+    print(".", flush=True)
+    time.sleep(1)
+
+    os.system("cls")
+
+######################
+# Lógica de una mano #
+######################  
 
 def mano(flor):
     ronda = 1
@@ -227,20 +278,25 @@ def mano(flor):
             while carta != 1 and carta != 2 and carta != 3:
                 carta = int(input("Error. ¿Que carta querés jugar? (1, 2 o 3) "))
             carta -= 1
+            cartaMaq = 2   
+
             # Posiblemente puede optimizarse
-            cartaMaq = 2 #cartaMaquina()  
+            cartaMaq= int(cartaMaquina(jugadores[0]['cartas'][carta]))
+            print()
 
             if jugadores[0]['cartas'][carta][2] < cartaMaq:
                 contRondasEllos += 1
-                print("Ellos")
+                print("La maquina se llevo la ronda!")
                 time.sleep(2)
             elif jugadores[0]['cartas'][carta][2] > cartaMaq:
                 contRondasNos += 1
-                print("Nos")
+                print("Te llevaste la ronda!")
                 time.sleep(2)
             elif jugadores[0]['cartas'][carta][2] == cartaMaq:
                 contRondasNos += 1
                 contRondasEllos += 1
+                print("Parda la mejor!")
+                time.sleep(2)
 
             os.system("cls")
             cartas = jugadores[0]['cartas']
@@ -252,61 +308,76 @@ def mano(flor):
             while carta != 1 and carta != 2:
                 carta = int(input("Error. ¿Que carta querés jugar? (1 o 2) "))
             carta -= 1
-            
-            cartaMaq = 5 #cartaMaquina()
+            os.system("cls")
+
+            cartaMaq= int(cartaMaquina(cartas[carta]))
+            print()
 
             if cartas[carta][2] < cartaMaq:
                 contRondasEllos += 1
-                print("Ellos")
+                print("La maquina se llevo la ronda")
                 time.sleep(2)
             elif cartas[carta][2] > cartaMaq:
                 contRondasNos += 1
-                print("Nos")
+                print("Te llevaste la ronda!")
                 time.sleep(2)
             elif cartas[carta][2] == cartaMaq:
                 contRondasNos += 1
                 contRondasEllos += 1
+                print("Parda!")
+                time.sleep(2)
             os.system("cls")
             if contRondasEllos == 2 and contRondasNos != 2:
-                print("La máquina gana la mano!")
+                print("La máquina gana la mano!\n")
                 contEllos += 1
                 ronda = 4
             elif contRondasNos == 2 and contRondasEllos != 2:
-                print("Vos ganás la mano!")
+                print("Vos ganás la mano!\n")
                 contNos += 1
                 ronda = 4
             else:
                 cartas.pop(carta)
-                tusCartas3(cartas)        
+                      
 
         elif ronda == 3:
+            cartaMaq= int(cartaMaquina(cartas[0]))
+            print()
+            
             if cartas[0][2] < cartaMaq:
-                print("La máquina gana la mano!")
+                print("La máquina gana la mano!\n")
                 contEllos += 1
                 ronda = 4
             elif cartas[0][2] > cartaMaq:
-                print("Vos ganás la mano!")
+                print("Vos ganás la mano!\n")
                 contNos += 1
                 ronda = 4
             elif cartas[0][2] == cartaMaq:
                 if tuTurno:
-                    print("Vos ganás la mano!")
+                    print("Vos ganás la mano!\n")
                     contNos += 1
                     ronda = 4
                 elif tuTurno == False:
                     print("La máquina gana la mano!")
                     contEllos += 1
-                    ronda = 4
-                
+                    ronda = 4       
         ronda += 1
+
+    time.sleep(2)
+    os.system("cls")
     return contNos, contEllos
+
+############################
+# Truco hasta que uno gane #
+############################
 
 def juego(nos, ellos):
     mezclarMazo() # Mezclar el mazo
     repartir_cartas_alternadamente(jugadores)  # Repartir las cartas  
     flor, pmax = config()
-    print(nos, ellos)
-    time.sleep(2)
+    tablero(nos, ellos)
+    time.sleep(1.5)
+    print("Presione una tecla...", end="")
+    input()
     os.system("cls")
     while nos <= pmax and ellos <= pmax:    
         nos_val, ellos_val = mano(flor)
@@ -314,22 +385,51 @@ def juego(nos, ellos):
         ellos += ellos_val
         mezclarMazo() # Mezclar el mazo
         repartir_cartas_alternadamente(jugadores)  # Repartir las cartas  
-        time.sleep(2)
+        tablero(nos,ellos)
+        time.sleep(1.5)
         print(nos, ellos)
-        time.sleep(2)
+        print("Presione una tecla...", end="")
+        input()
         os.system("cls")
+        printsMezclando()
+
+
+################
+# Puntuaciones #
+################
+
+def tablero(nos, ellos):
+    if nos <= 15:
+        puntosNos = "Malas"
+    else: 
+        puntosNos = "Buenas"
+    if ellos <= 15:
+        puntosEllos = "Malas"
+    else: 
+        puntosEllos = "Buenas"
+    print("   _______________________ ")
+    print("  |        TABLERO        |")
+    print("  |———————————————————————|")
+    print("  |  Jugador  |  Máquina  |")
+    print("  | ", nos, "puntos | ", ellos, "puntos |")
+    print(f"  |   {puntosNos}   |   {puntosEllos}   |")
+    print("  |___________|___________|")
+
+########################
+# Lógica de minijuegos #
+########################
+def truco ():
+    pass
 
 def envido(flor):
     if flor == 1:
         if jugadores[0]['cartas'][0][1] == jugadores[0]['cartas'][1][1] and jugadores[0]['cartas'][0][1] == jugadores[0]['cartas'][2][1]:
             pass
+            
+#########################
+# Funciones de arranque #
+#########################   
 
-    
-def ejecutar():
-    nos = 0
-    ellos = 0
-    creandoJugadores() # Crear los jugadores
-    juego(nos, ellos)
 
 
 def menu():
@@ -424,7 +524,7 @@ def menu():
                 os.system("cls")
                 input("Parece que ingresaste una opción no válida. ¡Presiona 'ENTER' y volvé a intentarlo!")
                 
-        except ValueError ():
+        except  TypeError:
               os.system("cls")                                                                                                   
               print("                                                                                                    ")
               print("EEEEEEEEEEEEEEEEEEEEEE                                                                              ")
@@ -444,5 +544,41 @@ def menu():
               print("E::::::::::::::::::::E r:::::r             r:::::r             oo:::::::::::oo  r:::::r             ")
               print("EEEEEEEEEEEEEEEEEEEEEE rrrrrrr             rrrrrrr               ooooooooooo    rrrrrrr             ")                                                                              
               input()
-           
-menu() 
+            
+def ejecutar():
+    nos = 0
+    ellos = 0
+    creandoJugadores() # Crear los jugadores
+    juego(nos, ellos)
+    
+def inicio():
+    os.system("cls")
+    print("                                                                                                               ")
+    print("TTTTTTTTTTTTTTTTTTTTTTT                                                                           ")
+    print("T:::::::::::::::::::::T                                                                           ")
+    print("T:::::::::::::::::::::T                                                                           ")
+    print("T:::::TT:::::::TT:::::T                                                                           ")
+    print("TTTTTT  T:::::T  TTTTTTrrrrr   rrrrrrrrr   uuuuuu    uuuuuu      cccccccccccccccc   ooooooooooo   ")
+    print("        T:::::T        r::::rrr:::::::::r  u::::u    u::::u    cc:::::::::::::::c oo:::::::::::oo ")
+    print("        T:::::T        r:::::::::::::::::r u::::u    u::::u   c:::::::::::::::::co:::::::::::::::o")
+    print("        T:::::T        rr::::::rrrrr::::::ru::::u    u::::u  c:::::::cccccc:::::co:::::ooooo:::::o")
+    print("        T:::::T         r:::::r     r:::::ru::::u    u::::u  c::::::c     ccccccco::::o     o::::o")
+    print("        T:::::T         r:::::r     rrrrrrru::::u    u::::u  c:::::c             o::::o     o::::o")
+    print("        T:::::T         r:::::r            u::::u    u::::u  c:::::c             o::::o     o::::o")
+    print("        T:::::T         r:::::r            u:::::uuuu:::::u  c::::::c     ccccccco::::o     o::::o")
+    print("      TT:::::::TT       r:::::r            u:::::::::::::::uuc:::::::cccccc:::::co:::::ooooo:::::o")
+    print("      T:::::::::T       r:::::r             u:::::::::::::::u c:::::::::::::::::co:::::::::::::::o")
+    print("      T:::::::::T       r:::::r              uu::::::::uu:::u  cc:::::::::::::::c oo:::::::::::oo ")
+    print("      TTTTTTTTTTT       rrrrrrr                uuuuuuuu  uuuu    cccccccccccccccc   ooooooooooo   ")
+    print()
+    print("                                                                           _   _    _    ___   ___ ")
+    print("                                                                          | | | |  /_\  |   \ | __|")
+    print("                                                                          | |_| | / _ \ | |) || _| ")
+    print("                                                                          \_____//_/ \_\|___/ |___|")
+    time.sleep(3)
+    print("\nPresione una tecla...", end="")
+    input()
+    menu() 
+
+
+
