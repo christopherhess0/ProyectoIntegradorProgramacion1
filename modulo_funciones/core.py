@@ -80,11 +80,11 @@ def config():
     pMax = int(input("\nIndique la puntuación máxima. (15 | 30) "))
     while pMax != 15 and pMax != 30:
         pMax = int(input("Respuesta no válida. Intente denuevo. Indique la puntuación máxima. (15 | 30) "))
-    
+
     os.system("cls")
 
     return flor, pMax
-    
+
 ##############################################
 # Funciones que muestran tus cartas (visual) #
 ##############################################
@@ -97,7 +97,7 @@ def tusCartas():
     carta1 = cartas_formateadas[0].center(ancho_carta)
     carta2 = cartas_formateadas[1].center(ancho_carta)
     carta3 = cartas_formateadas[2].center(ancho_carta)
-    
+
     print("    ________________     ________________     ________________ ")
     print("   |Carta 1         |   |Carta 2         |   |Carta 3         |")
     print("   |                |   |                |   |                |")
@@ -108,7 +108,6 @@ def tusCartas():
     print("   |                |   |                |   |                |")
     print("   |________________|   |________________|   |________________|")
     print(" ")
-
 
 def tusCartas2(cartas):
     cartas_formateadas = [f"{numero} de {palo}" for numero, palo, _ in cartas]
@@ -129,7 +128,6 @@ def tusCartas2(cartas):
     print(" ")
 
     return jugadores[0]['cartas']
-
 
 ############################    
 # Número de ronda (visual) #
@@ -248,7 +246,7 @@ def printsMezclando():
 
 ######################
 # Lógica de una mano #
-######################  
+######################
 
 def mano(flor):
     ronda = 1
@@ -265,7 +263,7 @@ def mano(flor):
         os.system("cls")
 
         if ronda == 1: # TERMINAR 
-            '''tusCartas()
+            '''
             envido = int(input("¿Querés cantar envido? (Si = 1 | No = 2) "))
             while envido != 1 and envido != 2:
                 envido = int(input("Error. Intente devuelta. ¿Querés cantar envido? (Si = 1 | No = 2) "))
@@ -278,15 +276,15 @@ def mano(flor):
             while carta != 1 and carta != 2 and carta != 3:
                 carta = int(input("Error. ¿Que carta querés jugar? (1, 2 o 3) "))
             carta -= 1
-            cartaMaq = 2   
+            os.system("cls")
 
             # Posiblemente puede optimizarse
-            cartaMaq= int(cartaMaquina(jugadores[0]['cartas'][carta]))
+            cartaMaq = int(cartaMaquina(jugadores[0]['cartas'][carta]))  
             print()
-
+           
             if jugadores[0]['cartas'][carta][2] < cartaMaq:
                 contRondasEllos += 1
-                print("La maquina se llevo la ronda!")
+                print("La máquina se llevó la ronda!")
                 time.sleep(2)
             elif jugadores[0]['cartas'][carta][2] > cartaMaq:
                 contRondasNos += 1
@@ -309,13 +307,13 @@ def mano(flor):
                 carta = int(input("Error. ¿Que carta querés jugar? (1 o 2) "))
             carta -= 1
             os.system("cls")
-
-            cartaMaq= int(cartaMaquina(cartas[carta]))
-            print()
+            
+            cartaMaq = int(cartaMaquina(cartas[carta]))
+            print() 
 
             if cartas[carta][2] < cartaMaq:
                 contRondasEllos += 1
-                print("La maquina se llevo la ronda")
+                print("La máquina se llevó la ronda!")
                 time.sleep(2)
             elif cartas[carta][2] > cartaMaq:
                 contRondasNos += 1
@@ -336,11 +334,10 @@ def mano(flor):
                 contNos += 1
                 ronda = 4
             else:
-                cartas.pop(carta)
-                      
+                cartas.pop(carta)       
 
         elif ronda == 3:
-            cartaMaq= int(cartaMaquina(cartas[0]))
+            cartaMaq = int(cartaMaquina(cartas[0]))
             print()
             
             if cartas[0][2] < cartaMaq:
@@ -357,12 +354,13 @@ def mano(flor):
                     contNos += 1
                     ronda = 4
                 elif tuTurno == False:
-                    print("La máquina gana la mano!")
+                    print("La máquina gana la mano!\n")
                     contEllos += 1
-                    ronda = 4       
+                    ronda = 4
+                
         ronda += 1
 
-    time.sleep(2)
+    time.sleep(2)    
     os.system("cls")
     return contNos, contEllos
 
@@ -376,23 +374,22 @@ def juego(nos, ellos):
     flor, pmax = config()
     tablero(nos, ellos)
     time.sleep(1.5)
-    print("Presione una tecla...", end="")
+    print("\nPresione una tecla...", end="")
     input()
     os.system("cls")
+    printsMezclando()
     while nos <= pmax and ellos <= pmax:    
         nos_val, ellos_val = mano(flor)
         nos += nos_val
         ellos += ellos_val
         mezclarMazo() # Mezclar el mazo
         repartir_cartas_alternadamente(jugadores)  # Repartir las cartas  
-        tablero(nos,ellos)
+        tablero(nos, ellos)
         time.sleep(1.5)
-        print(nos, ellos)
-        print("Presione una tecla...", end="")
+        print("\nPresione una tecla...", end="")
         input()
         os.system("cls")
         printsMezclando()
-
 
 ################
 # Puntuaciones #
@@ -400,37 +397,42 @@ def juego(nos, ellos):
 
 def tablero(nos, ellos):
     if nos <= 15:
-        puntosNos = "Malas"
+        puntosNos = "Malas "
     else: 
         puntosNos = "Buenas"
     if ellos <= 15:
-        puntosEllos = "Malas"
+        puntosEllos = "Malas "
     else: 
         puntosEllos = "Buenas"
-    print("   _______________________ ")
-    print("  |        TABLERO        |")
-    print("  |———————————————————————|")
-    print("  |  Jugador  |  Máquina  |")
+    
+    if nos < 10:
+        nos = str(nos) + " "
+    if ellos < 10:
+        ellos = str(nos) + ""
+
+    print("   _________________________ ")
+    print("  |         TABLERO         |")
+    print("  |—————————————————————————|")
+    print("  |   Jugador  |  Máquina   |")
     print("  | ", nos, "puntos | ", ellos, "puntos |")
     print(f"  |   {puntosNos}   |   {puntosEllos}   |")
-    print("  |___________|___________|")
+    print("  |____________|____________|")
 
 ########################
 # Lógica de minijuegos #
 ########################
-def truco ():
+
+def truco():
     pass
 
 def envido(flor):
     if flor == 1:
         if jugadores[0]['cartas'][0][1] == jugadores[0]['cartas'][1][1] and jugadores[0]['cartas'][0][1] == jugadores[0]['cartas'][2][1]:
             pass
-            
+
 #########################
 # Funciones de arranque #
-#########################   
-
-
+#########################
 
 def menu():
     repetir = True
@@ -499,18 +501,16 @@ def menu():
                 tecla = input("\nPresione 'ENTER' para volver al menú...")
             elif op == 2:
                 os.system("cls")
-                print("        ")
-                print("                                                                                                                                                                                            ")
-                print("       • El Truco se juega con una baraja española de 40 cartas (sin ningún 8, 9 o 10).                                                                                                     ")
-                print("       • Participan 2, 4 o 6 jugadores, organizados en 2 equipos donde cada jugador recibe 3 cartas y el objetivo es alcanzar 15 o 30 puntos, según la modalidad                            ")
-                print("       • El juego se desarrolla por manos donde se lleva puntos quien gane 2 de 3 enfrentamientos.                                                                                          ")
-                print("""       • Los jugadores pueden cantar "truco"  para desafiar al adversario, aumentando la apuesta de puntos;                                                                               """)
-                print("""         el rival puede aceptar, rechazar, o subir la apuesta con "re-truco" o "vale cuatro"                                                                                              """)
-                print("""       • También se puede "Cantar Envido" antes de usar la primer carta, apostando por el mejor par de cartas del mismo palo.                                                             """)
-                print("""       • Además, si un jugador tiene las tres cartas del mismo palo, puede "Cantar Flor" para ganar puntos extras (aunque se debe aclarar si está permitida al comienzo de la partida)    """)
-                print("       • Por último, los puntos se otorgan según el resultado de las manos y las apuestas realizadas.                                                                                        ")
+                print("• El Truco se juega con una baraja española de 40 cartas (sin ningún 8, 9 o 10).                                                                                                     ")
+                print("• Participan 2, 4 o 6 jugadores, organizados en 2 equipos donde cada jugador recibe 3 cartas y el objetivo es alcanzar 15 o 30 puntos, según la modalidad                            ")
+                print("• El juego se desarrolla por manos donde se lleva puntos quien gane 2 de 3 enfrentamientos.                                                                                          ")
+                print("""• Los jugadores pueden cantar "truco"  para desafiar al adversario, aumentando la apuesta de puntos;                                                                               """)
+                print("""el rival puede aceptar, rechazar, o subir la apuesta con "re-truco" o "vale cuatro"                                                                                              """)
+                print("""• También se puede "Cantar Envido" antes de usar la primer carta, apostando por el mejor par de cartas del mismo palo.                                                             """)
+                print("""• Además, si un jugador tiene las tres cartas del mismo palo, puede "Cantar Flor" para ganar puntos extras (aunque se debe aclarar si está permitida al comienzo de la partida)    """)
+                print("• Por último, los puntos se otorgan según el resultado de las manos y las apuestas realizadas.                                                                                        ")
                 print("")
-    
+
                 tecla = input("\nPresione 'ENTER' para volver al menú...")
             elif op == 3:
                 os.system("cls")
@@ -523,10 +523,9 @@ def menu():
             else: 
                 os.system("cls")
                 input("Parece que ingresaste una opción no válida. ¡Presiona 'ENTER' y volvé a intentarlo!")
-                
-        except  TypeError:
+        except TypeError:
               os.system("cls")                                                                                                   
-              print("                                                                                                    ")
+              print("                                                                                                               ")
               print("EEEEEEEEEEEEEEEEEEEEEE                                                                              ")
               print("E::::::::::::::::::::E                                                                              ")
               print("E::::::::::::::::::::E                                                                              ")
@@ -544,13 +543,13 @@ def menu():
               print("E::::::::::::::::::::E r:::::r             r:::::r             oo:::::::::::oo  r:::::r             ")
               print("EEEEEEEEEEEEEEEEEEEEEE rrrrrrr             rrrrrrr               ooooooooooo    rrrrrrr             ")                                                                              
               input()
-            
+
 def ejecutar():
     nos = 0
     ellos = 0
     creandoJugadores() # Crear los jugadores
     juego(nos, ellos)
-    
+
 def inicio():
     os.system("cls")
     print("                                                                                                               ")
@@ -578,7 +577,4 @@ def inicio():
     time.sleep(3)
     print("\nPresione una tecla...", end="")
     input()
-    menu() 
-
-
-
+    menu()
