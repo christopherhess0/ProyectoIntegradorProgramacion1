@@ -1,3 +1,4 @@
 import modulo_funciones.core as c
 
-c.inicio()
+if __name__ == '__main__':
+    c.inicio()
