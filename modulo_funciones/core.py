@@ -37,11 +37,19 @@ def mezclarMazo():
 def creandoJugadores():
     global jugadores
     jugadores = []
-    for i in range(2):
-        jugador = {'Nombre': f'Jugador {i+1}', 'cartas': []}
-        jugadores.append(jugador)
-
-tuTurno = True
+    num = random.randint(0, 9)
+    nombres = ["Enrique", "Dolores", "Ricardo", "Rosario", "Antonio", "Julieta", "Ernesto", "Eugenia", "Alberto", "Beatriz"]
+    npc = nombres[num]
+    usuario = input("Ingrese su nombre (máximo de 10 caractéres): ")
+    while len(usuario) >= 11:
+        usuario = input("Error. Ingrese su nombre (máximo de 10 caractéres): ")
+    jugador = {'Nombre': f'{usuario}', 'cartas': []}
+    jugadores.append(jugador)
+    jugador = {'Nombre': f'{npc}', 'cartas': []}
+    jugadores.append(jugador)
+    print(f"\nTu rival es {npc}!")
+    time.sleep(3)
+    os.system("cls")
 
 ##################################
 # Repartir cartas alternadamente #
@@ -60,7 +68,7 @@ def repartir_cartas_alternadamente(jugadores):
             else:
                 jugador_index = 0
             cont += 1
-    else:
+    elif tuTurno == False:
         jugador_index = 1  # Comienza con el segundo jugador
         cont = 0
         while cont < 6:
@@ -74,7 +82,7 @@ def repartir_cartas_alternadamente(jugadores):
 def config():
     print("Configuración de la partida.\n")
     time.sleep(1)
-    flor = int(input("¿Activar flor? (SI = 1 | NO = 2) "))
+    flor = int(input("¿Activar flor? (Si = 1 | No = 2) "))
     while flor < 1 or flor > 2:
         flor = int(input("Respuesta no válida. Intente denuevo. ¿Activar flor? (SI = 1 | NO = 2) "))
     pMax = int(input("\nIndique la puntuación máxima. (15 | 30) "))
@@ -196,7 +204,7 @@ def rondArt(ronda):
 # Carta que juega la máquina #
 ##############################
 
-def cartaMaquina(jugador):
+def cartaMaquina():
     cAlta = 0
     carta = 0 
     for i in range(len(jugadores[1]['cartas'])):
@@ -204,9 +212,8 @@ def cartaMaquina(jugador):
             cAlta = jugadores[1]['cartas'][i][2]
             carta = i
     eleccion = jugadores[1]['cartas'][carta]
-    cartasVersus(jugador, eleccion)
     jugadores[1]['cartas'].pop(carta)
-    return cAlta
+    return eleccion
 
 def cartasVersus(jugador, maquina):
     carta_jugador = f"{jugador[0]} de {jugador[1]}"
@@ -216,8 +223,13 @@ def cartasVersus(jugador, maquina):
     carta1 = carta_jugador.center(ancho_carta)
     carta2 = carta_maquina.center(ancho_carta)
 
+    nombre = jugadores[0]['Nombre'] 
+
+    for i in range(10 - len(jugadores[0]['Nombre'])):
+        nombre += " "
+    
     print("    ________________    |    ________________ ")
-    print("   |Carta Jugador   |   |   |Carta Máquina   |")
+    print(f"   |Carta {nombre}|   |   |Carta {jugadores[1]['Nombre']}   |")
     print("   |                |   |   |                |")
     print("   |                |   |   |                |")
     print(f"   | {carta1} |   |   | {carta2} |")
@@ -231,6 +243,24 @@ def cartasVersus(jugador, maquina):
 #########################
 # Mezclando... (visual) #
 #########################
+
+def cartaRival(eleccion):
+    carta = f"{eleccion[0]} de {eleccion[1]}"
+    ancho_carta = 14
+
+    carta1 = carta.center(ancho_carta)
+
+    print("    ________________    ")
+    print("   |                |")
+    print("   |                |")
+    print("   |                |")
+    print(f"   | {carta1} |")
+    print("   |                |")
+    print("   |                |")
+    print("   |                |")
+    print("   |________________|")
+    print("                        ")
+    print("------------------------")
 
 def printsMezclando():
     print("Mezclando el mazo y repartiendo", end="", flush=True)
@@ -251,6 +281,7 @@ def printsMezclando():
 def mano(flor):
     ronda = 1
     
+    ganadorPR = 0
     contNos = 0
     contEllos = 0
 
@@ -271,26 +302,39 @@ def mano(flor):
                     envido(flor)
             os.system("cls")'''
 
-            tusCartas()
-            carta = int(input("¿Que carta querés jugar? (1, 2 o 3) "))
-            while carta != 1 and carta != 2 and carta != 3:
-                carta = int(input("Error. ¿Que carta querés jugar? (1, 2 o 3) "))
-            carta -= 1
-            os.system("cls")
+            if tuTurno == False:
+                cartaMaq = cartaMaquina()
+                print(f"{jugadores[1]['Nombre']} jugó la siguiente carta: \n")
+                cartaRival(cartaMaq)
+                tusCartas()
+                carta = int(input("¿Que carta querés jugar? (1, 2 o 3) "))
+                while carta != 1 and carta != 2 and carta != 3:
+                    carta = int(input("Error. ¿Que carta querés jugar? (1, 2 o 3) "))
+                carta -= 1
+                os.system("cls")
+            elif tuTurno:
+                tusCartas()
+                carta = int(input("¿Que carta querés jugar? (1, 2 o 3) "))
+                while carta != 1 and carta != 2 and carta != 3:
+                    carta = int(input("Error. ¿Que carta querés jugar? (1, 2 o 3) "))
+                carta -= 1
+                os.system("cls")
+                cartaMaq = cartaMaquina()
 
-            # Posiblemente puede optimizarse
-            cartaMaq = int(cartaMaquina(jugadores[0]['cartas'][carta]))  
+            cartasVersus(jugadores[0]['cartas'][carta], cartaMaq)
             print()
            
-            if jugadores[0]['cartas'][carta][2] < cartaMaq:
+            if jugadores[0]['cartas'][carta][2] < cartaMaq[2]:
                 contRondasEllos += 1
-                print("La máquina se llevó la ronda!")
+                ganadorPR = 2
+                print(f"{jugadores[1]['Nombre']} se llevó la ronda!")
                 time.sleep(2)
-            elif jugadores[0]['cartas'][carta][2] > cartaMaq:
+            elif jugadores[0]['cartas'][carta][2] > cartaMaq[2]:
                 contRondasNos += 1
+                ganadorPR = 1
                 print("Te llevaste la ronda!")
                 time.sleep(2)
-            elif jugadores[0]['cartas'][carta][2] == cartaMaq:
+            elif jugadores[0]['cartas'][carta][2] == cartaMaq[2]:
                 contRondasNos += 1
                 contRondasEllos += 1
                 print("Parda la mejor!")
@@ -301,62 +345,84 @@ def mano(flor):
             cartas.pop(carta)
             
         elif ronda == 2:
-            tusCartas2(cartas)
-            carta = int(input("¿Que carta querés jugar? (1 o 2) "))
-            while carta != 1 and carta != 2:
-                carta = int(input("Error. ¿Que carta querés jugar? (1 o 2) "))
-            carta -= 1
-            os.system("cls")
+            if ganadorPR == 2:
+                cartaMaq = cartaMaquina()
+                print(f"{jugadores[1]['Nombre']} jugó la siguiente carta: \n")
+                cartaRival(cartaMaq)
+                tusCartas2(cartas)
+                carta = int(input("¿Que carta querés jugar? (1 o 2) "))
+                while carta != 1 and carta != 2:
+                    carta = int(input("Error. ¿Que carta querés jugar? (1 o 2) "))
+                carta -= 1
+                os.system("cls")
+            elif ganadorPR == 1:
+                tusCartas2(cartas)
+                carta = int(input("¿Que carta querés jugar? (1 o 2) "))
+                while carta != 1 and carta != 2:
+                    carta = int(input("Error. ¿Que carta querés jugar? (1 o 2) "))
+                carta -= 1
+                os.system("cls")
+                cartaMaq = cartaMaquina()
             
-            cartaMaq = int(cartaMaquina(cartas[carta]))
+            cartasVersus(cartas[carta], cartaMaq)
             print() 
 
-            if cartas[carta][2] < cartaMaq:
+            if cartas[carta][2] < cartaMaq[2]:
                 contRondasEllos += 1
-                print("La máquina se llevó la ronda!")
+                print(f"{jugadores[1]['Nombre']} se llevó la ronda!")
                 time.sleep(2)
-            elif cartas[carta][2] > cartaMaq:
+            elif cartas[carta][2] > cartaMaq[2]:
                 contRondasNos += 1
                 print("Te llevaste la ronda!")
                 time.sleep(2)
-            elif cartas[carta][2] == cartaMaq:
+            elif cartas[carta][2] == cartaMaq[2]:
                 contRondasNos += 1
                 contRondasEllos += 1
                 print("Parda!")
                 time.sleep(2)
             os.system("cls")
             if contRondasEllos == 2 and contRondasNos != 2:
-                print("La máquina gana la mano!\n")
-                contEllos += 1
+                print(f"{jugadores[1]['Nombre']} gana la mano!\n")
+                contEllos += 8
                 ronda = 4
             elif contRondasNos == 2 and contRondasEllos != 2:
                 print("Vos ganás la mano!\n")
-                contNos += 1
+                contNos += 8
                 ronda = 4
             else:
                 cartas.pop(carta)       
 
         elif ronda == 3:
-            cartaMaq = int(cartaMaquina(cartas[0]))
+            cartaMaq = cartaMaquina()
+            cartasVersus(cartas[0], cartaMaq)
             print()
             
-            if cartas[0][2] < cartaMaq:
-                print("La máquina gana la mano!\n")
-                contEllos += 1
+            if cartas[0][2] < cartaMaq[2]:
+                print(f"{jugadores[1]['Nombre']} gana la mano!\n")
+                contEllos += 8
                 ronda = 4
-            elif cartas[0][2] > cartaMaq:
+            elif cartas[0][2] > cartaMaq[2]:
                 print("Vos ganás la mano!\n")
-                contNos += 1
+                contNos += 8
                 ronda = 4
-            elif cartas[0][2] == cartaMaq:
-                if tuTurno:
+            elif cartas[0][2] == cartaMaq[2]:
+                if ganadorPR == 1:
                     print("Vos ganás la mano!\n")
-                    contNos += 1
+                    contNos += 8
                     ronda = 4
-                elif tuTurno == False:
-                    print("La máquina gana la mano!\n")
-                    contEllos += 1
+                elif ganadorPR == 2:
+                    print(f"{jugadores[1]['Nombre']} gana la mano!\n")
+                    contEllos += 8
                     ronda = 4
+                elif ganadorPR == 0:
+                    if tuTurno:
+                        print("Vos ganás la mano!\n")
+                        contNos += 8
+                        ronda = 4
+                    elif tuTurno == False:
+                        print(f"{jugadores[1]['Nombre']} gana la mano!\n")
+                        contEllos += 8
+                        ronda = 4
                 
         ronda += 1
 
@@ -369,28 +435,294 @@ def mano(flor):
 ############################
 
 def juego(nos, ellos):
+    global tuTurno
+    num = random.randint(1, 2)
+
+    if num == 1:
+        tuTurno = True
+    elif num == 2:
+        tuTurno = False
+
     mezclarMazo() # Mezclar el mazo
     repartir_cartas_alternadamente(jugadores)  # Repartir las cartas  
     flor, pmax = config()
-    tablero(nos, ellos)
-    time.sleep(1.5)
-    print("\nPresione una tecla...", end="")
-    input()
-    os.system("cls")
-    printsMezclando()
-    while nos <= pmax and ellos <= pmax:    
-        nos_val, ellos_val = mano(flor)
-        nos += nos_val
-        ellos += ellos_val
-        mezclarMazo() # Mezclar el mazo
-        repartir_cartas_alternadamente(jugadores)  # Repartir las cartas  
+
+    while nos <= pmax and ellos <= pmax:
         tablero(nos, ellos)
         time.sleep(1.5)
         print("\nPresione una tecla...", end="")
         input()
         os.system("cls")
-        printsMezclando()
+        printsMezclando()    
+        nos_val, ellos_val = mano(flor)
+        nos += nos_val
+        ellos += ellos_val
+        tuTurno = not(tuTurno)
+        mezclarMazo() # Mezclar el mazo
+        repartir_cartas_alternadamente(jugadores)  # Repartir las cartas  
 
+    if nos >= pmax:
+        felicidades()
+    elif ellos >= pmax:
+        print(f"{jugadores[1]['Nombre']} ganó la partida!")
+        time.sleep(3)
+
+############################
+# Si jugador gana (visual) #
+############################
+
+def felicidades():
+    print("                            ")
+    print("                                                                  ")
+    print("FFFFFFFFFFFFFFFFFFFFFF        ")
+    print("F::::::::::::::::::::F          ")
+    print("F::::::::::::::::::::F           ")
+    print("FF::::::FFFFFFFFF::::F         ")
+    print("  F:::::F       FFFFFF      ")
+    print("  F:::::F               ")
+    print("  F::::::FFFFFFFFFF ")
+    print("  F:::::::::::::::F")
+    print("  F:::::::::::::::F ")
+    print("  F::::::FFFFFFFFFF ")
+    print("  F:::::F         ")
+    print("  F:::::F                ")
+    print("FF:::::::FF          ")
+    print("F::::::::FF         ")
+    print("F::::::::FF         ")
+    print("FFFFFFFFFFF        ")
+    print()
+    time.sleep(0.3)
+    os.system("cls")
+    print("                                              ")
+    print("                                                         ")
+    print("FFFFFFFFFFFFFFFFFFFFFF                      ")
+    print("F::::::::::::::::::::F                      ")
+    print("F::::::::::::::::::::F                          ")
+    print("FF::::::FFFFFFFFF::::F                   ")
+    print("  F:::::F       FFFFFF eeeeeeeeeeee      ")
+    print("  F:::::F            ee::::::::::::ee   ")
+    print("  F::::::FFFFFFFFFF e::::::eeeee:::::ee ")
+    print("  F:::::::::::::::Fe::::::e     e:::::e")
+    print("  F:::::::::::::::Fe:::::::eeeee::::::e")
+    print("  F::::::FFFFFFFFFFe:::::::::::::::::e  ")
+    print("  F:::::F          e::::::eeeeeeeeeee   ")
+    print("  F:::::F          e:::::::e                ")
+    print("FF:::::::FF        e::::::::e             ")
+    print("F::::::::FF         e::::::::eeeeeeee    ")
+    print("F::::::::FF          ee:::::::::::::e   ")
+    print("FFFFFFFFFFF            eeeeeeeeeeeeee  ")
+    print()
+    time.sleep(0.3)
+    os.system("cls")
+    print("                                                                         ")
+    print("                                                                        ")
+    print("FFFFFFFFFFFFFFFFFFFFFF                lllllll         ")
+    print("F::::::::::::::::::::F                l:::::l       ")
+    print("F::::::::::::::::::::F                l:::::l             ")
+    print("FF::::::FFFFFFFFF::::F                l:::::l     ")
+    print("  F:::::F       FFFFFF eeeeeeeeeeee    l::::l     ")
+    print("  F:::::F            ee::::::::::::ee  l::::l    ")
+    print("  F::::::FFFFFFFFFF e::::::eeeee:::::eel::::l  ")
+    print("  F:::::::::::::::Fe::::::e     e:::::el::::l   ")
+    print("  F:::::::::::::::Fe:::::::eeeee::::::el::::l   ")
+    print("  F::::::FFFFFFFFFFe:::::::::::::::::e l::::l  ")
+    print("  F:::::F          e::::::eeeeeeeeeee  l::::l    ")
+    print("  F:::::F          e:::::::e           l::::l        ")
+    print("FF:::::::FF        e::::::::e         l::::::l     ")
+    print("F::::::::FF         e::::::::eeeeeeee l::::::l  ")
+    print("F::::::::FF          ee:::::::::::::e l::::::l ")
+    print("FFFFFFFFFFF            eeeeeeeeeeeeee llllllll")
+    print()
+    time.sleep(0.3)
+    os.system("cls")
+    print("                                                                ")
+    print("                                                                  ")
+    print("FFFFFFFFFFFFFFFFFFFFFF                lllllll   iiii                 ")
+    print("F::::::::::::::::::::F                l:::::l  i::::i            ")
+    print("F::::::::::::::::::::F                l:::::l   iiii                  ")
+    print("FF::::::FFFFFFFFF::::F                l:::::l                 ")
+    print("  F:::::F       FFFFFF eeeeeeeeeeee    l::::l iiiiiii       ")
+    print("  F:::::F            ee::::::::::::ee  l::::l i:::::i     ")
+    print("  F::::::FFFFFFFFFF e::::::eeeee:::::eel::::l  i::::i  ")
+    print("  F:::::::::::::::Fe::::::e     e:::::el::::l  i::::i ")
+    print("  F:::::::::::::::Fe:::::::eeeee::::::el::::l  i::::i ")
+    print("  F::::::FFFFFFFFFFe:::::::::::::::::e l::::l  i::::i ")
+    print("  F:::::F          e::::::eeeeeeeeeee  l::::l  i::::i   ")
+    print("  F:::::F          e:::::::e           l::::l  i::::i          ")
+    print("FF:::::::FF        e::::::::e         l::::::li::::::i        ")
+    print("F::::::::FF         e::::::::eeeeeeee l::::::li::::::i   ")
+    print("F::::::::FF          ee:::::::::::::e l::::::li::::::i  ")
+    print("FFFFFFFFFFF            eeeeeeeeeeeeee lllllllliiiiiiii ")
+    print()
+    time.sleep(0.3)
+    os.system("cls")
+    print("                                                                                                                                                               ")
+    print("                                                                                                       ")
+    print("FFFFFFFFFFFFFFFFFFFFFF                lllllll   iiii                                        ")
+    print("F::::::::::::::::::::F                l:::::l  i::::i                                 ")
+    print("F::::::::::::::::::::F                l:::::l   iiii                                          ")
+    print("FF::::::FFFFFFFFF::::F                l:::::l                                                   ")
+    print("  F:::::F       FFFFFF eeeeeeeeeeee    l::::l iiiiiii     cccccccccccccccc   ")
+    print("  F:::::F            ee::::::::::::ee  l::::l i:::::i   cc:::::::::::::::c ")
+    print("  F::::::FFFFFFFFFF e::::::eeeee:::::eel::::l  i::::i  c:::::::::::::::::c ")
+    print("  F:::::::::::::::Fe::::::e     e:::::el::::l  i::::i c:::::::cccccc:::::c ")
+    print("  F:::::::::::::::Fe:::::::eeeee::::::el::::l  i::::i c::::::c     ccccccc ")
+    print("  F::::::FFFFFFFFFFe:::::::::::::::::e l::::l  i::::i c:::::c              ")
+    print("  F:::::F          e::::::eeeeeeeeeee  l::::l  i::::i c:::::c             ")
+    print("  F:::::F          e:::::::e           l::::l  i::::i c::::::c     ccccccc         ")
+    print("FF:::::::FF        e::::::::e         l::::::li::::::ic:::::::cccccc:::::c     ")
+    print("F::::::::FF         e::::::::eeeeeeee l::::::li::::::i c:::::::::::::::::c ")
+    print("F::::::::FF          ee:::::::::::::e l::::::li::::::i  cc:::::::::::::::c ")
+    print("FFFFFFFFFFF            eeeeeeeeeeeeee lllllllliiiiiiii    cccccccccccccccc ")
+    print()
+    time.sleep(0.3)
+    os.system("cls")
+    print("                                                                                                                                                               ")
+    print("                                                                                                              ")
+    print("FFFFFFFFFFFFFFFFFFFFFF                lllllll   iiii                        iiii                               ")
+    print("F::::::::::::::::::::F                l:::::l  i::::i                      i::::i                            ")
+    print("F::::::::::::::::::::F                l:::::l   iiii                        iiii                         ")
+    print("FF::::::FFFFFFFFF::::F                l:::::l                                                              ")
+    print("  F:::::F       FFFFFF eeeeeeeeeeee    l::::l iiiiiii     cccccccccccccccciiiiiii      ")
+    print("  F:::::F            ee::::::::::::ee  l::::l i:::::i   cc:::::::::::::::ci:::::i   ")
+    print("  F::::::FFFFFFFFFF e::::::eeeee:::::eel::::l  i::::i  c:::::::::::::::::c i::::i ")
+    print("  F:::::::::::::::Fe::::::e     e:::::el::::l  i::::i c:::::::cccccc:::::c i::::i ")
+    print("  F:::::::::::::::Fe:::::::eeeee::::::el::::l  i::::i c::::::c     ccccccc i::::i ")
+    print("  F::::::FFFFFFFFFFe:::::::::::::::::e l::::l  i::::i c:::::c              i::::i  ")
+    print("  F:::::F          e::::::eeeeeeeeeee  l::::l  i::::i c:::::c              i::::i  ")
+    print("  F:::::F          e:::::::e           l::::l  i::::i c::::::c     ccccccc i::::i          ")
+    print("FF:::::::FF        e::::::::e         l::::::li::::::ic:::::::cccccc:::::ci::::::i        ")
+    print("F::::::::FF         e::::::::eeeeeeee l::::::li::::::i c:::::::::::::::::ci::::::i  ")
+    print("F::::::::FF          ee:::::::::::::e l::::::li::::::i  cc:::::::::::::::ci::::::i  ")
+    print("FFFFFFFFFFF            eeeeeeeeeeeeee lllllllliiiiiiii    cccccccccccccccciiiiiiii")
+    print()
+    time.sleep(0.3)
+    os.system("cls")
+    print("                                                                                                                                                               ")
+    print("                                                                                              dddddddd                                    ")
+    print("FFFFFFFFFFFFFFFFFFFFFF                lllllll   iiii                        iiii              d::::::d                                        ")
+    print("F::::::::::::::::::::F                l:::::l  i::::i                      i::::i             d::::::d                                   ")
+    print("F::::::::::::::::::::F                l:::::l   iiii                        iiii              d::::::d                                        ")
+    print("FF::::::FFFFFFFFF::::F                l:::::l                                                 d:::::d                                        ")
+    print("  F:::::F       FFFFFF eeeeeeeeeeee    l::::l iiiiiii     cccccccccccccccciiiiiii     ddddddddd:::::d     ")
+    print("  F:::::F            ee::::::::::::ee  l::::l i:::::i   cc:::::::::::::::ci:::::i   dd::::::::::::::d    ")
+    print("  F::::::FFFFFFFFFF e::::::eeeee:::::eel::::l  i::::i  c:::::::::::::::::c i::::i  d::::::::::::::::d ")
+    print("  F:::::::::::::::Fe::::::e     e:::::el::::l  i::::i c:::::::cccccc:::::c i::::i d:::::::ddddd:::::d")
+    print("  F:::::::::::::::Fe:::::::eeeee::::::el::::l  i::::i c::::::c     ccccccc i::::i d::::::d    d:::::d  ")
+    print("  F::::::FFFFFFFFFFe:::::::::::::::::e l::::l  i::::i c:::::c              i::::i d:::::d     d:::::d   ")
+    print("  F:::::F          e::::::eeeeeeeeeee  l::::l  i::::i c:::::c              i::::i d:::::d     d:::::d   ")
+    print("  F:::::F          e:::::::e           l::::l  i::::i c::::::c     ccccccc i::::i d:::::d     d:::::d           ")
+    print("FF:::::::FF        e::::::::e         l::::::li::::::ic:::::::cccccc:::::ci::::::id::::::ddddd::::::dd      ")
+    print("F::::::::FF         e::::::::eeeeeeee l::::::li::::::i c:::::::::::::::::ci::::::i d:::::::::::::::::d ")
+    print("F::::::::FF          ee:::::::::::::e l::::::li::::::i  cc:::::::::::::::ci::::::i  d:::::::::ddd::::d   ")
+    print("FFFFFFFFFFF            eeeeeeeeeeeeee lllllllliiiiiiii    cccccccccccccccciiiiiiii   ddddddddd   ddddd ")
+    print()
+    time.sleep(0.3)
+    os.system("cls")
+    print("                                                                                                                                                    ")
+    print("                                                                                              dddddddd                                  ")
+    print("FFFFFFFFFFFFFFFFFFFFFF                lllllll   iiii                        iiii              d::::::d                                ")
+    print("F::::::::::::::::::::F                l:::::l  i::::i                      i::::i             d::::::d                                ")
+    print("F::::::::::::::::::::F                l:::::l   iiii                        iiii              d::::::d                                ")
+    print("FF::::::FFFFFFFFF::::F                l:::::l                                                 d:::::d                                 ")
+    print("  F:::::F       FFFFFF eeeeeeeeeeee    l::::l iiiiiii     cccccccccccccccciiiiiii     ddddddddd:::::d   aaaaaaaaaaaaa         ")
+    print("  F:::::F            ee::::::::::::ee  l::::l i:::::i   cc:::::::::::::::ci:::::i   dd::::::::::::::d   a::::::::::::a           ")
+    print("  F::::::FFFFFFFFFF e::::::eeeee:::::eel::::l  i::::i  c:::::::::::::::::c i::::i  d::::::::::::::::d   aaaaaaaaa:::::a        ")
+    print("  F:::::::::::::::Fe::::::e     e:::::el::::l  i::::i c:::::::cccccc:::::c i::::i d:::::::ddddd:::::d            a::::a       ")
+    print("  F:::::::::::::::Fe:::::::eeeee::::::el::::l  i::::i c::::::c     ccccccc i::::i d::::::d    d:::::d     aaaaaaa:::::a       ")
+    print("  F::::::FFFFFFFFFFe:::::::::::::::::e l::::l  i::::i c:::::c              i::::i d:::::d     d:::::d   aa::::::::::::a        ")
+    print("  F:::::F          e::::::eeeeeeeeeee  l::::l  i::::i c:::::c              i::::i d:::::d     d:::::d  a::::aaaa::::::a      ")
+    print("  F:::::F          e:::::::e           l::::l  i::::i c::::::c     ccccccc i::::i d:::::d     d:::::d a::::a    a:::::a  ")
+    print("FF:::::::FF        e::::::::e         l::::::li::::::ic:::::::cccccc:::::ci::::::id::::::ddddd::::::dda::::a    a:::::a   ")
+    print("F::::::::FF         e::::::::eeeeeeee l::::::li::::::i c:::::::::::::::::ci::::::i d:::::::::::::::::da:::::aaaa::::::a   ")
+    print("F::::::::FF          ee:::::::::::::e l::::::li::::::i  cc:::::::::::::::ci::::::i  d:::::::::ddd::::d a::::::::::aa:::a         ")
+    print("FFFFFFFFFFF            eeeeeeeeeeeeee lllllllliiiiiiii    cccccccccccccccciiiiiiii   ddddddddd   ddddd  aaaaaaaaaa  aaaa    ")
+    print()
+    time.sleep(0.3)
+    os.system("cls")
+    print("                                                                                                                                                    ")
+    print("                                                                                              dddddddd                             dddddddd         ")
+    print("FFFFFFFFFFFFFFFFFFFFFF                lllllll   iiii                        iiii              d::::::d                             d::::::d         ")
+    print("F::::::::::::::::::::F                l:::::l  i::::i                      i::::i             d::::::d                             d::::::d         ")
+    print("F::::::::::::::::::::F                l:::::l   iiii                        iiii              d::::::d                             d::::::d         ")
+    print("FF::::::FFFFFFFFF::::F                l:::::l                                                 d:::::d                              d:::::d          ")
+    print("  F:::::F       FFFFFF eeeeeeeeeeee    l::::l iiiiiii     cccccccccccccccciiiiiii     ddddddddd:::::d   aaaaaaaaaaaaa      ddddddddd:::::d          ")
+    print("  F:::::F            ee::::::::::::ee  l::::l i:::::i   cc:::::::::::::::ci:::::i   dd::::::::::::::d   a::::::::::::a   dd::::::::::::::d          ")
+    print("  F::::::FFFFFFFFFF e::::::eeeee:::::eel::::l  i::::i  c:::::::::::::::::c i::::i  d::::::::::::::::d   aaaaaaaaa:::::a d::::::::::::::::d          ")
+    print("  F:::::::::::::::Fe::::::e     e:::::el::::l  i::::i c:::::::cccccc:::::c i::::i d:::::::ddddd:::::d            a::::ad:::::::ddddd:::::d          ")
+    print("  F:::::::::::::::Fe:::::::eeeee::::::el::::l  i::::i c::::::c     ccccccc i::::i d::::::d    d:::::d     aaaaaaa:::::ad::::::d    d:::::d          ")
+    print("  F::::::FFFFFFFFFFe:::::::::::::::::e l::::l  i::::i c:::::c              i::::i d:::::d     d:::::d   aa::::::::::::ad:::::d     d:::::d          ")
+    print("  F:::::F          e::::::eeeeeeeeeee  l::::l  i::::i c:::::c              i::::i d:::::d     d:::::d  a::::aaaa::::::ad:::::d     d:::::d          ")
+    print("  F:::::F          e:::::::e           l::::l  i::::i c::::::c     ccccccc i::::i d:::::d     d:::::d a::::a    a:::::ad:::::d     d:::::d          ")
+    print("FF:::::::FF        e::::::::e         l::::::li::::::ic:::::::cccccc:::::ci::::::id::::::ddddd::::::dda::::a    a:::::ad::::::ddddd::::::dd         ")
+    print("F::::::::FF         e::::::::eeeeeeee l::::::li::::::i c:::::::::::::::::ci::::::i d:::::::::::::::::da:::::aaaa::::::a d:::::::::::::::::d         ")
+    print("F::::::::FF          ee:::::::::::::e l::::::li::::::i  cc:::::::::::::::ci::::::i  d:::::::::ddd::::d a::::::::::aa:::a d:::::::::ddd::::d         ")
+    print("FFFFFFFFFFF            eeeeeeeeeeeeee lllllllliiiiiiii    cccccccccccccccciiiiiiii   ddddddddd   ddddd  aaaaaaaaaa  aaaa  ddddddddd   ddddd         ")
+    print()
+    time.sleep(0.3)
+    os.system("cls")
+    print("                                                                                                                                                               ")
+    print("                                                                                              dddddddd                             dddddddd                    ")
+    print("FFFFFFFFFFFFFFFFFFFFFF                lllllll   iiii                        iiii              d::::::d                             d::::::d                    ")
+    print("F::::::::::::::::::::F                l:::::l  i::::i                      i::::i             d::::::d                             d::::::d                    ")
+    print("F::::::::::::::::::::F                l:::::l   iiii                        iiii              d::::::d                             d::::::d                    ")
+    print("FF::::::FFFFFFFFF::::F                l:::::l                                                 d:::::d                              d:::::d                     ")
+    print("  F:::::F       FFFFFF eeeeeeeeeeee    l::::l iiiiiii     cccccccccccccccciiiiiii     ddddddddd:::::d   aaaaaaaaaaaaa      ddddddddd:::::d     eeeeeeeeeeee    ")
+    print("  F:::::F            ee::::::::::::ee  l::::l i:::::i   cc:::::::::::::::ci:::::i   dd::::::::::::::d   a::::::::::::a   dd::::::::::::::d   ee::::::::::::ee  ")
+    print("  F::::::FFFFFFFFFF e::::::eeeee:::::eel::::l  i::::i  c:::::::::::::::::c i::::i  d::::::::::::::::d   aaaaaaaaa:::::a d::::::::::::::::d  e::::::eeeee:::::ee")
+    print("  F:::::::::::::::Fe::::::e     e:::::el::::l  i::::i c:::::::cccccc:::::c i::::i d:::::::ddddd:::::d            a::::ad:::::::ddddd:::::d e::::::e     e:::::e")
+    print("  F:::::::::::::::Fe:::::::eeeee::::::el::::l  i::::i c::::::c     ccccccc i::::i d::::::d    d:::::d     aaaaaaa:::::ad::::::d    d:::::d e:::::::eeeee::::::e")
+    print("  F::::::FFFFFFFFFFe:::::::::::::::::e l::::l  i::::i c:::::c              i::::i d:::::d     d:::::d   aa::::::::::::ad:::::d     d:::::d e:::::::::::::::::e ")
+    print("  F:::::F          e::::::eeeeeeeeeee  l::::l  i::::i c:::::c              i::::i d:::::d     d:::::d  a::::aaaa::::::ad:::::d     d:::::d e::::::eeeeeeeeeee  ")
+    print("  F:::::F          e:::::::e           l::::l  i::::i c::::::c     ccccccc i::::i d:::::d     d:::::d a::::a    a:::::ad:::::d     d:::::d e:::::::e           ")
+    print("FF:::::::FF        e::::::::e         l::::::li::::::ic:::::::cccccc:::::ci::::::id::::::ddddd::::::dda::::a    a:::::ad::::::ddddd::::::dde::::::::e          ")
+    print("F::::::::FF         e::::::::eeeeeeee l::::::li::::::i c:::::::::::::::::ci::::::i d:::::::::::::::::da:::::aaaa::::::a d:::::::::::::::::d e::::::::eeeeeeee  ")
+    print("F::::::::FF          ee:::::::::::::e l::::::li::::::i  cc:::::::::::::::ci::::::i  d:::::::::ddd::::d a::::::::::aa:::a d:::::::::ddd::::d  ee:::::::::::::e  ")
+    print("FFFFFFFFFFF            eeeeeeeeeeeeee lllllllliiiiiiii    cccccccccccccccciiiiiiii   ddddddddd   ddddd  aaaaaaaaaa  aaaa  ddddddddd   ddddd    eeeeeeeeeeeeee  ")
+    print()
+    time.sleep(0.3)
+    os.system("cls")
+    print("                                                                                                                                                                                ")
+    print("                                                                                              dddddddd                             dddddddd                                     ")
+    print("FFFFFFFFFFFFFFFFFFFFFF                lllllll   iiii                        iiii              d::::::d                             d::::::d                                     ")
+    print("F::::::::::::::::::::F                l:::::l  i::::i                      i::::i             d::::::d                             d::::::d                                     ")
+    print("F::::::::::::::::::::F                l:::::l   iiii                        iiii              d::::::d                             d::::::d                                     ")
+    print("FF::::::FFFFFFFFF::::F                l:::::l                                                 d:::::d                              d:::::d                                      ")
+    print("  F:::::F       FFFFFF eeeeeeeeeeee    l::::l iiiiiii     cccccccccccccccciiiiiii     ddddddddd:::::d   aaaaaaaaaaaaa      ddddddddd:::::d     eeeeeeeeeeee        ssssssssss   ")
+    print("  F:::::F            ee::::::::::::ee  l::::l i:::::i   cc:::::::::::::::ci:::::i   dd::::::::::::::d   a::::::::::::a   dd::::::::::::::d   ee::::::::::::ee    ss::::::::::s  ")
+    print("  F::::::FFFFFFFFFF e::::::eeeee:::::eel::::l  i::::i  c:::::::::::::::::c i::::i  d::::::::::::::::d   aaaaaaaaa:::::a d::::::::::::::::d  e::::::eeeee:::::eess:::::::::::::s ")
+    print("  F:::::::::::::::Fe::::::e     e:::::el::::l  i::::i c:::::::cccccc:::::c i::::i d:::::::ddddd:::::d            a::::ad:::::::ddddd:::::d e::::::e     e:::::es::::::ssss:::::s")
+    print("  F:::::::::::::::Fe:::::::eeeee::::::el::::l  i::::i c::::::c     ccccccc i::::i d::::::d    d:::::d     aaaaaaa:::::ad::::::d    d:::::d e:::::::eeeee::::::e s:::::s  ssssss ")
+    print("  F::::::FFFFFFFFFFe:::::::::::::::::e l::::l  i::::i c:::::c              i::::i d:::::d     d:::::d   aa::::::::::::ad:::::d     d:::::d e:::::::::::::::::e    s::::::s      ")
+    print("  F:::::F          e::::::eeeeeeeeeee  l::::l  i::::i c:::::c              i::::i d:::::d     d:::::d  a::::aaaa::::::ad:::::d     d:::::d e::::::eeeeeeeeeee        s::::::s   ")
+    print("  F:::::F          e:::::::e           l::::l  i::::i c::::::c     ccccccc i::::i d:::::d     d:::::d a::::a    a:::::ad:::::d     d:::::d e:::::::e           ssssss   s:::::s ")
+    print("FF:::::::FF        e::::::::e         l::::::li::::::ic:::::::cccccc:::::ci::::::id::::::ddddd::::::dda::::a    a:::::ad::::::ddddd::::::dde::::::::e          s:::::ssss::::::s")
+    print("F::::::::FF         e::::::::eeeeeeee l::::::li::::::i c:::::::::::::::::ci::::::i d:::::::::::::::::da:::::aaaa::::::a d:::::::::::::::::d e::::::::eeeeeeee  s::::::::::::::s ")
+    print("F::::::::FF          ee:::::::::::::e l::::::li::::::i  cc:::::::::::::::ci::::::i  d:::::::::ddd::::d a::::::::::aa:::a d:::::::::ddd::::d  ee:::::::::::::e   s:::::::::::ss  ")
+    print("FFFFFFFFFFF            eeeeeeeeeeeeee lllllllliiiiiiii    cccccccccccccccciiiiiiii   ddddddddd   ddddd  aaaaaaaaaa  aaaa  ddddddddd   ddddd    eeeeeeeeeeeeee    sssssssssss    ")
+    print()
+    time.sleep(1)
+    os.system("cls")
+    print("                                                                                                                                                                                   ")
+    print("        GGGGGGGGGGGGG               AAA               NNNNNNNN        NNNNNNNN               AAA                 SSSSSSSSSSSSSSS TTTTTTTTTTTTTTTTTTTTTTTEEEEEEEEEEEEEEEEEEEEEE !!! ")
+    print("     GGG::::::::::::G              A:::A              N:::::::N       N::::::N              A:::A              SS:::::::::::::::ST:::::::::::::::::::::TE::::::::::::::::::::E!!:!!")
+    print("   GG:::::::::::::::G             A:::::A             N::::::::N      N::::::N             A:::::A            S:::::SSSSSS::::::ST:::::::::::::::::::::TE::::::::::::::::::::E!:::!")
+    print("  G:::::GGGGGGGG::::G            A:::::::A            N:::::::::N     N::::::N            A:::::::A           S:::::S     SSSSSSST:::::TT:::::::TT:::::TEE::::::EEEEEEEEE::::E!:::!")
+    print(" G:::::G       GGGGGG           A:::::::::A           N::::::::::N    N::::::N           A:::::::::A          S:::::S            TTTTTT  T:::::T  TTTTTT  E:::::E       EEEEEE!:::!")
+    print("G:::::G                        A:::::A:::::A          N:::::::::::N   N::::::N          A:::::A:::::A         S:::::S                    T:::::T          E:::::E             !:::!")
+    print("G:::::G                       A:::::A A:::::A         N:::::::N::::N  N::::::N         A:::::A A:::::A         S::::SSSS                 T:::::T          E::::::EEEEEEEEEE   !:::!")
+    print("G:::::G    GGGGGGGGGG        A:::::A   A:::::A        N::::::N N::::N N::::::N        A:::::A   A:::::A         SS::::::SSSSS            T:::::T          E:::::::::::::::E   !:::!")
+    print("G:::::G    G::::::::G       A:::::A     A:::::A       N::::::N  N::::N:::::::N       A:::::A     A:::::A          SSS::::::::SS          T:::::T          E:::::::::::::::E   !:::!")
+    print("G:::::G    GGGGG::::G      A:::::AAAAAAAAA:::::A      N::::::N   N:::::::::::N      A:::::AAAAAAAAA:::::A            SSSSSS::::S         T:::::T          E::::::EEEEEEEEEE   !:::!")
+    print("G:::::G        G::::G     A:::::::::::::::::::::A     N::::::N    N::::::::::N     A:::::::::::::::::::::A                S:::::S        T:::::T          E:::::E             !!:!!")
+    print(" G:::::G       G::::G    A:::::AAAAAAAAAAAAA:::::A    N::::::N     N:::::::::N    A:::::AAAAAAAAAAAAA:::::A               S:::::S        T:::::T          E:::::E       EEEEEE !!! ")
+    print("  G:::::GGGGGGGG::::G   A:::::A             A:::::A   N::::::N      N::::::::N   A:::::A             A:::::A  SSSSSSS     S:::::S      TT:::::::TT      EE::::::EEEEEEEE:::::E     ")
+    print("   GG:::::::::::::::G  A:::::A               A:::::A  N::::::N       N:::::::N  A:::::A               A:::::A S::::::SSSSSS:::::S      T:::::::::T      E::::::::::::::::::::E !!! ")
+    print("     GGG::::::GGG:::G A:::::A                 A:::::A N::::::N        N::::::N A:::::A                 A:::::AS:::::::::::::::SS       T:::::::::T      E::::::::::::::::::::E!!:!!")
+    print("        GGGGGG   GGGGAAAAAAA                   AAAAAAANNNNNNNN         NNNNNNNAAAAAAA                   AAAAAAASSSSSSSSSSSSSSS         TTTTTTTTTTT      EEEEEEEEEEEEEEEEEEEEEE !!! ")
+    print()
+    time.sleep(3)
+        
 ################
 # Puntuaciones #
 ################
@@ -408,12 +740,14 @@ def tablero(nos, ellos):
     if nos < 10:
         nos = str(nos) + " "
     if ellos < 10:
-        ellos = str(nos) + ""
+        ellos = str(ellos) + " "
+
+    nombre = jugadores[0]['Nombre'].center(12)
 
     print("   _________________________ ")
     print("  |         TABLERO         |")
     print("  |—————————————————————————|")
-    print("  |   Jugador  |  Máquina   |")
+    print(f"  |{nombre}|  {jugadores[1]['Nombre']}   |")
     print("  | ", nos, "puntos | ", ellos, "puntos |")
     print(f"  |   {puntosNos}   |   {puntosEllos}   |")
     print("  |____________|____________|")
@@ -523,7 +857,7 @@ def menu():
             else: 
                 os.system("cls")
                 input("Parece que ingresaste una opción no válida. ¡Presiona 'ENTER' y volvé a intentarlo!")
-        except TypeError:
+        except:
               os.system("cls")                                                                                                   
               print("                                                                                                               ")
               print("EEEEEEEEEEEEEEEEEEEEEE                                                                              ")
