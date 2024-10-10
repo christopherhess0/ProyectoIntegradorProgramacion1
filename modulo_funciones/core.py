@@ -116,10 +116,25 @@ def comentariosJugadores(ha_perdido=False):
         },
     }
 
+    # Comentarios generales
+    comentarios_generales = [
+        "¡Esto está comenzando a ser emocionante!",
+        "No puedo esperar a ver cómo termina esta ronda.",
+        "Cada carta cuenta, ¡vamos!",
+        "Este juego siempre tiene sorpresas.",
+        "¡La estrategia es la clave para ganar!",
+        "No subestimen mis cartas, tengo un plan.",
+        "¡Estoy disfrutando de este juego al máximo!",
+        "La próxima mano podría cambiarlo todo.",
+        "Esto se está volviendo muy interesante.",
+        "¡A jugar se ha dicho!"
+    ]
+
     for jugador in jugadores:
-        if jugador['Nombre'] != jugadores[0]['Nombre']: 
+        if jugador['Nombre'] != jugadores[0]['Nombre']:
             npc_name = jugador['Nombre']
-            if ha_perdido:
+
+            if ha_perdido:  # Comentario cuando el NPC pierde
                 comentario = random.choice(comentarios_por_npc[npc_name]['derrota'])
             else:
                 cantidad_cartas = len(jugador['cartas'])
@@ -129,10 +144,18 @@ def comentariosJugadores(ha_perdido=False):
                     comentario = random.choice(comentarios_por_npc[npc_name]['positivos'])
                 else:
                     comentario = random.choice(comentarios_por_npc[npc_name]['negativos'])
-            
-            print(f"{npc_name} dice: {comentario}")
 
-# falta agregar: comentariosJugadores()
+            print(f"{npc_name} dice: {comentario}")
+            time.sleep(2)
+    
+    # Comentarios generales que pueden ser usados por cualquiera
+    comentario_general = random.choice(comentarios_generales)
+    print(f"Comentario general: {comentario_general}")
+    time.sleep(2)
+
+# queda agregar esto para llamar a las funciones.
+#comentariosJugadores()
+#comentariosJugadores(ha_perdido=True)
 
 ##################################
 # Repartir cartas alternadamente #
