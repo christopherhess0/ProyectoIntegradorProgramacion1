@@ -132,6 +132,8 @@ def comentariosJugadores(ha_perdido=False):
             
             print(f"{npc_name} dice: {comentario}")
 
+# falta agregar: comentariosJugadores()
+
 ##################################
 # Repartir cartas alternadamente #
 ##################################
