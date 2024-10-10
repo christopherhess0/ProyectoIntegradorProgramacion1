@@ -51,6 +51,87 @@ def creandoJugadores():
     time.sleep(3)
     os.system("cls")
 
+def comentariosJugadores(ha_perdido=False):
+    # Comentarios personalizados para cada NPC
+    comentarios_por_npc = {
+        "Enrique": {
+            'positivos': ["¡Estoy a punto de ganar, lo puedo sentir!", "Estas cartas son perfectas para mí, ¡vamos!"],
+            'neutros': ["No está mal, pero he tenido mejores manos.", "Vamos a ver cómo me va con esto."],
+            'negativos': ["¡Esto no pinta bien para mí!", "Necesitaré un milagro para ganar con estas cartas..."],
+            'derrota': ["¡Imposible, perdí!", "Esto no me puede estar pasando...", "Tendré que mejorar para la próxima."]
+        },
+        "Dolores": {
+            'positivos': ["¡Siento que la suerte está de mi lado hoy!", "Estas cartas me van a llevar directo a la victoria."],
+            'neutros': ["Bueno, no es lo mejor, pero tampoco lo peor.", "Creo que podría funcionar."],
+            'negativos': ["Esto no parece prometedor...", "Voy a necesitar algo de suerte para salir adelante."],
+            'derrota': ["No puede ser, perdí...", "¡Qué mala suerte tengo hoy!", "Bueno, no siempre se puede ganar..."]
+        },
+        "Ricardo": {
+            'positivos': ["¡Fácil, esta ronda es mía!", "Esto va a ser pan comido."],
+            'neutros': ["Podría ir mejor, pero no me quejo.", "Podría ser interesante."],
+            'negativos': ["No es mi día...", "Voy a necesitar un poco de suerte."],
+            'derrota': ["¡Rayos! Perdí esta vez.", "Parece que la suerte no estaba de mi lado.", "Volveré más fuerte la próxima."]
+        },
+        "Rosario": {
+            'positivos': ["¡Voy a ganar, lo siento!", "¡Qué buena mano tengo!"],
+            'neutros': ["Podría ir mejor, pero veremos.", "Estas cartas están bien, creo."],
+            'negativos': ["No me gustan mis cartas esta vez...", "Creo que no es mi día."],
+            'derrota': ["No puedo creer que haya perdido.", "Parece que no fue mi día.", "Bueno, una derrota no me detendrá."]
+        },
+        "Antonio": {
+            'positivos': ["¡Vamos, esto lo tengo!", "¡Esto será fácil!"],
+            'neutros': ["No está mal, pero tampoco excelente.", "Estas cartas... pueden funcionar."],
+            'negativos': ["Estoy en problemas, lo siento.", "No me gustan estas cartas para nada."],
+            'derrota': ["¡Perdí! No me lo creo.", "Esto fue inesperado.", "La próxima vez ganaré, ya verán."]
+        },
+        "Julieta": {
+            'positivos': ["¡Qué suerte tengo!", "¡Este juego es mío!"],
+            'neutros': ["No sé qué pensar de estas cartas.", "Es una mano decente."],
+            'negativos': ["Oh no, esto no se ve bien...", "No creo que pueda ganar con esto."],
+            'derrota': ["Bueno, hoy no fue mi día...", "Perdí, pero aún me queda una oportunidad.", "La próxima vez lo haré mejor."]
+        },
+        "Ernesto": {
+            'positivos': ["¡Vamos a ganar!", "Las cartas me favorecen."],
+            'neutros': ["Esto está equilibrado, veremos qué pasa.", "No es lo mejor, pero podría funcionar."],
+            'negativos': ["No tengo buenas cartas...", "Creo que voy a perder."],
+            'derrota': ["¡Vaya, perdí!", "No esperaba esto...", "La próxima vez ganaré, estoy seguro."]
+        },
+        "Eugenia": {
+            'positivos': ["¡Qué emocionante es jugar!", "¡Estoy lista para ganar!"],
+            'neutros': ["Vamos a ver cómo se desarrolla el juego.", "No es la mejor mano, pero tengo esperanzas."],
+            'negativos': ["Esto no se ve bien en absoluto.", "Necesito cambiar mi suerte."],
+            'derrota': ["No puedo creer que haya perdido.", "No fue mi día, pero la próxima vez lo haré mejor."]
+        },
+        "Alberto": {
+            'positivos': ["¡Esto es fácil, estoy ganando!", "¡No hay manera de que pierda!"],
+            'neutros': ["Esto puede salir bien.", "Podría ser mejor, pero no me quejo."],
+            'negativos': ["No estoy seguro de que esto funcione...", "Mis cartas no son las mejores."],
+            'derrota': ["¡No puede ser, he perdido!", "No esperaba eso, intentaré de nuevo."]
+        },
+        "Beatriz": {
+            'positivos': ["¡Estoy lista para la victoria!", "Las cartas me favorecen, ¡esto es genial!"],
+            'neutros': ["Podría ser peor, veamos cómo va.", "Es un juego interesante."],
+            'negativos': ["Esto no está bien, necesito mejores cartas.", "No me gusta cómo se ve esto."],
+            'derrota': ["Esto fue inesperado, perdí.", "No puedo creerlo, la próxima vez lo haré mejor."]
+        },
+    }
+
+    for jugador in jugadores:
+        if jugador['Nombre'] != jugadores[0]['Nombre']: 
+            npc_name = jugador['Nombre']
+            if ha_perdido:
+                comentario = random.choice(comentarios_por_npc[npc_name]['derrota'])
+            else:
+                cantidad_cartas = len(jugador['cartas'])
+                if cantidad_cartas == 0:
+                    comentario = random.choice(comentarios_por_npc[npc_name]['neutros'])
+                elif cantidad_cartas > 3:
+                    comentario = random.choice(comentarios_por_npc[npc_name]['positivos'])
+                else:
+                    comentario = random.choice(comentarios_por_npc[npc_name]['negativos'])
+            
+            print(f"{npc_name} dice: {comentario}")
+
 ##################################
 # Repartir cartas alternadamente #
 ##################################
