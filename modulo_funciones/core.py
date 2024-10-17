@@ -148,9 +148,9 @@ def comentariosJugadores(ha_perdido=False):
             print(f"{npc_name} dice: {comentario}")
             time.sleep(2)
     
-    # Comentarios generales que pueden ser usados por cualquiera
+    # Comentarios generales que pueden ser usados por cualquier bot
     comentario_general = random.choice(comentarios_generales)
-    print(f"Comentario general: {comentario_general}")
+    print(f"{comentario_general}")
     time.sleep(2)
 
 # queda agregar esto para llamar a las funciones.
