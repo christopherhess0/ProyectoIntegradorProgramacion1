@@ -151,6 +151,7 @@ def menuLogin():
         elif opcion == "4":
             # os.system("cls")
             print("¡Hasta luego!")
+            menu()
             time.sleep(2)
         else:
             os.system("cls")
@@ -903,7 +904,7 @@ def menu():
     while repetir:
         os.system("cls") #limpia la pantalla
         print("   ■■■■■■■■■■■■■■■■■■■■■■■     ■■■■■■■■■■■■■■■■■■■■■■■■      ■■■■■■■■■■■■■■■■■■■■■■■     ■■■■■■■■■■■■■■■■■■■■■■■     ■■■■■■■■■■■■■■■■■■■■■■■        ")
-        print("   █      1. Equipo      █     █  2. Instrucciones    █      █     3. Ejecutar     █     █  4. Iniciar Sesion  █     █  5. Salir           █        ")
+        print("   █      1. Equipo      █     █  2. Instrucciones    █      █     3. Ejecutar     █     █  4. Iniciar Sesion  █     █      5. Salir       █        ")
         print("   ■■■■■■■■■■■■■■■■■■■■■■■     ■■■■■■■■■■■■■■■■■■■■■■■■      ■■■■■■■■■■■■■■■■■■■■■■■     ■■■■■■■■■■■■■■■■■■■■■■■     ■■■■■■■■■■■■■■■■■■■■■■■        ")
         print("")
 
@@ -1014,6 +1015,10 @@ def menu():
               input()
 
 def ejecutar():
+    if not LogginState:
+        print("Debes iniciar sesión para jugar.")
+        time.sleep(2)
+        return  
     nos = 0
     ellos = 0
     creandoJugadores() # Crear los jugadores
