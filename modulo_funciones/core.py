@@ -107,10 +107,12 @@ def iniciar_sesion():
 # Función principal del programa
 def menuLogin():
     while True:
-        print("\n--- Menú ---")
-        print("1. Iniciar sesión")
-        print("2. Registrar usuario")
-        print("3. Salir")
+        print("■■■■■■■■■■■■■■■■■■■■■■■ Menú ■■■■■■■■■■■■■■■■■■■■■■■")
+        print("■             1. Iniciar sesión                    ■")
+        print("■             2. Registrar usuario                 ■")
+        print("■             3. Salir de la cuenta                ■")
+        print("■             4. Salir al Menu                     ■")
+        print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
         opcion = input("Seleccione una opción: ")
 
         if opcion == "1":
@@ -948,6 +950,10 @@ def menu():
                 ejecutar()
                 tecla = input("\nPresione 'ENTER' para volver al menú...")
             elif op == 4:
+                os.system("cls")
+                menuLogin()
+                tecla = input("\nPresione 'ENTER' para volver al menú...")
+            elif op == 5:
                 os.system("cls")
                 repetir = False
                 print("Gracias por jugar.")
