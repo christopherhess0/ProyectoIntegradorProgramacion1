@@ -55,7 +55,7 @@ def comentariosJugadores(num):
         "Ricardo": {
             'a': ["¡Esta ronda es mía! Ya voy tomando ritmo, te va a costar recuperarte.", "Una más en el bolsillo, ¡te dije que no me subestimes!"],
             'b': ["Esto no ha terminado, prepárate porque te voy a aplastar en la próxima.", "Perdí esta, pero ya verás cómo me recupero... ¡no me gusta perder!"],
-            'c': ["¡Victoria! Te lo dije, no me gusta perder. ¡Te voy a ganar cada vez que juguemos!", "Ganamos, como lo esperaba. La próxima va a ser igual de intensa, ¡preparate!"],
+            'c': ["¡Victoria! Te lo dije, no me gusta perder. ¡Te voy a ganar cada vez que juguemos!", "Gané, como lo esperaba. La próxima va a ser igual de intensa, ¡preparate!"],
             'd': ["Perder... esto no me sienta bien. ¡La próxima te vas a acordar de mí!", "Ok, ganaste esta vez, pero no creas que volverá a pasar. ¡Voy a mejorar para la revancha!"]
         },
         "Rosario": {
@@ -212,18 +212,41 @@ def salir_cuenta():
 def menuLogin():
     global usuario   
     os.system("cls")
-    print("■■■■■■■■■■■■■■■■■■■■■■■ Menú ■■■■■■■■■■■■■■■■■■■■■■■")
-    print("■             1. Iniciar sesión                    ■")
-    print("■             2. Registrar usuario                 ■")
-    print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
-    opcion = input("\nIngrese una opción: ")
+    print("   ■■■■■■■■■■■■■■■■■■■■■■■     ■■■■■■■■■■■■■■■■■■■■■■■")
+    print("   █  1. Iniciar sesión  █     █   2. Registrarse    █")
+    print("   ■■■■■■■■■■■■■■■■■■■■■■■     ■■■■■■■■■■■■■■■■■■■■■■■")
+    op = input("\nIngrese una opción: ")
 
-    if opcion == "1":
+    if op == "1":
         os.system("cls")
         usuario = iniciar_sesion()
-    elif opcion == "2":
+    elif op == "2":
         os.system("cls")
         usuario = registrar_usuario()
+    else:
+        os.system("cls")                                                                                                   
+        print("                                                                                                               ")
+        print("EEEEEEEEEEEEEEEEEEEEEE                                                                              ")
+        print("E::::::::::::::::::::E                                                                              ")
+        print("E::::::::::::::::::::E                                                                              ")
+        print("EE::::::EEEEEEEEE::::E                                                                              ")
+        print("  E:::::E       EEEEEErrrrr   rrrrrrrrr   rrrrr   rrrrrrrrr      ooooooooooo   rrrrr   rrrrrrrrr    ")
+        print("  E:::::E             r::::rrr:::::::::r  r::::rrr:::::::::r   oo:::::::::::oo r::::rrr:::::::::r   ")
+        print("  E::::::EEEEEEEEEE   r:::::::::::::::::r r:::::::::::::::::r o:::::::::::::::or:::::::::::::::::r  ")
+        print("  E:::::::::::::::E   rr::::::rrrrr::::::rrr::::::rrrrr::::::ro:::::ooooo:::::orr::::::rrrrr::::::r ")
+        print("  E:::::::::::::::E    r:::::r     r:::::r r:::::r     r:::::ro::::o     o::::o r:::::r     r:::::r ")
+        print("  E::::::EEEEEEEEEE    r:::::r     rrrrrrr r:::::r     rrrrrrro::::o     o::::o r:::::r     rrrrrrr ")
+        print("  E:::::E              r:::::r             r:::::r            o::::o     o::::o r:::::r             ")
+        print("  E:::::E       EEEEEE r:::::r             r:::::r            o::::o     o::::o r:::::r             ")
+        print("EE::::::EEEEEEEE:::::E r:::::r             r:::::r            o:::::ooooo:::::o r:::::r             ")
+        print("E::::::::::::::::::::E r:::::r             r:::::r            o:::::::::::::::o r:::::r             ")
+        print("E::::::::::::::::::::E r:::::r             r:::::r             oo:::::::::::oo  r:::::r             ")
+        print("EEEEEEEEEEEEEEEEEEEEEE rrrrrrr             rrrrrrr               ooooooooooo    rrrrrrr             ")
+        time.sleep(2)                                                                              
+        input("\nPresione 'ENTER' para volver al menú...")
+        os.system("cls")
+        menuLogin()
+
 
 ###################
 # Crear jugadores #
@@ -240,7 +263,7 @@ def creandoJugadores():
     jugador = {'Nombre': f'{npc}', 'cartas': []}
     jugadores.append(jugador)
     print(f"Tu rival es {npc}!\n")
-    time.sleep(3)
+    time.sleep(2)
 
 ##################################
 # Repartir cartas alternadamente #
@@ -669,7 +692,6 @@ def juego(nos, ellos):
     elif ellos >= pmax:
         print(f"{jugadores[1]['Nombre']} ganó la partida!\n")
         comentariosJugadores(3)
-        tecla = input("\nPresione 'ENTER' para volver al menú...")
 
 ############################
 # Si jugador gana (visual) #
@@ -904,26 +926,6 @@ def felicidades():
     print("F::::::::FF         e::::::::eeeeeeee l::::::li::::::i c:::::::::::::::::ci::::::i d:::::::::::::::::da:::::aaaa::::::a d:::::::::::::::::d e::::::::eeeeeeee  s::::::::::::::s ")
     print("F::::::::FF          ee:::::::::::::e l::::::li::::::i  cc:::::::::::::::ci::::::i  d:::::::::ddd::::d a::::::::::aa:::a d:::::::::ddd::::d  ee:::::::::::::e   s:::::::::::ss  ")
     print("FFFFFFFFFFF            eeeeeeeeeeeeee lllllllliiiiiiii    cccccccccccccccciiiiiiii   ddddddddd   ddddd  aaaaaaaaaa  aaaa  ddddddddd   ddddd    eeeeeeeeeeeeee    sssssssssss    ")
-    print()
-    time.sleep(1)
-    os.system("cls")
-    print("                                                                                                                                                                                   ")
-    print("        GGGGGGGGGGGGG               AAA               NNNNNNNN        NNNNNNNN               AAA                 SSSSSSSSSSSSSSS TTTTTTTTTTTTTTTTTTTTTTTEEEEEEEEEEEEEEEEEEEEEE !!! ")
-    print("     GGG::::::::::::G              A:::A              N:::::::N       N::::::N              A:::A              SS:::::::::::::::ST:::::::::::::::::::::TE::::::::::::::::::::E!!:!!")
-    print("   GG:::::::::::::::G             A:::::A             N::::::::N      N::::::N             A:::::A            S:::::SSSSSS::::::ST:::::::::::::::::::::TE::::::::::::::::::::E!:::!")
-    print("  G:::::GGGGGGGG::::G            A:::::::A            N:::::::::N     N::::::N            A:::::::A           S:::::S     SSSSSSST:::::TT:::::::TT:::::TEE::::::EEEEEEEEE::::E!:::!")
-    print(" G:::::G       GGGGGG           A:::::::::A           N::::::::::N    N::::::N           A:::::::::A          S:::::S            TTTTTT  T:::::T  TTTTTT  E:::::E       EEEEEE!:::!")
-    print("G:::::G                        A:::::A:::::A          N:::::::::::N   N::::::N          A:::::A:::::A         S:::::S                    T:::::T          E:::::E             !:::!")
-    print("G:::::G                       A:::::A A:::::A         N:::::::N::::N  N::::::N         A:::::A A:::::A         S::::SSSS                 T:::::T          E::::::EEEEEEEEEE   !:::!")
-    print("G:::::G    GGGGGGGGGG        A:::::A   A:::::A        N::::::N N::::N N::::::N        A:::::A   A:::::A         SS::::::SSSSS            T:::::T          E:::::::::::::::E   !:::!")
-    print("G:::::G    G::::::::G       A:::::A     A:::::A       N::::::N  N::::N:::::::N       A:::::A     A:::::A          SSS::::::::SS          T:::::T          E:::::::::::::::E   !:::!")
-    print("G:::::G    GGGGG::::G      A:::::AAAAAAAAA:::::A      N::::::N   N:::::::::::N      A:::::AAAAAAAAA:::::A            SSSSSS::::S         T:::::T          E::::::EEEEEEEEEE   !:::!")
-    print("G:::::G        G::::G     A:::::::::::::::::::::A     N::::::N    N::::::::::N     A:::::::::::::::::::::A                S:::::S        T:::::T          E:::::E             !!:!!")
-    print(" G:::::G       G::::G    A:::::AAAAAAAAAAAAA:::::A    N::::::N     N:::::::::N    A:::::AAAAAAAAAAAAA:::::A               S:::::S        T:::::T          E:::::E       EEEEEE !!! ")
-    print("  G:::::GGGGGGGG::::G   A:::::A             A:::::A   N::::::N      N::::::::N   A:::::A             A:::::A  SSSSSSS     S:::::S      TT:::::::TT      EE::::::EEEEEEEE:::::E     ")
-    print("   GG:::::::::::::::G  A:::::A               A:::::A  N::::::N       N:::::::N  A:::::A               A:::::A S::::::SSSSSS:::::S      T:::::::::T      E::::::::::::::::::::E !!! ")
-    print("     GGG::::::GGG:::G A:::::A                 A:::::A N::::::N        N::::::N A:::::A                 A:::::AS:::::::::::::::SS       T:::::::::T      E::::::::::::::::::::E!!:!!")
-    print("        GGGGGG   GGGGAAAAAAA                   AAAAAAANNNNNNNN         NNNNNNNAAAAAAA                   AAAAAAASSSSSSSSSSSSSSS         TTTTTTTTTTT      EEEEEEEEEEEEEEEEEEEEEE !!! ")
     print()
     time.sleep(3)
         
