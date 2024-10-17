@@ -31,10 +31,10 @@ def mezclarMazo():
     global mazo
     mazo = cartas.copy()
     random.shuffle(mazo)
-###################
-# LOG-IN #
-###################
 
+##########
+# LOG-IN #
+##########
 
 # Estado loggin:
 
@@ -54,19 +54,18 @@ def registrar_usuario():
     usuario = input("Ingrese su nombre de usuario: ")
     
     # Validar el nombre de usuario
-    if not es_valido(usuario):
-        print("El nombre de usuario es inválido. Solo se permiten caracteres a-z, A-Z, 0-9, _, -, y .")
-        return
+    while not es_valido(usuario) or verificar_usuario_existe(usuario):
+        usuario = input("El nombre de usuario no está disponible. Intente nuevamente: ")
     
-    contraseña = input("Ingrese su contraseña: ")
+    contraseña = input("\nIngrese su contraseña: ")
     contraseña_encriptada = encriptar_contraseña(contraseña)
-    
-    if verificar_usuario_existe(usuario):
-        print("El usuario ya existe. Intente con otro nombre de usuario.")
-    else:
+
+    if True:
         with open("usuarios.txt", "a") as archivo:
             archivo.write(f"{usuario},{contraseña_encriptada}\n")
         print("Usuario registrado con éxito.")
+    time.sleep(3)
+    return usuario 
 
 # Función para verificar si un usuario ya existe
 def verificar_usuario_existe(usuario):
@@ -83,33 +82,33 @@ def verificar_usuario_existe(usuario):
 # Función para iniciar sesión
 def iniciar_sesion():
     global LogginState
-    usuario = input("Ingrese su nombre de usuario: ")
-    
-    # Validar el nombre de usuario
-    if not es_valido(usuario):
-        print("El nombre de usuario es inválido. Solo se permiten caracteres a-z, A-Z, 0-9, _, -, y .")
-        # return
-    
-    contraseña = input("Ingrese su contraseña: ")
-    contraseña_encriptada = encriptar_contraseña(contraseña)
-    
-    if not os.path.exists("usuarios.txt"):
-        print("No hay usuarios registrados.")
-        # return
-    
-    with open("usuarios.txt", "r") as archivo:
-        for linea in archivo:
-            usuario_guardado, contraseña_guardada = linea.strip().split(',')
-            if usuario == usuario_guardado and contraseña_encriptada == contraseña_guardada:
-                LogginState = True
-                os.system("cls")
-                print("Inicio de sesión exitoso.")
+    correcto = False
+    while correcto == False:
+        usuario = input("Ingrese su nombre de usuario: ")
+        
+        # Validar el nombre de usuario
+        while not es_valido(usuario):
+            usuario = input("El nombre de usuario contiene caractéres inválidos. Intente nuevamente: ")
+        
+        contraseña = input("\nIngrese su contraseña: ")
+        contraseña_encriptada = encriptar_contraseña(contraseña)
+        
+        with open("usuarios.txt", "r") as archivo:
+            for linea in archivo:
+                usuario_guardado, contraseña_guardada = linea.strip().split(',')
+                if usuario == usuario_guardado and contraseña_encriptada == contraseña_guardada:
+                    LogginState = True
+                    os.system("cls")
+                    print("Inicio de sesión exitoso.")
+                    time.sleep(2)
+                    correcto = True
+            if correcto == False:
+                print("\nUsuario o contraseña incorrectos. Intentelo nuevamente.")
                 time.sleep(2)
-                return
+                os.system("cls")
     os.system("cls")
-    print("Usuario o contraseña incorrectos, intentelo Nuevamente.")
-    time.sleep(2)
-    os.system("cls")
+    return usuario
+
 # Funcion para Salir de la cuenta si el usuario toca Desloggearse
 def salir_cuenta():
     global LogginState
@@ -118,48 +117,27 @@ def salir_cuenta():
     if respuesta.lower() == 'si':
         os.system("cls")
         LogginState = False
-        print("Deslogueado con éxito. Hasta luego!")
+        print("Deslogueado con éxito.")
         time.sleep(3)
     else:
         print("Continúa logueado.")
 
 # Función principal del programa
-def menuLogin():   
-    while True:
+def menuLogin():
+    global usuario   
+    os.system("cls")
+    print("■■■■■■■■■■■■■■■■■■■■■■■ Menú ■■■■■■■■■■■■■■■■■■■■■■■")
+    print("■             1. Iniciar sesión                    ■")
+    print("■             2. Registrar usuario                 ■")
+    print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+    opcion = input("\nIngrese una opción: ")
+
+    if opcion == "1":
         os.system("cls")
-        print("■■■■■■■■■■■■■■■■■■■■■■■ Menú ■■■■■■■■■■■■■■■■■■■■■■■")
-        print("■             1. Iniciar sesión                    ■")
-        print("■             2. Registrar usuario                 ■")
-        print("■             3. Salir de la cuenta                ■")
-        print("■             4. Salir al Menu                     ■")
-        print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
-        opcion = input("Seleccione una opción: ")
-
-        if opcion == "1":
-            os.system("cls")
-            iniciar_sesion()
-        elif opcion == "2":
-            os.system("cls")
-            registrar_usuario()
-        elif opcion == "3" and not LogginState:
-            os.system("cls")
-            print("No estás loggeado.")
-            time.sleep(2)
-        elif opcion == "3" and LogginState:
-            salir_cuenta()
-        
-        elif opcion == "4":
-            # os.system("cls")
-            print("¡Hasta luego!")
-            menu()
-            time.sleep(2)
-        else:
-            os.system("cls")
-            print("Opción no válida. Intente nuevamente.")
-            time.sleep(2)
-
-# Ejecutar el menú principal
-
+        usuario = iniciar_sesion()
+    elif opcion == "2":
+        os.system("cls")
+        usuario = registrar_usuario()
 
 ###################
 # Crear jugadores #
@@ -900,11 +878,12 @@ def envido(flor):
 #########################
 
 def menu():
+    menuLogin()
     repetir = True
     while repetir:
         os.system("cls") #limpia la pantalla
         print("   ■■■■■■■■■■■■■■■■■■■■■■■     ■■■■■■■■■■■■■■■■■■■■■■■■      ■■■■■■■■■■■■■■■■■■■■■■■     ■■■■■■■■■■■■■■■■■■■■■■■     ■■■■■■■■■■■■■■■■■■■■■■■        ")
-        print("   █      1. Equipo      █     █  2. Instrucciones    █      █     3. Ejecutar     █     █  4. Iniciar Sesion  █     █      5. Salir       █        ")
+        print("   █      1. Equipo      █     █  2. Instrucciones    █      █     3. Ejecutar     █     █  4. Cambiar Sesion  █     █  5. Salir           █        ")
         print("   ■■■■■■■■■■■■■■■■■■■■■■■     ■■■■■■■■■■■■■■■■■■■■■■■■      ■■■■■■■■■■■■■■■■■■■■■■■     ■■■■■■■■■■■■■■■■■■■■■■■     ■■■■■■■■■■■■■■■■■■■■■■■        ")
         print("")
 
@@ -984,8 +963,8 @@ def menu():
                 tecla = input("\nPresione 'ENTER' para volver al menú...")
             elif op == 4:
                 os.system("cls")
+                salir_cuenta()
                 menuLogin()
-                tecla = input("\nPresione 'ENTER' para volver al menú...")
             elif op == 5:
                 os.system("cls")
                 repetir = False
@@ -1015,10 +994,6 @@ def menu():
               input()
 
 def ejecutar():
-    if not LogginState:
-        print("Debes iniciar sesión para jugar.")
-        time.sleep(2)
-        return  
     nos = 0
     ellos = 0
     creandoJugadores() # Crear los jugadores
