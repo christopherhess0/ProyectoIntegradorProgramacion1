@@ -32,6 +32,92 @@ def mezclarMazo():
     mazo = cartas.copy()
     random.shuffle(mazo)
 
+def comentariosJugadores(num):
+    # num == 1 --> ronda ganada por el npc
+    # num == 2 --> ronda perdida por el npc
+    # num == 3 --> partida ganada por el npc
+    # num == 4 --> partida perdida por el npc
+
+    # Comentarios personalizados para cada NPC
+    comentarios_por_npc = {
+        "Enrique": {
+            'a': ["Otra ronda ganada, ¡ya es cuestión de tiempo para llevarme la partida!", "Así se juega, aprendé un poco observándome."],
+            'b': ["Perder es algo raro para mí, ¡debe haber sido pura suerte de tu parte!", "Tranquilo, no siempre se puede estar a mi nivel. ¡Ya verás la próxima!"],
+            'c': ["¡Sabía que iba a ganar desde el principio! Lo mío no es suerte, es pura habilidad.", "Esto es lo que pasa cuando te enfrentas al mejor, ¡aprendé de mí!"],
+            'd': ["¿Perdí? Debe haber sido pura suerte, ¡no puede ser por tu habilidad!", "Bueno, hasta los mejores tienen un mal día... no te acostumbres."]
+        },
+        "Dolores": {
+            'a': ["¡Bien jugado! Esta ronda fue mía, pero aún queda mucho por delante.", "¡Qué linda ronda! Espero que sigamos así de parejos."],
+            'b': ["¡Qué bien jugado, me ganaste esta vez! Vamos a ver qué pasa en la próxima ronda.", "Fue una buena mano, ¡me alegro por ti! Espero que sigamos con buen ánimo."],
+            'c': ["¡Ganamos! Fue una partida muy divertida, gracias por jugar conmigo.", "Qué buena partida, ¡me alegra haber ganado! Pero lo importante es que lo disfrutamos."],
+            'd': ["¡Qué bien jugado! Perdí la partida, pero la pasé genial jugando contigo.", "Hoy no fue mi día, pero me divertí mucho. ¡Felicitaciones!"]
+        },
+        "Ricardo": {
+            'a': ["¡Esta ronda es mía! Ya voy tomando ritmo, te va a costar recuperarte.", "Una más en el bolsillo, ¡te dije que no me subestimes!"],
+            'b': ["Esto no ha terminado, prepárate porque te voy a aplastar en la próxima.", "Perdí esta, pero ya verás cómo me recupero... ¡no me gusta perder!"],
+            'c': ["¡Victoria! Te lo dije, no me gusta perder. ¡Te voy a ganar cada vez que juguemos!", "Ganamos, como lo esperaba. La próxima va a ser igual de intensa, ¡preparate!"],
+            'd': ["Perder... esto no me sienta bien. ¡La próxima te vas a acordar de mí!", "Ok, ganaste esta vez, pero no creas que volverá a pasar. ¡Voy a mejorar para la revancha!"]
+        },
+        "Rosario": {
+            'a': ["Ronda ganada como lo planeé... solo tengo que seguir enfocada.", "Una victoria en la ronda, pero todavía no me confío. Lo importante es la estrategia a largo plazo."],
+            'b': ["Bueno, esa no la vi venir... tendré que ajustar mi estrategia para la próxima.", "Mmm, cometí un error, pero ya tengo un plan para la siguiente ronda."],
+            'c': ["¡Partida ganada! Todo salió según mi plan, cada jugada fue clave.", "Sabía que la estrategia iba a dar frutos... esta victoria fue bien pensada."],
+            'd': ["Perdí la partida... claramente tengo que ajustar mi estrategia.", "Fue una partida interesante, pero cometí algunos errores. ¡La próxima será diferente!"]
+        },
+        "Antonio": {
+            'a': ["¡Mirá qué bien, gané la ronda! A ver qué viene ahora, esto se pone divertido.", "Otra ronda para mí, ¡pero tranqui, que lo importante es pasarla bien!"],
+            'b': ["¡Ah, me ganaste! Bueno, da igual, lo importante es divertirse, ¿no?", "Perdí, pero no importa, ¡esto recién comienza!"],
+            'c': ["¡Mirá, gané la partida! Fue divertido, eso es lo que cuenta, ¿no?", "¡Qué bien, gané! Aunque más que la victoria, me llevo un buen rato compartido."],
+            'd': ["¡Ah, perdí! Bueno, no pasa nada, lo importante es que estuvo divertido.", "Perdí la partida, ¡pero qué bien la pasamos! Al final, eso es lo que importa."]
+        },
+        "Julieta": {
+            'a': ["¡Te lo dije, esta ronda era mía! Ahora vamos a por la siguiente.", "¡Ganada! Vamos con todo para seguir sumando puntos."],
+            'b': ["¡No puedo creer que perdí! ¡Esta mano era buenísima!", "Malas decisiones... ¡pero la próxima no te salvas, voy con todo!"],
+            'c': ["¡Sí, gané la partida! ¡Sabía que iba a salir todo bien, lo sentí desde el principio!", "¡Esta partida es mía! Ahora vamos por la próxima, ¡no me quiero detener!"],
+            'd': ["¡No puede ser que perdí! Esta partida estaba en mis manos.", "¡Qué bronca! Esta partida era mía, pero ya verás en la próxima."]
+        },
+        "Ernesto": {
+            'a': ["Gané la ronda... interesante. Ahora a ver cómo sigue.", "Una ronda menos... me enfocaré en la siguiente."],
+            'b': ["Perdí... esto no me gusta, pero no siempre se puede ganar.", "Bien jugado, veremos cómo sigue esto."],
+            'c': ["Gané la partida... fue interesante, aunque prefiero mantener la calma.", "Una victoria bien trabajada. Ahora, a seguir mejorando para la próxima."],
+            'd': ["Perdí... no fue mi mejor partida, pero bueno, a veces se gana y a veces se pierde.", "La partida no salió como esperaba... habrá una próxima vez."]
+        },
+        "Eugenia": {
+            'a': ["Era obvio que iba a ganar esta ronda, todo salió según el plan.", "Gané, pero aún no es suficiente. No me detengo hasta la partida final."],
+            'b': ["Esto no debería haber pasado, cometí un error. ¡Voy a hacerlo mejor!", "No puede ser... no juego para perder. ¡Voy a ajustar mi estrategia!"],
+            'c': ["Gané, pero no me sorprende, todo salió exactamente como lo planeé.", "Una victoria bien merecida, pero aún así, siempre se puede mejorar. ¡A seguir adelante!"],
+            'd': ["No debería haber perdido. Claramente cometí errores que no puedo permitirme.", "Perdí la partida... pero voy a analizar cada jugada y asegurarme de que no vuelva a pasar."]
+        },
+        "Alberto": {
+            'a': ["¡Uy, gané otra ronda! ¡Qué sorpresa tan inesperada!", "Una ronda más, ¡qué emocionante! Supongo que no lo viste venir..."],
+            'b': ["¡Oh, qué sorpresa! Perder una mano... nunca me había pasado, claro.", "Bueno, sí, claro, perdí... ¡porque obviamente las cartas estaban de tu lado!"],
+            'c': ["¡Uy, gané! ¡Qué sorpresa tan inesperada! Pero claro, era solo cuestión de tiempo.", "Gané, ¡pero no sé si sentirme bien o mal por vos!"],
+            'd': ["Ah, claro, perdí. ¡Todo parte de mi plan maestro de hacerte confiar!", "Perdí, sí, porque obviamente las cartas estaban en tu favor... ¡pero no me molesta para nada, no!"]
+        },
+        "Beatriz": {
+            'a': ["¡Qué bueno, esta ronda es mía! Pero aún puede pasar de todo.", "¡Otra ronda para mí! La suerte me está sonriendo hoy."],
+            'b': ["Perdí, pero está bien, ¡la suerte me acompañará la próxima!", "No fue mi mejor ronda, pero estoy segura de que la siguiente será mejor."],
+            'c': ["¡Qué emoción, gané la partida! ¡Fue muy divertida, espero que la próxima sea igual!", "Hoy fue mi día, ¡pero lo mejor es que la pasamos genial! Vamos por otra."],
+            'd': ["¡Perdí la partida! Pero bueno, ¡la próxima será diferente! Me quedo con lo bueno.", "Hoy no fue mi día, pero no me rindo. ¡La próxima será mía!"]
+        },
+    }
+
+    for jugador in jugadores:
+        if jugador['Nombre'] != jugadores[0]['Nombre']:
+            npc_name = jugador['Nombre']
+
+            if num == 1:
+                comentario = random.choice(comentarios_por_npc[npc_name]['a'])
+            elif num == 2:
+                comentario = random.choice(comentarios_por_npc[npc_name]['b'])
+            elif num == 3:
+                comentario = random.choice(comentarios_por_npc[npc_name]['c'])
+            elif num == 4:
+                comentario = random.choice(comentarios_por_npc[npc_name]['d'])
+
+            print(f"{npc_name} dice: {comentario}")
+            time.sleep(2)
+
 ##########
 # LOG-IN #
 ##########
@@ -54,7 +140,7 @@ def registrar_usuario():
     usuario = input("Ingrese su nombre de usuario: ")
     
     # Validar el nombre de usuario
-    while not es_valido(usuario) or verificar_usuario_existe(usuario):
+    while not es_valido(usuario) or verificar_usuario_existe(usuario) or len(usuario) > 10:
         usuario = input("El nombre de usuario no está disponible. Intente nuevamente: ")
     
     contraseña = input("\nIngrese su contraseña: ")
@@ -63,7 +149,7 @@ def registrar_usuario():
     if True:
         with open("usuarios.txt", "a") as archivo:
             archivo.write(f"{usuario},{contraseña_encriptada}\n")
-        print("Usuario registrado con éxito.")
+        print("\nUsuario registrado con éxito.")
     time.sleep(3)
     return usuario 
 
@@ -149,16 +235,12 @@ def creandoJugadores():
     num = random.randint(0, 9)
     nombres = ["Enrique", "Dolores", "Ricardo", "Rosario", "Antonio", "Julieta", "Ernesto", "Eugenia", "Alberto", "Beatriz"]
     npc = nombres[num]
-    usuario = input("Ingrese su nombre (máximo de 10 caractéres): ")
-    while len(usuario) >= 11:
-        usuario = input("Error. Ingrese su nombre (máximo de 10 caractéres): ")
     jugador = {'Nombre': f'{usuario}', 'cartas': []}
     jugadores.append(jugador)
     jugador = {'Nombre': f'{npc}', 'cartas': []}
     jugadores.append(jugador)
-    print(f"\nTu rival es {npc}!")
+    print(f"Tu rival es {npc}!\n")
     time.sleep(3)
-    os.system("cls")
 
 ##################################
 # Repartir cartas alternadamente #
@@ -492,10 +574,12 @@ def mano(flor):
             os.system("cls")
             if contRondasEllos == 2 and contRondasNos != 2:
                 print(f"{jugadores[1]['Nombre']} gana la mano!\n")
+                comentariosJugadores(1)
                 contEllos += 8
                 ronda = 4
             elif contRondasNos == 2 and contRondasEllos != 2:
                 print("Vos ganás la mano!\n")
+                comentariosJugadores(2)
                 contNos += 8
                 ronda = 4
             else:
@@ -508,28 +592,34 @@ def mano(flor):
             
             if cartas[0][2] < cartaMaq[2]:
                 print(f"{jugadores[1]['Nombre']} gana la mano!\n")
+                comentariosJugadores(1)
                 contEllos += 8
                 ronda = 4
             elif cartas[0][2] > cartaMaq[2]:
                 print("Vos ganás la mano!\n")
+                comentariosJugadores(2)
                 contNos += 8
                 ronda = 4
             elif cartas[0][2] == cartaMaq[2]:
                 if ganadorPR == 1:
                     print("Vos ganás la mano!\n")
+                    comentariosJugadores(2)
                     contNos += 8
                     ronda = 4
                 elif ganadorPR == 2:
                     print(f"{jugadores[1]['Nombre']} gana la mano!\n")
+                    comentariosJugadores(1)
                     contEllos += 8
                     ronda = 4
                 elif ganadorPR == 0:
                     if tuTurno:
                         print("Vos ganás la mano!\n")
+                        comentariosJugadores(2)
                         contNos += 8
                         ronda = 4
                     elif tuTurno == False:
                         print(f"{jugadores[1]['Nombre']} gana la mano!\n")
+                        comentariosJugadores(1)
                         contEllos += 8
                         ronda = 4
                 
@@ -571,10 +661,15 @@ def juego(nos, ellos):
         repartir_cartas_alternadamente(jugadores)  # Repartir las cartas  
 
     if nos >= pmax:
+        print("Ganaste!\n")
+        comentariosJugadores(4)
+        tecla = input("\nPresione 'ENTER'...")
+        os.system("cls")
         felicidades()
     elif ellos >= pmax:
-        print(f"{jugadores[1]['Nombre']} ganó la partida!")
-        time.sleep(3)
+        print(f"{jugadores[1]['Nombre']} ganó la partida!\n")
+        comentariosJugadores(3)
+        tecla = input("\nPresione 'ENTER' para volver al menú...")
 
 ############################
 # Si jugador gana (visual) #
@@ -882,6 +977,8 @@ def menu():
     repetir = True
     while repetir:
         os.system("cls") #limpia la pantalla
+        print(f"   Bienvenido {usuario}!")
+        print("")
         print("   ■■■■■■■■■■■■■■■■■■■■■■■     ■■■■■■■■■■■■■■■■■■■■■■■■      ■■■■■■■■■■■■■■■■■■■■■■■     ■■■■■■■■■■■■■■■■■■■■■■■     ■■■■■■■■■■■■■■■■■■■■■■■        ")
         print("   █      1. Equipo      █     █  2. Instrucciones    █      █     3. Ejecutar     █     █  4. Cambiar Sesion  █     █  5. Salir           █        ")
         print("   ■■■■■■■■■■■■■■■■■■■■■■■     ■■■■■■■■■■■■■■■■■■■■■■■■      ■■■■■■■■■■■■■■■■■■■■■■■     ■■■■■■■■■■■■■■■■■■■■■■■     ■■■■■■■■■■■■■■■■■■■■■■■        ")
