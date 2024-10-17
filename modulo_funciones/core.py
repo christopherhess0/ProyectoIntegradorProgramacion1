@@ -82,31 +82,51 @@ def verificar_usuario_existe(usuario):
 
 # Función para iniciar sesión
 def iniciar_sesion():
+    global LogginState
     usuario = input("Ingrese su nombre de usuario: ")
     
     # Validar el nombre de usuario
     if not es_valido(usuario):
         print("El nombre de usuario es inválido. Solo se permiten caracteres a-z, A-Z, 0-9, _, -, y .")
-        return
+        # return
     
     contraseña = input("Ingrese su contraseña: ")
     contraseña_encriptada = encriptar_contraseña(contraseña)
     
     if not os.path.exists("usuarios.txt"):
         print("No hay usuarios registrados.")
-        return
+        # return
     
     with open("usuarios.txt", "r") as archivo:
         for linea in archivo:
             usuario_guardado, contraseña_guardada = linea.strip().split(',')
             if usuario == usuario_guardado and contraseña_encriptada == contraseña_guardada:
+                LogginState = True
+                os.system("cls")
                 print("Inicio de sesión exitoso.")
+                time.sleep(2)
                 return
-    print("Usuario o contraseña incorrectos.")
+    os.system("cls")
+    print("Usuario o contraseña incorrectos, intentelo Nuevamente.")
+    time.sleep(2)
+    os.system("cls")
+# Funcion para Salir de la cuenta si el usuario toca Desloggearse
+def salir_cuenta():
+    global LogginState
+    print("¿Desea salir de la cuenta?")
+    respuesta = input("Ingrese 'si' para salir o 'no' para continuar: ")
+    if respuesta.lower() == 'si':
+        os.system("cls")
+        LogginState = False
+        print("Deslogueado con éxito. Hasta luego!")
+        time.sleep(3)
+    else:
+        print("Continúa logueado.")
 
 # Función principal del programa
-def menuLogin():
+def menuLogin():   
     while True:
+        os.system("cls")
         print("■■■■■■■■■■■■■■■■■■■■■■■ Menú ■■■■■■■■■■■■■■■■■■■■■■■")
         print("■             1. Iniciar sesión                    ■")
         print("■             2. Registrar usuario                 ■")
@@ -116,14 +136,26 @@ def menuLogin():
         opcion = input("Seleccione una opción: ")
 
         if opcion == "1":
+            os.system("cls")
             iniciar_sesion()
         elif opcion == "2":
+            os.system("cls")
             registrar_usuario()
-        elif opcion == "3":
+        elif opcion == "3" and not LogginState:
+            os.system("cls")
+            print("No estás loggeado.")
+            time.sleep(2)
+        elif opcion == "3" and LogginState:
+            salir_cuenta()
+        
+        elif opcion == "4":
+            # os.system("cls")
             print("¡Hasta luego!")
-            break
+            time.sleep(2)
         else:
+            os.system("cls")
             print("Opción no válida. Intente nuevamente.")
+            time.sleep(2)
 
 # Ejecutar el menú principal
 
