@@ -199,18 +199,20 @@ def iniciar_sesion():
 def salir_cuenta():
     global LogginState
     print("¿Desea salir de la cuenta?")
-    respuesta = input("Ingrese 'si' para salir o 'no' para continuar: ")
-    if respuesta.lower() == 'si':
+    respuesta = input("Ingrese 'salir' para cambiar de cuenta: ")
+    if respuesta.lower() == 'salir':
         os.system("cls")
         LogginState = False
         print("Deslogueado con éxito.")
         time.sleep(3)
+        menuLogin()
     else:
         print("Continúa logueado.")
 
 # Función principal del programa
 def menuLogin():
-    global usuario   
+    global usuario
+    usuario = None   
     os.system("cls")
     print("   ■■■■■■■■■■■■■■■■■■■■■■■     ■■■■■■■■■■■■■■■■■■■■■■■")
     print("   █  1. Iniciar sesión  █     █   2. Registrarse    █")
@@ -982,7 +984,7 @@ def menu():
         print(f"   Bienvenido {usuario}!")
         print("")
         print("   ■■■■■■■■■■■■■■■■■■■■■■■     ■■■■■■■■■■■■■■■■■■■■■■■■      ■■■■■■■■■■■■■■■■■■■■■■■     ■■■■■■■■■■■■■■■■■■■■■■■     ■■■■■■■■■■■■■■■■■■■■■■■        ")
-        print("   █      1. Equipo      █     █  2. Instrucciones    █      █     3. Ejecutar     █     █  4. Cambiar Sesion  █     █  5. Salir           █        ")
+        print("   █      1. Equipo      █     █  2. Instrucciones    █      █     3. Ejecutar     █     █  4. Cambiar Sesion  █     █      5. Salir       █        ")
         print("   ■■■■■■■■■■■■■■■■■■■■■■■     ■■■■■■■■■■■■■■■■■■■■■■■■      ■■■■■■■■■■■■■■■■■■■■■■■     ■■■■■■■■■■■■■■■■■■■■■■■     ■■■■■■■■■■■■■■■■■■■■■■■        ")
         print("")
 
@@ -1063,7 +1065,6 @@ def menu():
             elif op == 4:
                 os.system("cls")
                 salir_cuenta()
-                menuLogin()
             elif op == 5:
                 os.system("cls")
                 repetir = False
