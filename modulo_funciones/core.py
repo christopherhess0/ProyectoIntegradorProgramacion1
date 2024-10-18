@@ -3,6 +3,7 @@ import os
 import time
 import hashlib
 import re
+import getpass
 
 ########
 # Mazo #
@@ -143,7 +144,7 @@ def registrar_usuario():
     while not es_valido(usuario) or verificar_usuario_existe(usuario) or len(usuario) > 10:
         usuario = input("El nombre de usuario no está disponible. Intente nuevamente: ")
     
-    contraseña = input("\nIngrese su contraseña: ")
+    contraseña = getpass.getpass("\nIngrese su contraseña (no se muestra en pantalla): ")
     contraseña_encriptada = encriptar_contraseña(contraseña)
 
     if True:
@@ -176,7 +177,7 @@ def iniciar_sesion():
         while not es_valido(usuario):
             usuario = input("El nombre de usuario contiene caractéres inválidos. Intente nuevamente: ")
         
-        contraseña = input("\nIngrese su contraseña: ")
+        contraseña = getpass.getpass("\nIngrese su contraseña (no se muestra en pantalla): ")
         contraseña_encriptada = encriptar_contraseña(contraseña)
         
         with open("usuarios.txt", "r") as archivo:
@@ -416,20 +417,128 @@ def rondArt(ronda):
         print("R::::::R     R:::::R oo:::::::::::oo   n::::n    n::::n  d:::::::::ddd::::d a::::::::::aa:::a     3:::::::::::::::33  ")
         print("RRRRRRRR     RRRRRRR   ooooooooooo     nnnnnn    nnnnnn   ddddddddd   ddddd  aaaaaaaaaa  aaaa      333333333333333    ")
 
-##############################
-# Carta que juega la máquina #
-##############################
+############################
+# Estrategia de la máquina #
+############################
 
-def cartaMaquina():
-    cAlta = 0
-    carta = 0 
-    for i in range(len(jugadores[1]['cartas'])):
-        if jugadores[1]['cartas'][i][2] > cAlta:
-            cAlta = jugadores[1]['cartas'][i][2]
-            carta = i
-    eleccion = jugadores[1]['cartas'][carta]
-    jugadores[1]['cartas'].pop(carta)
-    return eleccion
+def estrategiaNPC(ronda, tuCarta, ganadorPR):
+    if ronda == 1:
+        if tuTurno:
+            lista = jugadores[1]['cartas'][:]
+            for i in range (len(jugadores[1]['cartas']) - 1, -1, -1):
+                if jugadores[1]['cartas'][i][2] <= tuCarta[2]:
+                    lista.pop(i)
+            if len(lista) > 1:
+                cBaja = 15
+                carta = 0 
+                for i in range(len(lista)):
+                    if lista[i][2] < cBaja:
+                        cBaja = lista[i][2]
+                        carta = i
+                eleccion = lista[carta]
+                jugadores[1]['cartas'].remove(eleccion)
+                return eleccion
+            elif len(lista) == 1:
+                eleccion = lista[0]
+                jugadores[1]['cartas'].remove(eleccion)
+                return eleccion
+            elif len(lista) == 0:
+                cBaja = 15
+                carta = 0 
+                for i in range(len(jugadores[1]['cartas'])):
+                    if jugadores[1]['cartas'][i][2] < cBaja:
+                        cBaja = jugadores[1]['cartas'][i][2]
+                        carta = i
+                eleccion = jugadores[1]['cartas'][carta]
+                jugadores[1]['cartas'].remove(eleccion)
+                return eleccion
+        elif tuTurno == False:
+            for i in range(len(jugadores[1]['cartas'])):
+                if jugadores[1]['cartas'][i][2] == 10 or jugadores[1]['cartas'][i][2] == 11:
+                    eleccion = jugadores[1]['cartas'][i]
+                    jugadores[1]['cartas'].remove(eleccion)
+                    return eleccion
+            cBaja = 15
+            carta = 0 
+            for i in range(len(jugadores[1]['cartas'])):
+                if jugadores[1]['cartas'][i][2] < cBaja:
+                    cBaja = jugadores[1]['cartas'][i][2]
+                    carta = i
+            eleccion = jugadores[1]['cartas'][carta]
+            jugadores[1]['cartas'].remove(eleccion)
+            return eleccion
+    elif ronda == 2:
+        if ganadorPR == 0:
+            cAlta = 0
+            carta = 0 
+            for i in range(len(jugadores[1]['cartas'])):
+                if jugadores[1]['cartas'][i][2] > cAlta:
+                    cAlta = jugadores[1]['cartas'][i][2]
+                    carta = i
+            eleccion = jugadores[1]['cartas'][carta]
+            jugadores[1]['cartas'].remove(eleccion)
+            return eleccion
+        elif ganadorPR == 2:
+            for i in range(len(jugadores[1]['cartas'])):
+                if jugadores[1]['cartas'][i][2] == 8:
+                    eleccion = jugadores[1]['cartas'][i]
+                    jugadores[1]['cartas'].remove(eleccion)
+                    return eleccion
+            for i in range(len(jugadores[1]['cartas'])):
+                if jugadores[1]['cartas'][i][2] == 7:
+                    eleccion = jugadores[1]['cartas'][i]
+                    jugadores[1]['cartas'].remove(eleccion)
+                    return eleccion
+            for i in range(len(jugadores[1]['cartas'])):
+                if jugadores[1]['cartas'][i][2] == 6 or jugadores[1]['cartas'][i][2] == 5:
+                    eleccion = jugadores[1]['cartas'][i]
+                    jugadores[1]['cartas'].remove(eleccion)
+                    return eleccion
+            for i in range(len(jugadores[1]['cartas'])):
+                if jugadores[1]['cartas'][i][2] < 5:
+                    eleccion = jugadores[1]['cartas'][i]
+                    jugadores[1]['cartas'].remove(eleccion)
+                    return eleccion
+            cBaja = 15
+            carta = 0 
+            for i in range(len(jugadores[1]['cartas'])):
+                if jugadores[1]['cartas'][i][2] < cBaja:
+                    cBaja = jugadores[1]['cartas'][i][2]
+                    carta = i
+            eleccion = jugadores[1]['cartas'][carta]
+            jugadores[1]['cartas'].remove(eleccion)
+            return eleccion
+        elif ganadorPR == 1:
+            lista = jugadores[1]['cartas'][:]
+            for i in range (len(jugadores[1]['cartas']) - 1, -1, -1):
+                if jugadores[1]['cartas'][i][2] <= tuCarta[2]:
+                    lista.pop(i)
+            if len(lista) > 1:
+                cBaja = 15
+                carta = 0 
+                for i in range(len(lista)):
+                    if lista[i][2] < cBaja:
+                        cBaja = lista[i][2]
+                        carta = i
+                eleccion = lista[carta]
+                jugadores[1]['cartas'].remove(eleccion)
+                return eleccion
+            elif len(lista) == 1:
+                eleccion = lista[0]
+                jugadores[1]['cartas'].remove(eleccion)
+                return eleccion
+            elif len(lista) == 0:
+                cBaja = 15
+                carta = 0 
+                for i in range(len(jugadores[1]['cartas'])):
+                    if jugadores[1]['cartas'][i][2] < cBaja:
+                        cBaja = jugadores[1]['cartas'][i][2]
+                        carta = i
+                eleccion = jugadores[1]['cartas'][carta]
+                jugadores[1]['cartas'].remove(eleccion)
+                return eleccion
+    elif ronda == 3:
+        return jugadores[1]['cartas'][0]
 
 def cartasVersus(jugador, maquina):
     carta_jugador = f"{jugador[0]} de {jugador[1]}"
@@ -478,18 +587,6 @@ def cartaRival(eleccion):
     print("                        ")
     print("------------------------")
 
-def printsMezclando():
-    print("Mezclando el mazo y repartiendo", end="", flush=True)
-    time.sleep(1)
-    print(".", end="", flush=True)
-    time.sleep(1)
-    print(".", end="", flush=True)
-    time.sleep(1)
-    print(".", flush=True)
-    time.sleep(1)
-
-    os.system("cls")
-
 ######################
 # Lógica de una mano #
 ######################
@@ -500,6 +597,7 @@ def mano(flor):
     ganadorPR = 0
     contNos = 0
     contEllos = 0
+    tuCarta = 0
 
     contRondasNos = 0
     contRondasEllos = 0
@@ -519,7 +617,7 @@ def mano(flor):
             os.system("cls")'''
 
             if tuTurno == False:
-                cartaMaq = cartaMaquina()
+                cartaMaq = estrategiaNPC(ronda, tuCarta, ganadorPR)
                 print(f"{jugadores[1]['Nombre']} jugó la siguiente carta: \n")
                 cartaRival(cartaMaq)
                 tusCartas()
@@ -535,7 +633,8 @@ def mano(flor):
                     carta = int(input("Error. ¿Que carta querés jugar? (1, 2 o 3) "))
                 carta -= 1
                 os.system("cls")
-                cartaMaq = cartaMaquina()
+                tuCarta = jugadores[0]['cartas'][carta]
+                cartaMaq = estrategiaNPC(ronda, tuCarta, ganadorPR)
 
             cartasVersus(jugadores[0]['cartas'][carta], cartaMaq)
             print()
@@ -562,7 +661,7 @@ def mano(flor):
             
         elif ronda == 2:
             if ganadorPR == 2:
-                cartaMaq = cartaMaquina()
+                cartaMaq = estrategiaNPC(ronda, tuCarta, ganadorPR)
                 print(f"{jugadores[1]['Nombre']} jugó la siguiente carta: \n")
                 cartaRival(cartaMaq)
                 tusCartas2(cartas)
@@ -578,7 +677,8 @@ def mano(flor):
                     carta = int(input("Error. ¿Que carta querés jugar? (1 o 2) "))
                 carta -= 1
                 os.system("cls")
-                cartaMaq = cartaMaquina()
+                tuCarta = jugadores[0]['cartas'][carta]
+                cartaMaq = estrategiaNPC(ronda, tuCarta, ganadorPR)
             
             cartasVersus(cartas[carta], cartaMaq)
             print() 
@@ -600,52 +700,52 @@ def mano(flor):
             if contRondasEllos == 2 and contRondasNos != 2:
                 print(f"{jugadores[1]['Nombre']} gana la mano!\n")
                 comentariosJugadores(1)
-                contEllos += 8
+                contEllos += 1
                 ronda = 4
             elif contRondasNos == 2 and contRondasEllos != 2:
                 print("Vos ganás la mano!\n")
                 comentariosJugadores(2)
-                contNos += 8
+                contNos += 1
                 ronda = 4
             else:
                 cartas.pop(carta)       
 
         elif ronda == 3:
-            cartaMaq = cartaMaquina()
+            cartaMaq = estrategiaNPC(ronda, jugadores[0]['cartas'][0], ganadorPR)
             cartasVersus(cartas[0], cartaMaq)
             print()
             
             if cartas[0][2] < cartaMaq[2]:
                 print(f"{jugadores[1]['Nombre']} gana la mano!\n")
                 comentariosJugadores(1)
-                contEllos += 8
+                contEllos += 1
                 ronda = 4
             elif cartas[0][2] > cartaMaq[2]:
                 print("Vos ganás la mano!\n")
                 comentariosJugadores(2)
-                contNos += 8
+                contNos += 1
                 ronda = 4
             elif cartas[0][2] == cartaMaq[2]:
                 if ganadorPR == 1:
                     print("Vos ganás la mano!\n")
                     comentariosJugadores(2)
-                    contNos += 8
+                    contNos += 1
                     ronda = 4
                 elif ganadorPR == 2:
                     print(f"{jugadores[1]['Nombre']} gana la mano!\n")
                     comentariosJugadores(1)
-                    contEllos += 8
+                    contEllos += 1
                     ronda = 4
                 elif ganadorPR == 0:
                     if tuTurno:
                         print("Vos ganás la mano!\n")
                         comentariosJugadores(2)
-                        contNos += 8
+                        contNos += 1
                         ronda = 4
                     elif tuTurno == False:
                         print(f"{jugadores[1]['Nombre']} gana la mano!\n")
                         comentariosJugadores(1)
-                        contEllos += 8
+                        contEllos += 1
                         ronda = 4
                 
         ronda += 1
@@ -676,8 +776,7 @@ def juego(nos, ellos):
         time.sleep(1.5)
         print("\nPresione una tecla...", end="")
         input()
-        os.system("cls")
-        printsMezclando()    
+        os.system("cls")  
         nos_val, ellos_val = mano(flor)
         nos += nos_val
         ellos += ellos_val
