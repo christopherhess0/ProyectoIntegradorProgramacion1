@@ -118,6 +118,16 @@ def comentariosJugadores(num):
 
             print(f"{npc_name} dice: {comentario}")
             time.sleep(2)
+def mentiras(nombreNpc):
+    for jugador in jugadores:
+        if jugador['Nombre'] == nombreNpc:
+            jugador['valorMentira'] = random.randint(1, 10)
+    numeroRandom = random.randint(1, 10)
+    if numeroRandom <= jugador['valorMentira']:
+      return True
+    else:
+        return False
+
 
 ##########
 # LOG-IN #
@@ -263,7 +273,7 @@ def creandoJugadores():
     npc = nombres[num]
     jugador = {'Nombre': f'{usuario}', 'cartas': []}
     jugadores.append(jugador)
-    jugador = {'Nombre': f'{npc}', 'cartas': []}
+    jugador = {'Nombre': f'{npc}', 'cartas': [], 'valorMentira': 0}
     jugadores.append(jugador)
     print(f"Tu rival es {npc}!\n")
     time.sleep(2)
