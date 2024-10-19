@@ -118,10 +118,28 @@ def comentariosJugadores(num):
 
             print(f"{npc_name} dice: {comentario}")
             time.sleep(2)
-def mentiras(nombreNpc):
+def mentiras():
     for jugador in jugadores:
-        if jugador['Nombre'] == nombreNpc:
-            jugador['valorMentira'] = random.randint(1, 10)
+        if jugador['Nombre'] == 'Enrique':
+            jugador['valorMentira'] = 1
+        elif jugador['Nombre'] == 'Dolores':
+            jugador['valorMentira'] = 2
+        elif jugador['Nombre'] == 'Ricardo':
+            jugador['valorMentira'] = 3
+        elif jugador['Nombre'] == 'Rosario':
+            jugador['valorMentira'] = 4
+        elif jugador['Nombre'] == 'Antonio':
+            jugador['valorMentira'] = 5
+        elif jugador['Nombre'] == 'Julieta':
+            jugador['valorMentira'] = 6
+        elif jugador['Nombre'] == 'Ernesto':
+            jugador['valorMentira'] = 7
+        elif jugador['Nombre'] == 'Eugenia':
+            jugador['valorMentira'] = 8
+        elif jugador['Nombre'] == 'Alberto':
+            jugador['valorMentira'] = 9
+        elif jugador['Nombre'] == 'Beatriz':
+            jugador['valorMentira'] = 10
     numeroRandom = random.randint(1, 10)
     if numeroRandom <= jugador['valorMentira']:
       return True
