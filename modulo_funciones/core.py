@@ -328,6 +328,36 @@ def menuLogin():
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
     print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+
+    def guardar_puntajes(maquina,nos,ellos):
+   
+    archivo_puntajes = 'puntajes.txt'
+
+   
+    if os.path.exists(archivo_puntajes):
+        # Cargar los puntajes existentes
+        with open(archivo_puntajes, 'r') as file:
+            puntajes = json.load(file)
+    else:
+        
+        puntajes = {}
+
+    # Actualizar los puntajes del usuario
+    if usuario in puntajes:
+        puntajes[usuario] += nos  
+    else:
+        puntajes[usuario] = nos  
+    if maquina in puntajes: 
+         puntajes[maquina] += ellos  
+    else:
+        puntajes[maquina] = ellos 
+    
+    try:
+        with open(archivo_puntajes, 'w') as file:
+            json.dump(puntajes, file, indent=4)
+    except Exception as e:
+        print(f"Error al guardar los puntajes: {e}")
+
     
     op = input("\nIngrese una opción: ")
 
