@@ -121,25 +121,25 @@ def comentariosJugadores(num):
 def mentiras():
     for jugador in jugadores:
         if jugador['Nombre'] == 'Enrique':
-            jugador['valorMentira'] = 1
+            jugador['valorMentira'] = 7
         elif jugador['Nombre'] == 'Dolores':
             jugador['valorMentira'] = 2
         elif jugador['Nombre'] == 'Ricardo':
-            jugador['valorMentira'] = 3
-        elif jugador['Nombre'] == 'Rosario':
-            jugador['valorMentira'] = 4
-        elif jugador['Nombre'] == 'Antonio':
-            jugador['valorMentira'] = 5
-        elif jugador['Nombre'] == 'Julieta':
-            jugador['valorMentira'] = 6
-        elif jugador['Nombre'] == 'Ernesto':
-            jugador['valorMentira'] = 7
-        elif jugador['Nombre'] == 'Eugenia':
             jugador['valorMentira'] = 8
+        elif jugador['Nombre'] == 'Rosario':
+            jugador['valorMentira'] = 6
+        elif jugador['Nombre'] == 'Antonio':
+            jugador['valorMentira'] = 3
+        elif jugador['Nombre'] == 'Julieta':
+            jugador['valorMentira'] = 5
+        elif jugador['Nombre'] == 'Ernesto':
+            jugador['valorMentira'] = 4
+        elif jugador['Nombre'] == 'Eugenia':
+            jugador['valorMentira'] = 1
         elif jugador['Nombre'] == 'Alberto':
-            jugador['valorMentira'] = 9
+            jugador['valorMentira'] = 6
         elif jugador['Nombre'] == 'Beatriz':
-            jugador['valorMentira'] = 10
+            jugador['valorMentira'] = 2
     numeroRandom = random.randint(1, 10)
     if numeroRandom <= jugador['valorMentira']:
       return True
@@ -832,15 +832,7 @@ def mano(flor):
         time.sleep(2)
         os.system("cls")
 
-        if ronda == 1: # TERMINAR 
-            '''
-            envido = int(input("¿Querés cantar envido? (Si = 1 | No = 2) "))
-            while envido != 1 and envido != 2:
-                envido = int(input("Error. Intente devuelta. ¿Querés cantar envido? (Si = 1 | No = 2) "))
-                if envido == 1:
-                    envido(flor)
-            os.system("cls")'''
-
+        if ronda == 1:
             if tuTurno == False:
                 cartaMaq = estrategiaNPC(ronda, tuCarta, ganadorPR)
                 print(f"{jugadores[1]['Nombre']} jugó la siguiente carta: \n")
