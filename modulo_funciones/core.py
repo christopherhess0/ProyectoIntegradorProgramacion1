@@ -4,11 +4,12 @@ import time
 import hashlib
 import re
 import getpass
-
+"""
 ########
 # Mazo #
 ########
 
+"""
 cartas = [
     ('1', 'Espada', 14), ('1', 'Basto', 13), 
     ('7', 'Espada', 12), ('7', 'Oro', 11),
@@ -24,9 +25,13 @@ cartas = [
     ('4', 'Espada', 1), ('4', 'Basto', 1), ('4', 'Oro', 1), ('4', 'Copa', 1),
     ]
 
+"""
+
 ###################
 # Mezclar el mazo #
 ###################
+
+"""
 
 def mezclarMazo():
     global mazo
@@ -34,12 +39,15 @@ def mezclarMazo():
     random.shuffle(mazo)
 
 def comentariosJugadores(num):
-    # num == 1 --> ronda ganada por el npc
-    # num == 2 --> ronda perdida por el npc
-    # num == 3 --> partida ganada por el npc
-    # num == 4 --> partida perdida por el npc
 
-    # Comentarios personalizados para cada NPC
+    """
+     num == 1 --> ronda ganada por el npc
+     num == 2 --> ronda perdida por el npc
+     num == 3 --> partida ganada por el npc
+     num == 4 --> partida perdida por el npc
+
+     Comentarios personalizados para cada NPC
+    """
     comentarios_por_npc = {
         "Enrique": {
             'a': ["Otra ronda ganada, ¡ya es cuestión de tiempo para llevarme la partida!", "Así se juega, aprendé un poco observándome."],
@@ -146,26 +154,35 @@ def mentiras():
     else:
         return False
 
+"""
 
 ##########
 # LOG-IN #
 ##########
 
-# Estado loggin:
+"""
 
+"""
+Estado loggin:
+"""
 LogginState = False
 
-# Función para encriptar la contraseña
+"""
+Función para encriptar la contraseña
+"""
 def encriptar_contraseña(contraseña):
     return hashlib.sha256(contraseña.encode()).hexdigest()
-
-# Función para validar el nombre de usuario
+"""
+Función para validar el nombre de usuario
+"""
 def es_valido(cadena):
-    # La expresión regular permite a-z, A-Z, 0-9, _, -, y .
+    """
+     La expresión regular permite a-z, A-Z, 0-9, _, -, y .
+    """
     return bool(re.match("^[a-zA-Z0-9_.-]+$", cadena))
-
-# Funciónes para registrar un nuevo usuario
-
+"""
+ Funciónes para registrar un nuevo usuario
+"""
 def registrarVisual():
     print("")                                                                                                  
     print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
@@ -200,8 +217,9 @@ def registrar_usuario():
     time.sleep(1)
     print("")
     usuario = input("Ingrese su nombre de usuario: ")
-    
-    # Validar el nombre de usuario
+    """
+     Validar el nombre de usuario
+    """
     while not es_valido(usuario) or verificar_usuario_existe(usuario) or len(usuario) > 10:
         print("\nEl nombre de usuario no está disponible. Intente nuevamente... ")
         time.sleep(1.5)
@@ -219,8 +237,9 @@ def registrar_usuario():
         print("\nUsuario registrado con éxito.")
     time.sleep(2)
     return usuario 
-
-# Función para verificar si un usuario ya existe
+"""
+ Función para verificar si un usuario ya existe
+"""
 def verificar_usuario_existe(usuario):
     if not os.path.exists("usuarios.txt"):
         return False
@@ -231,9 +250,9 @@ def verificar_usuario_existe(usuario):
             if usuario_guardado == usuario:
                 return True
     return False
-
-# Funciónes para iniciar sesión
-
+"""
+ Funciónes para iniciar sesión
+"""
 def iniciar_sesionVisual():
     print("")
     print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
@@ -271,8 +290,9 @@ def iniciar_sesion():
     while correcto == False:
         print("")
         usuario = input("Ingrese su nombre de usuario: ")
-        
-        # Validar el nombre de usuario
+        """
+         Validar el nombre de usuario
+        """
         while not es_valido(usuario):
             print("\nEl nombre de usuario contiene caractéres inválidos. Intente nuevamente... ")
             time.sleep(1.5)
@@ -299,8 +319,9 @@ def iniciar_sesion():
                 iniciar_sesionVisual()
     os.system("cls")
     return usuario
-
-# Funcion para Salir de la cuenta si el usuario toca Desloggearse
+"""
+ Funcion para Salir de la cuenta si el usuario toca Desloggearse
+"""
 def salir_cuenta():
     global LogginState
     respuesta = input("Ingrese 'salir' para cambiar de cuenta: ")
@@ -311,8 +332,9 @@ def salir_cuenta():
         menuLogin()
     else:
         print("Continúa logueado.")
-
-# Función principal del programa
+"""
+ Función principal del programa
+"""
 def menuLogin():
     global usuario
     usuario = None   
@@ -387,10 +409,13 @@ def menuLogin():
         os.system("cls")
         menuLogin()
 
+"""
 
 ###################
 # Crear jugadores #
 ###################
+
+"""
 
 def creandoJugadores():
     global jugadores
@@ -403,15 +428,22 @@ def creandoJugadores():
     jugador = {'Nombre': f'{npc}', 'cartas': [], 'valorMentira': 0}
     jugadores.append(jugador)
 
+"""
+
 ##################################
 # Repartir cartas alternadamente #
 ##################################
+
+"""
 
 def repartir_cartas_alternadamente(jugadores):
     for i in range(2):
         jugadores[i]['cartas'].clear()
     if tuTurno:
-        jugador_index = 0  # Comienza con el primer jugador
+        """
+         Comienza con el primer jugador
+        """
+        jugador_index = 0  
         cont = 0
         while cont < 6:
             jugadores[jugador_index]['cartas'].append(mazo[cont])
@@ -421,7 +453,10 @@ def repartir_cartas_alternadamente(jugadores):
                 jugador_index = 0
             cont += 1
     elif tuTurno == False:
-        jugador_index = 1  # Comienza con el segundo jugador
+        """
+         Comienza con el segundo jugador
+        """
+        jugador_index = 1  
         cont = 0
         while cont < 6:
             jugadores[jugador_index]['cartas'].append(mazo[cont])
@@ -474,9 +509,13 @@ def config():
 
     return flor, pMax
 
+"""
+
 ##############################################
 # Funciones que muestran tus cartas (visual) #
 ##############################################
+
+"""
 
 def tusCartas():
     cartas = jugadores[0]['cartas']
@@ -552,9 +591,13 @@ def tusCartas2(cartas):
 
     return jugadores[0]['cartas']
 
+"""
+
 ############################    
 # Número de ronda (visual) #
 ############################
+
+"""
 
 def rondArt(ronda):
     if ronda == 1:
@@ -641,10 +684,13 @@ def rondArt(ronda):
         print("█                                                                                                                                                              █")
         print("█                                                                                                                                                              █")
         print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+"""
 
 ############################
 # Estrategia de la máquina #
 ############################
+
+"""
 
 def estrategiaNPC(ronda, tuCarta, ganadorPR):
     if ronda == 1:
@@ -806,11 +852,13 @@ def cartasVersus(jugador, maquina):
     print("█                                                                                                                                                              █")                                                                                                                                                                          
     print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
     time.sleep(1.5)
+"""
 
 #########################
 # Mezclando... (visual) #
 #########################
 
+"""
 def cartaRival(eleccion):
     carta = f"{eleccion[0]} de {eleccion[1]}"
     ancho_carta = 14
@@ -891,9 +939,13 @@ def cartaRival2(eleccion, cartas):
     print("█                                                                                                                                                              █")
     print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
 
+"""
+
 ######################
 # Lógica de una mano #
 ######################
+
+"""
 
 def mano(flor):
     ronda = 1
@@ -1047,9 +1099,13 @@ def mano(flor):
     os.system("cls")
     return contNos, contEllos
 
+"""
+
 ############################
 # Truco hasta que uno gane #
 ############################
+
+"""
 
 def juego(nos, ellos):
     global tuTurno
@@ -1060,8 +1116,14 @@ def juego(nos, ellos):
     elif num == 2:
         tuTurno = False
 
-    mezclarMazo() # Mezclar el mazo
-    repartir_cartas_alternadamente(jugadores)  # Repartir las cartas  
+    """    
+    Mezclar el mazo
+    """
+    mezclarMazo() 
+    """
+    Repartir las cartas
+    """
+    repartir_cartas_alternadamente(jugadores)   
     flor, pmax = config()
 
     while nos <= pmax and ellos <= pmax:
@@ -1074,8 +1136,8 @@ def juego(nos, ellos):
         nos += nos_val
         ellos += ellos_val
         tuTurno = not(tuTurno)
-        mezclarMazo() # Mezclar el mazo
-        repartir_cartas_alternadamente(jugadores)  # Repartir las cartas  
+        mezclarMazo() 
+        repartir_cartas_alternadamente(jugadores)   
 
     if nos >= pmax:
         print("Ganaste!\n")
@@ -1086,10 +1148,13 @@ def juego(nos, ellos):
     elif ellos >= pmax:
         print(f"{jugadores[1]['Nombre']} ganó la partida!\n")
         comentariosJugadores(3)
+"""
 
 ############################
 # Si jugador gana (visual) #
 ############################
+
+"""
 
 def felicidades():
     print("")
@@ -1420,10 +1485,13 @@ def felicidades():
     print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")                                                                                                                                                                                
     print()
     time.sleep(3)
-        
+"""
+
 ################
 # Puntuaciones #
 ################
+
+"""
 
 def tablero(nos, ellos):
     nos=int(nos)
@@ -1440,9 +1508,9 @@ def tablero(nos, ellos):
     
     nos_str = f"{nos:2d}"
     ellos_str= f"{ellos:2d}"
-    nombre1= f"{jugadores[0]['Nombre']:11s}"# Esto garantiza que tanto números de un dígito como de dos dígitos ocupen siempre 2 espacios.
-    nombre2 = f"{jugadores[1]['Nombre']:7s}" # siempre ocupe 12 espacios
-    puntosNos= f"{puntosNos:6s}" # siempre ocupe 6 espacios
+    nombre1= f"{jugadores[0]['Nombre']:11s}"
+    nombre2 = f"{jugadores[1]['Nombre']:7s}" 
+    puntosNos= f"{puntosNos:6s}" 
     puntosEllos= f"{puntosEllos:6s}"
 
     print("")
@@ -1473,11 +1541,13 @@ def tablero(nos, ellos):
     print("█                                                                                                                                                              █")
     print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
 
+"""
 
 ########################
 # Lógica de minijuegos #
 ########################
 
+"""
 def truco():
     pass
 
@@ -1485,16 +1555,22 @@ def envido(flor):
     if flor == 1:
         if jugadores[0]['cartas'][0][1] == jugadores[0]['cartas'][1][1] and jugadores[0]['cartas'][0][1] == jugadores[0]['cartas'][2][1]:
             pass
+"""
 
 #########################
 # Funciones de arranque #
 #########################
 
+"""
+
 def menu():
     menuLogin()
     repetir = True
     while repetir:
-        os.system("cls") #limpia la pantalla
+        """
+        limpia la pantalla 
+        """
+        os.system("cls") 
         usuario1 = f"{usuario:12s}"
         print("")
         print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
@@ -1724,7 +1800,10 @@ def menu():
 def ejecutar():
     nos = 0
     ellos = 0
-    creandoJugadores() # Crear los jugadores
+    """
+    se crean los jugadores
+    """
+    creandoJugadores() 
     juego(nos, ellos)
 
 def inicio():
