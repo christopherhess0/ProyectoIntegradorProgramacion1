@@ -164,10 +164,11 @@ def es_valido(cadena):
     # La expresión regular permite a-z, A-Z, 0-9, _, -, y .
     return bool(re.match("^[a-zA-Z0-9_.-]+$", cadena))
 
-# Función para registrar un nuevo usuario
-def registrar_usuario():
+# Funciónes para registrar un nuevo usuario
+
+def registrarVisual():
     print("")                                                                                                  
-    print(" ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+    print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
     print("█                                                                                                                                                              █")                                                                                                                                                                   
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
@@ -193,14 +194,22 @@ def registrar_usuario():
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")                                                                                                                                                              
     print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")  
-    time.sleep(2)
-    os.system("cls")
+
+def registrar_usuario():
+    registrarVisual()
+    time.sleep(1)
+    print("")
     usuario = input("Ingrese su nombre de usuario: ")
     
     # Validar el nombre de usuario
     while not es_valido(usuario) or verificar_usuario_existe(usuario) or len(usuario) > 10:
-        usuario = input("El nombre de usuario no está disponible. Intente nuevamente: ")
-    
+        print("\nEl nombre de usuario no está disponible. Intente nuevamente... ")
+        time.sleep(1.5)
+        os.system("cls")
+        registrarVisual()
+        print("")
+        usuario = input("Ingrese su nombre de usuario: ")
+
     contraseña = getpass.getpass("\nIngrese su contraseña (no se muestra en pantalla): ")
     contraseña_encriptada = encriptar_contraseña(contraseña)
 
@@ -208,7 +217,7 @@ def registrar_usuario():
         with open("usuarios.txt", "a") as archivo:
             archivo.write(f"{usuario},{contraseña_encriptada}\n")
         print("\nUsuario registrado con éxito.")
-    time.sleep(3)
+    time.sleep(2)
     return usuario 
 
 # Función para verificar si un usuario ya existe
@@ -223,10 +232,11 @@ def verificar_usuario_existe(usuario):
                 return True
     return False
 
-# Función para iniciar sesión
-def iniciar_sesion():
+# Funciónes para iniciar sesión
+
+def iniciar_sesionVisual():
     print("")
-    print(" ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+    print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
     print("█                                                                                                                                                              █")
     print("█                                    iiiiiiiiiiiiiiiiiiii                                                                                                      █")
     print("█                                    i::::::::::::::::::i               ii              ii                                                                     █")
@@ -252,16 +262,24 @@ def iniciar_sesion():
     print("█                                    sssssssssssss    eeeeeeeeeeeeee  sssssssssssss i:::i oooooooooooonnnnnn    nnnnn                                          █")
     print("█                                                                                                                                                              █")
     print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
-    time.sleep(2)
-    os.system("cls")
+
+def iniciar_sesion():
+    iniciar_sesionVisual()
+    time.sleep(1)
     global LogginState
     correcto = False
     while correcto == False:
+        print("")
         usuario = input("Ingrese su nombre de usuario: ")
         
         # Validar el nombre de usuario
         while not es_valido(usuario):
-            usuario = input("El nombre de usuario contiene caractéres inválidos. Intente nuevamente: ")
+            print("\nEl nombre de usuario contiene caractéres inválidos. Intente nuevamente... ")
+            time.sleep(1.5)
+            os.system("cls")
+            iniciar_sesionVisual()
+            print("")
+            usuario = input("Ingrese su nombre de usuario: ")
         
         contraseña = getpass.getpass("\nIngrese su contraseña (no se muestra en pantalla): ")
         contraseña_encriptada = encriptar_contraseña(contraseña)
@@ -271,27 +289,25 @@ def iniciar_sesion():
                 usuario_guardado, contraseña_guardada = linea.strip().split(',')
                 if usuario == usuario_guardado and contraseña_encriptada == contraseña_guardada:
                     LogginState = True
-                    os.system("cls")
-                    print("Inicio de sesión exitoso.")
-                    time.sleep(2)
+                    print("\nInicio de sesión exitoso.")
+                    time.sleep(1)
                     correcto = True
             if correcto == False:
-                print("\nUsuario o contraseña incorrectos. Intentelo nuevamente.")
-                time.sleep(2)
+                print("\nUsuario o contraseña incorrectos. Intentelo nuevamente...")
+                time.sleep(1.5)
                 os.system("cls")
+                iniciar_sesionVisual()
     os.system("cls")
     return usuario
 
 # Funcion para Salir de la cuenta si el usuario toca Desloggearse
 def salir_cuenta():
     global LogginState
-    print("¿Desea salir de la cuenta?")
     respuesta = input("Ingrese 'salir' para cambiar de cuenta: ")
     if respuesta.lower() == 'salir':
-        os.system("cls")
         LogginState = False
-        print("Deslogueado con éxito.")
-        time.sleep(3)
+        print("\nDeslogueado con éxito.")
+        time.sleep(2)
         menuLogin()
     else:
         print("Continúa logueado.")
@@ -302,7 +318,7 @@ def menuLogin():
     usuario = None   
     os.system("cls")
     print("")
-    print(" ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+    print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
     print("█                                                                                                                                                              █")
     print("█                bbbbbbbbbbb                                                                                                                                   █")
     print("█              b::::::::::::b                                                                                                                                  █")
@@ -340,7 +356,7 @@ def menuLogin():
     else:
         os.system("cls")                                                                                                   
         print("")                                                                                                  
-        print(" ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+        print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
         print("█                                                                                                                                                              █")                                                                                                                                                                   
         print("█                                                                                                                                                              █")
         print("█                                                                                                                                                              █")
@@ -386,8 +402,6 @@ def creandoJugadores():
     jugadores.append(jugador)
     jugador = {'Nombre': f'{npc}', 'cartas': [], 'valorMentira': 0}
     jugadores.append(jugador)
-    print(f"Tu rival es {npc}!\n")
-    time.sleep(2)
 
 ##################################
 # Repartir cartas alternadamente #
@@ -419,7 +433,7 @@ def repartir_cartas_alternadamente(jugadores):
 
 def config():
     print("")
-    print(" ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+    print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
@@ -445,9 +459,10 @@ def config():
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
     print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
-    time.sleep(3)
-    os.system("cls")
-    
+    time.sleep(2)
+    print("")
+    print(f"Tu rival es {jugadores[1]['Nombre']}!\n")
+    time.sleep(0.5)
     flor = int(input("¿Activar flor? (Si = 1 | No = 2) "))
     while flor < 1 or flor > 2:
         flor = int(input("Respuesta no válida. Intente denuevo. ¿Activar flor? (SI = 1 | NO = 2) "))
@@ -473,7 +488,7 @@ def tusCartas():
     carta3 = cartas_formateadas[2].center(ancho_carta)
 
     print("")
-    print(" ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+    print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
@@ -508,7 +523,7 @@ def tusCartas2(cartas):
     carta2 = cartas_formateadas[1].center(ancho_carta)
 
     print("")
-    print(" ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+    print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
@@ -544,7 +559,7 @@ def tusCartas2(cartas):
 def rondArt(ronda):
     if ronda == 1:
         print("")
-        print(" ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+        print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
         print("█                                                                                                                                                              █")
         print("█                                                                                                                                                              █")
         print("█                                                                                          dddddddd                                                            █")
@@ -572,7 +587,7 @@ def rondArt(ronda):
         print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
     elif ronda == 2:
         print("")
-        print(" ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+        print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
         print("█                                                                                                                                                              █")
         print("█                                                                                                                                                              █")
         print("█                                                                                          dddddddd                                                            █")
@@ -600,7 +615,7 @@ def rondArt(ronda):
         print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
     else:
         print("")
-        print(" ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+        print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
         print("█                                                                                                                                                              █")
         print("█                                                                                                                                                              █")
         print("█                                                                                          dddddddd                                                            █")
@@ -764,7 +779,7 @@ def cartasVersus(jugador, maquina):
         nombre += " "
     
     print("")
-    print(" ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+    print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
@@ -772,16 +787,16 @@ def cartasVersus(jugador, maquina):
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
-    print("█                                                             ________________    |    ________________                                                        █")
-    print(f"█                                                            |Carta {nombre}|   |   |Carta {jugadores[1]['Nombre']}   |                                                       █")
-    print("█                                                            |                |   |   |                |                                                       █")
-    print("█                                                            |                |   |   |                |                                                       █")
-    print(f"█                                                            | {carta1} |   |   | {carta2} |                                                       █")
-    print("█                                                            |                |   |   |                |                                                       █")
-    print("█                                                            |                |   |   |                |                                                       █")
-    print("█                                                            |                |   |   |                |                                                       █")
-    print("█                                                            |________________|   |   |________________|                                                       █")
-    print("█                                                                                 |                                                                            █")
+    print("█                                                          ________________    ||   ________________                                                           █")
+    print(f"█                                                         |Carta {nombre}|   ||  |Carta {jugadores[1]['Nombre']}   |                                                          █")
+    print("█                                                         |                |   ||  |                |                                                          █")
+    print("█                                                         |                |   ||  |                |                                                          █")
+    print(f"█                                                         | {carta1} |   ||  | {carta2} |                                                          █")
+    print("█                                                         |                |   ||  |                |                                                          █")
+    print("█                                                         |                |   ||  |                |                                                          █")
+    print("█                                                         |                |   ||  |                |                                                          █")
+    print("█                                                         |________________|   ||  |________________|                                                          █")
+    print("█                                                                              ||                                                                              █")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
@@ -800,17 +815,81 @@ def cartaRival(eleccion):
     carta = f"{eleccion[0]} de {eleccion[1]}"
     ancho_carta = 14
 
-    carta1 = carta.center(ancho_carta)
+    cartas = jugadores[0]['cartas']
+    cartas_formateadas = [f"{numero} de {palo}" for numero, palo, _ in cartas]
+    ancho_carta = 14
 
-    print("    ________________    ")
-    print("   |                |")
-    print("   |                |")
-    print("   |                |")
-    print(f"   | {carta1} |")
-    print("   |                |")
-    print("   |                |")
-    print("   |                |")
-    print("   |________________|")
+    carta1 = cartas_formateadas[0].center(ancho_carta)
+    carta2 = cartas_formateadas[1].center(ancho_carta)
+    carta3 = cartas_formateadas[2].center(ancho_carta)
+
+    cartaRiv = carta.center(ancho_carta)
+
+    print("")
+    print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+    print("█                                                                                                                                                              █")
+    print("█                                                                              ||                                                                              █")
+    print("█                                                                              ||                            ¡Estas son tus cartas!                            █")
+    print("█                                                                              ||                    ________________     ________________                     █")
+    print("█                                                                              ||                   |Carta 1         |   |Carta 2         |                    █")
+    print("█                                                                              ||                   |                |   |                |                    █")
+    print(f"█                       {jugadores[1]['Nombre']} jugo la siguiente carta!                       ||                   |                |   |                |                    █")
+    print(f"█                                                                              ||                   | {carta1} |   | {carta2} |                    █")
+    print("█                               ________________                               ||                   |                |   |                |                    █")
+    print("█                              |                |                              ||                   |                |   |                |                    █")
+    print("█                              |                |                              ||                   |                |   |                |                    █")
+    print("█                              |                |                              ||                   |________________|   |________________|                    █")
+    print(f"█                              | {cartaRiv} |                              ||                               ________________                               █")
+    print("█                              |                |                              ||                              |Carta 3         |                              █")
+    print("█                              |                |                              ||                              |                |                              █")
+    print("█                              |                |                              ||                              |                |                              █")
+    print(f"█                              |________________|                              ||                              | {carta3} |                              █")
+    print("█                                                                              ||                              |                |                              █")
+    print(f"█                                                                              ||                              |                |                              █")
+    print("█                                                                              ||                              |                |                              █")
+    print("█                                                                              ||                              |________________|                              █")
+    print("█                                                                              ||                                                                              █")
+    print("█                                                                                                                                                              █")
+    print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+
+def cartaRival2(eleccion, cartas):
+    carta = f"{eleccion[0]} de {eleccion[1]}"
+    ancho_carta = 14
+
+    cartas_formateadas = [f"{numero} de {palo}" for numero, palo, _ in cartas]
+    ancho_carta = 14
+
+    carta1 = cartas_formateadas[0].center(ancho_carta)
+    carta2 = cartas_formateadas[1].center(ancho_carta)
+
+    cartaRiv = carta.center(ancho_carta)
+
+    print("")
+    print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+    print("█                                                                                                                                                              █")
+    print("█                                                                              ||                                                                              █")
+    print("█                                                                              ||                            ¡Estas son tus cartas!                            █")
+    print("█                                                                              ||                               ________________                               █")
+    print("█                                                                              ||                              |Carta 1         |                              █")
+    print("█                                                                              ||                              |                |                              █")
+    print(f"█                       {jugadores[1]['Nombre']} jugo la siguiente carta!                       ||                              |                |                              █")
+    print(f"█                                                                              ||                              | {carta1} |                              █")
+    print("█                               ________________                               ||                              |                |                              █")
+    print("█                              |                |                              ||                              |                |                              █")
+    print("█                              |                |                              ||                              |                |                              █")
+    print("█                              |                |                              ||                              |________________|                              █")
+    print(f"█                              | {cartaRiv} |                              ||                               ________________                               █")
+    print("█                              |                |                              ||                              |Carta 2         |                              █")
+    print("█                              |                |                              ||                              |                |                              █")
+    print("█                              |                |                              ||                              |                |                              █")
+    print(f"█                              |________________|                              ||                              | {carta2} |                              █")
+    print("█                                                                              ||                              |                |                              █")
+    print(f"█                                                                              ||                              |                |                              █")
+    print("█                                                                              ||                              |                |                              █")
+    print("█                                                                              ||                              |________________|                              █")
+    print("█                                                                              ||                                                                              █")
+    print("█                                                                                                                                                              █")
+    print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
 
 ######################
 # Lógica de una mano #
@@ -835,17 +914,15 @@ def mano(flor):
         if ronda == 1:
             if tuTurno == False:
                 cartaMaq = estrategiaNPC(ronda, tuCarta, ganadorPR)
-                print(f"{jugadores[1]['Nombre']} jugó la siguiente carta: \n")
                 cartaRival(cartaMaq)
-                tusCartas()
-                carta = int(input("¿Que carta querés jugar? (1, 2 o 3) "))
+                carta = int(input("\n¿Que carta querés jugar? (1, 2 o 3) "))
                 while carta != 1 and carta != 2 and carta != 3:
                     carta = int(input("Error. ¿Que carta querés jugar? (1, 2 o 3) "))
                 carta -= 1
                 os.system("cls")
             elif tuTurno:
                 tusCartas()
-                carta = int(input("¿Que carta querés jugar? (1, 2 o 3) "))
+                carta = int(input("\n¿Que carta querés jugar? (1, 2 o 3) "))
                 while carta != 1 and carta != 2 and carta != 3:
                     carta = int(input("Error. ¿Que carta querés jugar? (1, 2 o 3) "))
                 carta -= 1
@@ -880,8 +957,7 @@ def mano(flor):
             if ganadorPR == 2:
                 cartaMaq = estrategiaNPC(ronda, tuCarta, ganadorPR)
                 print(f"{jugadores[1]['Nombre']} jugó la siguiente carta: \n")
-                cartaRival(cartaMaq)
-                tusCartas2(cartas)
+                cartaRival2(cartaMaq, cartas)
                 carta = int(input("¿Que carta querés jugar? (1 o 2) "))
                 while carta != 1 and carta != 2:
                     carta = int(input("Error. ¿Que carta querés jugar? (1 o 2) "))
@@ -1364,13 +1440,13 @@ def tablero(nos, ellos):
     
     nos_str = f"{nos:2d}"
     ellos_str= f"{ellos:2d}"
-    nombre1= f"{jugadores[0]['Nombre']:12s}"# Esto garantiza que tanto números de un dígito como de dos dígitos ocupen siempre 2 espacios.
-    nombre2 = f"{jugadores[1]['Nombre']:12s}" # siempre ocupe 12 espacios
+    nombre1= f"{jugadores[0]['Nombre']:11s}"# Esto garantiza que tanto números de un dígito como de dos dígitos ocupen siempre 2 espacios.
+    nombre2 = f"{jugadores[1]['Nombre']:7s}" # siempre ocupe 12 espacios
     puntosNos= f"{puntosNos:6s}" # siempre ocupe 6 espacios
     puntosEllos= f"{puntosEllos:6s}"
 
     print("")
-    print(" ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+    print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
@@ -1383,7 +1459,7 @@ def tablero(nos, ellos):
     print("█                                                                _________________________                                                                     █")
     print("█                                                               |         TABLERO         |                                                                    █")
     print("█                                                               |—————————————————————————|                                                                    █")
-    print(f"█                                                               |{nombre1}|{nombre2}|                                                                    █")
+    print(f"█                                                               | {nombre1}|   {nombre2}  |                                                                    █")
     print(f"█                                                               |  {nos_str} puntos |  {ellos_str} puntos |                                                                    █")
     print(f"█                                                               |   {puntosNos}   |   {puntosEllos}   |                                                                    █")
     print("█                                                               |____________|____________|                                                                    █")
@@ -1419,12 +1495,12 @@ def menu():
     repetir = True
     while repetir:
         os.system("cls") #limpia la pantalla
-        usuario1= f"{usuario:12s}"
+        usuario1 = f"{usuario:12s}"
         print("")
-        print(" ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+        print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
         print("█                                                                                                                                                              █")
+        print(f"█   Bienvenido {usuario1}                                                                                                                                    █")
         print("█                                                                                                                                                              █")
-        print(f"█   Hola {usuario1}                                                                                                                                          █")
         print("█                                                                                                                                                              █")
         print("█                                                                                                                                                              █")
         print("█                                                                                                                                                              █")
@@ -1450,12 +1526,12 @@ def menu():
 
 
         try:
-            op = int(input("Ingrese una opción: "))
+            op = int(input("\nIngrese una opción: "))
             print()
             if op == 1:
                 os.system("cls")
                 print(" ")
-                print(" ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+                print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
                 print("█                                                                                                                                                              █")
                 print("█                                    eeeeeeeeeeeee                                                                                                             █")
                 print("█                                    e:::::::::::e                                 ii                                                                          █")
@@ -1484,7 +1560,7 @@ def menu():
                 time.sleep(1)
                 os.system("cls")
                 print("")
-                print(" ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+                print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
                 print("█                                                                                                                                                              █")
                 print("█                                    eeeeeeeeeeeee                                                                                                             █")
                 print("█                                    e:::::::::::e                                 ii                                                                          █")
@@ -1513,7 +1589,7 @@ def menu():
                 time.sleep(1)
                 os.system("cls")
                 print("")
-                print(" ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+                print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
                 print("█                                                                                                                                                              █")
                 print("█                                    eeeeeeeeeeeee                                                                                                             █")
                 print("█                                    e:::::::::::e                                 ii                                                                          █")
@@ -1542,7 +1618,7 @@ def menu():
                 time.sleep(1)
                 os.system("cls")
                 print("")
-                print(" ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+                print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
                 print("█                                                                                                                                                              █")
                 print("█                                    eeeeeeeeeeeee                                                                                                             █")
                 print("█                                    e:::::::::::e                                 ii                                                                          █")
@@ -1573,7 +1649,7 @@ def menu():
             elif op == 2:
                 os.system("cls")
                 print(" ")
-                print(" ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+                print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
                 print("█                                                                                                                                                              █")
                 print("█      iiiiiiiiiiiiii                                                                                                                                          █")
                 print("█      i::::::::::::i                                                                                                                                          █")
@@ -1606,7 +1682,6 @@ def menu():
                 ejecutar()
                 tecla = input("\nPresione 'ENTER' para volver al menú...")
             elif op == 4:
-                os.system("cls")
                 salir_cuenta()
             elif op == 5:
                 os.system("cls")
@@ -1618,7 +1693,7 @@ def menu():
         except:
               os.system("cls")                                                                                                   
               print("")                                                                                                
-              print(" ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+              print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
               print("█                                                                                                                                                              █")
               print("█                                                                                                                                                              █")
               print("█                                                                                                                                                              █")
@@ -1655,7 +1730,7 @@ def ejecutar():
 def inicio():
     os.system("cls")
     print("")
-    print(" ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+    print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
     print("█                               TTTTTTTTTTTTTTTTTTTTTTT                                                                                                        █")
