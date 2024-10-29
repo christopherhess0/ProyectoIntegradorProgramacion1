@@ -4,12 +4,11 @@ import time
 import hashlib
 import re
 import getpass
-"""
+
 ########
 # Mazo #
 ########
 
-"""
 cartas = [
     ('1', 'Espada', 14), ('1', 'Basto', 13), 
     ('7', 'Espada', 12), ('7', 'Oro', 11),
@@ -25,13 +24,9 @@ cartas = [
     ('4', 'Espada', 1), ('4', 'Basto', 1), ('4', 'Oro', 1), ('4', 'Copa', 1),
     ]
 
-"""
-
 ###################
 # Mezclar el mazo #
 ###################
-
-"""
 
 def mezclarMazo():
     global mazo
@@ -39,15 +34,12 @@ def mezclarMazo():
     random.shuffle(mazo)
 
 def comentariosJugadores(num):
+    # num == 1 --> ronda ganada por el npc
+    # num == 2 --> ronda perdida por el npc
+    # num == 3 --> partida ganada por el npc
+    # num == 4 --> partida perdida por el npc
 
-    """
-     num == 1 --> ronda ganada por el npc
-     num == 2 --> ronda perdida por el npc
-     num == 3 --> partida ganada por el npc
-     num == 4 --> partida perdida por el npc
-
-     Comentarios personalizados para cada NPC
-    """
+    # Comentarios personalizados para cada NPC
     comentarios_por_npc = {
         "Enrique": {
             'a': ["Otra ronda ganada, ¡ya es cuestión de tiempo para llevarme la partida!", "Así se juega, aprendé un poco observándome."],
@@ -126,6 +118,7 @@ def comentariosJugadores(num):
 
             print(f"{npc_name} dice: {comentario}")
             time.sleep(2)
+
 def mentiras():
     for jugador in jugadores:
         if jugador['Nombre'] == 'Enrique':
@@ -154,35 +147,25 @@ def mentiras():
     else:
         return False
 
-"""
-
 ##########
 # LOG-IN #
 ##########
 
-"""
+# Estado loggin:
 
-"""
-Estado loggin:
-"""
 LogginState = False
 
-"""
-Función para encriptar la contraseña
-"""
+# Función para encriptar la contraseña
 def encriptar_contraseña(contraseña):
     return hashlib.sha256(contraseña.encode()).hexdigest()
-"""
-Función para validar el nombre de usuario
-"""
+
+# Función para validar el nombre de usuario
 def es_valido(cadena):
-    """
-     La expresión regular permite a-z, A-Z, 0-9, _, -, y .
-    """
+    # La expresión regular permite a-z, A-Z, 0-9, _, -, y .
     return bool(re.match("^[a-zA-Z0-9_.-]+$", cadena))
-"""
- Funciónes para registrar un nuevo usuario
-"""
+
+# Funciónes para registrar un nuevo usuario
+
 def registrarVisual():
     print("")                                                                                                  
     print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
@@ -217,9 +200,8 @@ def registrar_usuario():
     time.sleep(1)
     print("")
     usuario = input("Ingrese su nombre de usuario: ")
-    """
-     Validar el nombre de usuario
-    """
+    
+    # Validar el nombre de usuario
     while not es_valido(usuario) or verificar_usuario_existe(usuario) or len(usuario) > 10:
         print("\nEl nombre de usuario no está disponible. Intente nuevamente... ")
         time.sleep(1.5)
@@ -237,9 +219,8 @@ def registrar_usuario():
         print("\nUsuario registrado con éxito.")
     time.sleep(2)
     return usuario 
-"""
- Función para verificar si un usuario ya existe
-"""
+
+# Función para verificar si un usuario ya existe
 def verificar_usuario_existe(usuario):
     if not os.path.exists("usuarios.txt"):
         return False
@@ -250,9 +231,9 @@ def verificar_usuario_existe(usuario):
             if usuario_guardado == usuario:
                 return True
     return False
-"""
- Funciónes para iniciar sesión
-"""
+
+# Funciónes para iniciar sesión
+
 def iniciar_sesionVisual():
     print("")
     print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
@@ -290,9 +271,8 @@ def iniciar_sesion():
     while correcto == False:
         print("")
         usuario = input("Ingrese su nombre de usuario: ")
-        """
-         Validar el nombre de usuario
-        """
+        
+        # Validar el nombre de usuario
         while not es_valido(usuario):
             print("\nEl nombre de usuario contiene caractéres inválidos. Intente nuevamente... ")
             time.sleep(1.5)
@@ -319,9 +299,8 @@ def iniciar_sesion():
                 iniciar_sesionVisual()
     os.system("cls")
     return usuario
-"""
- Funcion para Salir de la cuenta si el usuario toca Desloggearse
-"""
+
+# Funcion para Salir de la cuenta si el usuario toca Desloggearse
 def salir_cuenta():
     global LogginState
     respuesta = input("Ingrese 'salir' para cambiar de cuenta: ")
@@ -332,9 +311,8 @@ def salir_cuenta():
         menuLogin()
     else:
         print("Continúa logueado.")
-"""
- Función principal del programa
-"""
+
+# Función principal del programa
 def menuLogin():
     global usuario
     usuario = None   
@@ -409,13 +387,10 @@ def menuLogin():
         os.system("cls")
         menuLogin()
 
-"""
 
 ###################
 # Crear jugadores #
 ###################
-
-"""
 
 def creandoJugadores():
     global jugadores
@@ -428,22 +403,15 @@ def creandoJugadores():
     jugador = {'Nombre': f'{npc}', 'cartas': [], 'valorMentira': 0}
     jugadores.append(jugador)
 
-"""
-
 ##################################
 # Repartir cartas alternadamente #
 ##################################
-
-"""
 
 def repartir_cartas_alternadamente(jugadores):
     for i in range(2):
         jugadores[i]['cartas'].clear()
     if tuTurno:
-        """
-         Comienza con el primer jugador
-        """
-        jugador_index = 0  
+        jugador_index = 0  # Comienza con el primer jugador
         cont = 0
         while cont < 6:
             jugadores[jugador_index]['cartas'].append(mazo[cont])
@@ -453,10 +421,7 @@ def repartir_cartas_alternadamente(jugadores):
                 jugador_index = 0
             cont += 1
     elif tuTurno == False:
-        """
-         Comienza con el segundo jugador
-        """
-        jugador_index = 1  
+        jugador_index = 1  # Comienza con el segundo jugador
         cont = 0
         while cont < 6:
             jugadores[jugador_index]['cartas'].append(mazo[cont])
@@ -473,9 +438,9 @@ def config():
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
-    print("█                                                                                                                                                              █")
-    print("█          ccccccccc                                                                                                                                           █")
-    print("█        c:::::::::c                                                                                                           ii                              █")
+    print("█                                                                                                                                       ii                     █")
+    print("█          ccccccccc                                                                                                                   ii                      █")
+    print("█        c:::::::::c                                                                                                          ii                               █")
     print("█      c:::::::::::c oooooooooo  nnnn         fffffffff ii   gggggggggggguuuu     uuuurrrr  rrrrr    aaaaaaaaaa  ccccccccccc  ii  oooooooooo nnnn              █")
     print("█     c:::ccccccc::co::::::::::o n::nnnnnn  f:::::::::f     g:::::::::::gu::u     u::ur::rrrrrrrrr a:::::::::::ac:::::::::::c    o::::::::::on::nnnnnnn        █")
     print("█     c::c       ccco:::oooo:::on:::::::::n f::ffffffffiiiig::::ggggg:::gu::u     u::ur::rrr     rra:::aaaaaa::ac:::cccc::::ciiiio:::oooo:::on:::::::::n       █")
@@ -509,13 +474,9 @@ def config():
 
     return flor, pMax
 
-"""
-
 ##############################################
 # Funciones que muestran tus cartas (visual) #
 ##############################################
-
-"""
 
 def tusCartas():
     cartas = jugadores[0]['cartas']
@@ -591,13 +552,9 @@ def tusCartas2(cartas):
 
     return jugadores[0]['cartas']
 
-"""
-
 ############################    
 # Número de ronda (visual) #
 ############################
-
-"""
 
 def rondArt(ronda):
     if ronda == 1:
@@ -684,13 +641,10 @@ def rondArt(ronda):
         print("█                                                                                                                                                              █")
         print("█                                                                                                                                                              █")
         print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
-"""
 
 ############################
 # Estrategia de la máquina #
 ############################
-
-"""
 
 def estrategiaNPC(ronda, tuCarta, ganadorPR):
     if ronda == 1:
@@ -830,35 +784,33 @@ def cartasVersus(jugador, maquina):
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
-    print("█                                                                                                                                                              █")
-    print("█                                                                                                                                                              █")
-    print("█                                                                                                                                                              █")
-    print("█                                                          ________________    ||   ________________                                                           █")
-    print(f"█                                                         |Carta {nombre}|   ||  |Carta {jugadores[1]['Nombre']}   |                                                          █")
-    print("█                                                         |                |   ||  |                |                                                          █")
-    print("█                                                         |                |   ||  |                |                                                          █")
-    print(f"█                                                         | {carta1} |   ||  | {carta2} |                                                          █")
-    print("█                                                         |                |   ||  |                |                                                          █")
-    print("█                                                         |                |   ||  |                |                                                          █")
-    print("█                                                         |                |   ||  |                |                                                          █")
-    print("█                                                         |________________|   ||  |________________|                                                          █")
     print("█                                                                              ||                                                                              █")
-    print("█                                                                                                                                                              █")
-    print("█                                                                                                                                                              █")
-    print("█                                                                                                                                                              █")
+    print("█                                                                              ||                                                                              █")
+    print("█                                                                              ||                                                                              █")
+    print("█                                                        ________________      ||      ________________                                                        █")
+    print(f"█                                                       |Carta {nombre}|     ||     |Carta {jugadores[1]['Nombre']}   |                                                       █")
+    print("█                                                       |                |     ||     |                |                                                       █")
+    print("█                                                       |                |     ||     |                |                                                       █")
+    print(f"█                                                       | {carta1} |     ||     | {carta2} |                                                       █")
+    print("█                                                       |                |     ||     |                |                                                       █")
+    print("█                                                       |                |     ||     |                |                                                       █")
+    print("█                                                       |                |     ||     |                |                                                       █")
+    print("█                                                       |________________|     ||     |________________|                                                       █")
+    print("█                                                                              ||                                                                              █")
+    print("█                                                                              ||                                                                              █")
+    print("█                                                                              ||                                                                              █")
+    print("█                                                                              ||                                                                              █")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")              
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")                                                                                                                                                                          
     print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
     time.sleep(1.5)
-"""
 
 #########################
 # Mezclando... (visual) #
 #########################
 
-"""
 def cartaRival(eleccion):
     carta = f"{eleccion[0]} de {eleccion[1]}"
     ancho_carta = 14
@@ -939,13 +891,28 @@ def cartaRival2(eleccion, cartas):
     print("█                                                                                                                                                              █")
     print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
 
-"""
+def respuestaNPC():
+    miente = mentiras()
+    puntos = puntosAI()
+    if puntos >= 31:
+        respuesta = "falta envido!"
+        return respuesta, puntos
+    elif puntos >= 29:
+        respuesta = "real envido!"
+        return respuesta, puntos
+    elif puntos >= 27:
+        respuesta = "quiero!"
+        return respuesta, puntos
+    else:
+        if miente:
+            respuesta = "miente"
+            return respuesta, puntos
+        respuesta = "no quiero"
+        return respuesta, puntos  
 
 ######################
 # Lógica de una mano #
 ######################
-
-"""
 
 def mano(flor):
     ronda = 1
@@ -959,12 +926,26 @@ def mano(flor):
     contRondasEllos = 0
 
     while ronda <= 3:
+        os.system("cls")
         rondArt(ronda)
         time.sleep(2)
         os.system("cls")
 
         if ronda == 1:
+            tusCartas()
+            input("\nPresiona 'ENTER' para continuar...")
             if tuTurno == False:
+                envNos, envEllos = envidoST(flor)
+                contNos += envNos
+                contEllos += envEllos
+                if envNos == 0 and envEllos == 0:
+                    print(f"\n{jugadores[1]['Nombre']} no cantó.")
+                    envNos, envEllos = envidoTT(flor)
+                    contNos += envNos
+                    contEllos += envEllos
+                if contNos >= pmax or contEllos >= pmax:
+                    return contNos, contEllos
+                os.system("cls")
                 cartaMaq = estrategiaNPC(ronda, tuCarta, ganadorPR)
                 cartaRival(cartaMaq)
                 carta = int(input("\n¿Que carta querés jugar? (1, 2 o 3) "))
@@ -973,6 +954,15 @@ def mano(flor):
                 carta -= 1
                 os.system("cls")
             elif tuTurno:
+                envNos, envEllos = envidoTT(flor)
+                contNos += envNos
+                contEllos += envEllos
+                if envNos == 0 and envEllos == 0:
+                    envNos, envEllos = envidoST(flor)
+                    contNos += envNos
+                    contEllos += envEllos
+                if contNos >= pmax or contEllos >= pmax:
+                    return contNos, contEllos
                 tusCartas()
                 carta = int(input("\n¿Que carta querés jugar? (1, 2 o 3) "))
                 while carta != 1 and carta != 2 and carta != 3:
@@ -983,22 +973,21 @@ def mano(flor):
                 cartaMaq = estrategiaNPC(ronda, tuCarta, ganadorPR)
 
             cartasVersus(jugadores[0]['cartas'][carta], cartaMaq)
-            print()
            
             if jugadores[0]['cartas'][carta][2] < cartaMaq[2]:
                 contRondasEllos += 1
                 ganadorPR = 2
-                print(f"{jugadores[1]['Nombre']} se llevó la ronda!")
+                print(f"\n{jugadores[1]['Nombre']} se llevó la ronda!")
                 time.sleep(2)
             elif jugadores[0]['cartas'][carta][2] > cartaMaq[2]:
                 contRondasNos += 1
                 ganadorPR = 1
-                print("Te llevaste la ronda!")
+                print("\nTe llevaste la ronda!")
                 time.sleep(2)
             elif jugadores[0]['cartas'][carta][2] == cartaMaq[2]:
                 contRondasNos += 1
                 contRondasEllos += 1
-                print("Parda la mejor!")
+                print("\nParda la mejor!")
                 time.sleep(2)
 
             os.system("cls")
@@ -1008,71 +997,79 @@ def mano(flor):
         elif ronda == 2:
             if ganadorPR == 2:
                 cartaMaq = estrategiaNPC(ronda, tuCarta, ganadorPR)
-                print(f"{jugadores[1]['Nombre']} jugó la siguiente carta: \n")
                 cartaRival2(cartaMaq, cartas)
-                carta = int(input("¿Que carta querés jugar? (1 o 2) "))
+                carta = int(input("\n¿Que carta querés jugar? (1 o 2) "))
                 while carta != 1 and carta != 2:
                     carta = int(input("Error. ¿Que carta querés jugar? (1 o 2) "))
                 carta -= 1
                 os.system("cls")
             elif ganadorPR == 1:
                 tusCartas2(cartas)
-                carta = int(input("¿Que carta querés jugar? (1 o 2) "))
+                carta = int(input("\n¿Que carta querés jugar? (1 o 2) "))
                 while carta != 1 and carta != 2:
                     carta = int(input("Error. ¿Que carta querés jugar? (1 o 2) "))
                 carta -= 1
                 os.system("cls")
                 tuCarta = jugadores[0]['cartas'][carta]
                 cartaMaq = estrategiaNPC(ronda, tuCarta, ganadorPR)
-            
+            else:
+                if tuTurno:
+                    carta = int(input("\n¿Que carta querés jugar? (1 o 2) "))
+                    while carta != 1 and carta != 2:
+                        carta = int(input("Error. ¿Que carta querés jugar? (1 o 2) "))
+                    carta -= 1
+                    os.system("cls")
+                    cartaMaq = estrategiaNPC(ronda, jugadores[0]['cartas'][carta], ganadorPR)
+                else:
+                    cartaMaq = estrategiaNPC(ronda, tuCarta, 0)
+                    cartaRival2(cartaMaq, cartas)
+                    carta = int(input("\n¿Que carta querés jugar? (1 o 2) "))
+                    while carta != 1 and carta != 2:
+                        carta = int(input("Error. ¿Que carta querés jugar? (1 o 2) "))
+                    carta -= 1
+                    os.system("cls")
+
             cartasVersus(cartas[carta], cartaMaq)
-            print() 
 
             if cartas[carta][2] < cartaMaq[2]:
                 contRondasEllos += 1
-                print(f"{jugadores[1]['Nombre']} se llevó la ronda!")
-                time.sleep(2)
+                print(f"\n{jugadores[1]['Nombre']} se llevó la ronda!")
             elif cartas[carta][2] > cartaMaq[2]:
                 contRondasNos += 1
-                print("Te llevaste la ronda!")
-                time.sleep(2)
+                print("\nTe llevaste la ronda!")
             elif cartas[carta][2] == cartaMaq[2]:
                 contRondasNos += 1
                 contRondasEllos += 1
-                print("Parda!")
-                time.sleep(2)
-            os.system("cls")
+                print("\nParda!")
             if contRondasEllos == 2 and contRondasNos != 2:
-                print(f"{jugadores[1]['Nombre']} gana la mano!\n")
+                print(f"\n{jugadores[1]['Nombre']} gana la mano!\n")
                 comentariosJugadores(1)
                 contEllos += 1
                 ronda = 4
             elif contRondasNos == 2 and contRondasEllos != 2:
-                print("Vos ganás la mano!\n")
+                print("\nVos ganás la mano!\n")
                 comentariosJugadores(2)
                 contNos += 1
                 ronda = 4
             else:
-                cartas.pop(carta)       
-
+                cartas.pop(carta)
         elif ronda == 3:
             cartaMaq = estrategiaNPC(ronda, jugadores[0]['cartas'][0], ganadorPR)
             cartasVersus(cartas[0], cartaMaq)
-            print()
             
             if cartas[0][2] < cartaMaq[2]:
-                print(f"{jugadores[1]['Nombre']} gana la mano!\n")
+                print(f"\n{jugadores[1]['Nombre']} gana la mano!\n")
                 comentariosJugadores(1)
                 contEllos += 1
                 ronda = 4
             elif cartas[0][2] > cartaMaq[2]:
-                print("Vos ganás la mano!\n")
+                print("\nVos ganás la mano!\n")
                 comentariosJugadores(2)
                 contNos += 1
                 ronda = 4
             elif cartas[0][2] == cartaMaq[2]:
                 if ganadorPR == 1:
-                    print("Vos ganás la mano!\n")
+                    print("\nVos ganás la mano!\n")
                     comentariosJugadores(2)
                     contNos += 1
                     ronda = 4
@@ -1083,12 +1080,12 @@ def mano(flor):
                     ronda = 4
                 elif ganadorPR == 0:
                     if tuTurno:
-                        print("Vos ganás la mano!\n")
+                        print("\nVos ganás la mano!\n")
                         comentariosJugadores(2)
                         contNos += 1
                         ronda = 4
                     elif tuTurno == False:
-                        print(f"{jugadores[1]['Nombre']} gana la mano!\n")
+                        print(f"\n{jugadores[1]['Nombre']} gana la mano!\n")
                         comentariosJugadores(1)
                         contEllos += 1
                         ronda = 4
@@ -1099,16 +1096,13 @@ def mano(flor):
     os.system("cls")
     return contNos, contEllos
 
-"""
-
 ############################
 # Truco hasta que uno gane #
 ############################
 
-"""
-
 def juego(nos, ellos):
     global tuTurno
+    global pmax
     num = random.randint(1, 2)
 
     if num == 1:
@@ -1116,14 +1110,8 @@ def juego(nos, ellos):
     elif num == 2:
         tuTurno = False
 
-    """    
-    Mezclar el mazo
-    """
-    mezclarMazo() 
-    """
-    Repartir las cartas
-    """
-    repartir_cartas_alternadamente(jugadores)   
+    mezclarMazo() # Mezclar el mazo
+    repartir_cartas_alternadamente(jugadores)  # Repartir las cartas  
     flor, pmax = config()
 
     while nos <= pmax and ellos <= pmax:
@@ -1136,29 +1124,34 @@ def juego(nos, ellos):
         nos += nos_val
         ellos += ellos_val
         tuTurno = not(tuTurno)
-        mezclarMazo() 
-        repartir_cartas_alternadamente(jugadores)   
+        mezclarMazo() # Mezclar el mazo
+        repartir_cartas_alternadamente(jugadores)  # Repartir las cartas  
 
     if nos >= pmax:
-        print("Ganaste!\n")
+        nos = pmax
+        tablero(nos, ellos)
+        print("\nGanaste!\n")
         comentariosJugadores(4)
         tecla = input("\nPresione 'ENTER'...")
         os.system("cls")
         felicidades()
+        tecla = input("\nPresione 'ENTER' para volver al menú...")
+        menu()
     elif ellos >= pmax:
-        print(f"{jugadores[1]['Nombre']} ganó la partida!\n")
+        ellos = pmax
+        tablero(nos, ellos)
+        print(f"\n{jugadores[1]['Nombre']} ganó la partida!\n")
         comentariosJugadores(3)
-"""
+        tecla = input("\nPresione 'ENTER'...")
+        menu()
 
 ############################
 # Si jugador gana (visual) #
 ############################
 
-"""
-
 def felicidades():
     print("")
-    print(" ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+    print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
@@ -1188,7 +1181,7 @@ def felicidades():
     time.sleep(0.3)
     os.system("cls")
     print("")
-    print(" ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+    print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
@@ -1217,7 +1210,8 @@ def felicidades():
     print()
     time.sleep(0.3)
     os.system("cls")
-    print(" ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+    print("")
+    print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
@@ -1247,7 +1241,7 @@ def felicidades():
     time.sleep(0.3)
     os.system("cls")
     print("")
-    print(" ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+    print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
@@ -1277,7 +1271,7 @@ def felicidades():
     time.sleep(0.3)
     os.system("cls")
     print("")
-    print(" ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+    print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
@@ -1307,7 +1301,7 @@ def felicidades():
     time.sleep(0.3)
     os.system("cls")
     print("")
-    print(" ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+    print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
@@ -1337,7 +1331,7 @@ def felicidades():
     time.sleep(0.3)
     os.system("cls")
     print("")
-    print(" ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+    print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
@@ -1367,7 +1361,7 @@ def felicidades():
     time.sleep(0.3)
     os.system("cls")
     print("")
-    print(" ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+    print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
@@ -1397,7 +1391,7 @@ def felicidades():
     time.sleep(0.3)
     os.system("cls")
     print("")
-    print(" ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+    print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
@@ -1427,7 +1421,7 @@ def felicidades():
     time.sleep(0.3)
     os.system("cls")
     print("")
-    print(" ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+    print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
@@ -1457,7 +1451,7 @@ def felicidades():
     time.sleep(0.3)
     os.system("cls")
     print("")
-    print(" ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+    print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
     print("█                                                                                                                                                              █")
@@ -1485,13 +1479,10 @@ def felicidades():
     print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")                                                                                                                                                                                
     print()
     time.sleep(3)
-"""
-
+        
 ################
 # Puntuaciones #
 ################
-
-"""
 
 def tablero(nos, ellos):
     nos=int(nos)
@@ -1508,9 +1499,9 @@ def tablero(nos, ellos):
     
     nos_str = f"{nos:2d}"
     ellos_str= f"{ellos:2d}"
-    nombre1= f"{jugadores[0]['Nombre']:11s}"
-    nombre2 = f"{jugadores[1]['Nombre']:7s}" 
-    puntosNos= f"{puntosNos:6s}" 
+    nombre1= f"{jugadores[0]['Nombre']:11s}"# Esto garantiza que tanto números de un dígito como de dos dígitos ocupen siempre 2 espacios.
+    nombre2 = f"{jugadores[1]['Nombre']:7s}" # siempre ocupe 12 espacios
+    puntosNos= f"{puntosNos:6s}" # siempre ocupe 6 espacios
     puntosEllos= f"{puntosEllos:6s}"
 
     print("")
@@ -1541,36 +1532,602 @@ def tablero(nos, ellos):
     print("█                                                                                                                                                              █")
     print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
 
-"""
 
 ########################
 # Lógica de minijuegos #
 ########################
 
-"""
 def truco():
     pass
 
-def envido(flor):
-    if flor == 1:
-        if jugadores[0]['cartas'][0][1] == jugadores[0]['cartas'][1][1] and jugadores[0]['cartas'][0][1] == jugadores[0]['cartas'][2][1]:
-            pass
-"""
+def envidoST(flor):
+    puntos = tusPuntos()
+    puntosNPC = puntosAI()
+    miente = mentiras()
+    contNos = 0
+    contEllos = 0
+    npc = jugadores[1]['Nombre']
+
+    if jugadores[1]['cartas'][0][1] == jugadores[1]['cartas'][1][1] and jugadores[1]['cartas'][0][1] == jugadores[1]['cartas'][2][1] and flor == 1:
+        print(f"\n{npc} canta flor!")
+        juego = 0
+        contEllos = 3
+    elif miente:
+        num = random.randint(1, 3)
+        if num == 1:
+            print(f"\n{npc} canta envido!")
+            juego = 1
+        elif num == 2:
+            print(f"\n{npc} canta real envido!")
+            juego = 2
+        else:
+            print(f"\n{npc} canta falta envido!")
+            juego = 3
+    elif puntosNPC >= 31:
+        print(f"\n{npc} canta falta envido!")
+        juego = 3
+    elif puntosNPC >= 29:
+        print(f"\n{npc} canta real envido!")
+        juego = 2
+    elif puntosNPC >= 27:
+        print(f"\n{npc} canta envido!")
+        juego = 1
+    else:
+        juego = 0
+    if juego != 0:
+        time.sleep(2)
+        os.system("cls")
+        if juego == 1:
+            envidoArt()
+            tecla = int(input("\n¿Querés, no querés, cantas 'real envido' o cantas 'falta envido'? ('quiero' = 1 | 'no quiero' = 2 | 'real envido' = 3 | 'falta envido' = 4) "))
+            while tecla < 1 or tecla > 4:
+                tecla = int(input("Error. Ingresa tu elección nuevamente: "))
+            if tecla == 1:
+                if puntos <= puntosNPC:
+                    print(f"\n{npc} canta {puntosNPC} y se lleva los puntos!")
+                    time.sleep(2)
+                    contEllos = 2
+                else:
+                    print(f"\n{npc} canta {puntosNPC} pero vos le ganás con {puntos}!")
+                    time.sleep(2)
+                    contNos = 2
+            elif tecla == 2:
+                print(f"\n{npc} dice: Un puntito para mi...")
+                time.sleep(2)
+                contEllos = 1
+            elif tecla == 3:
+                if miente:
+                    print(f"\n{npc} canta falta envido!")
+                    tecla = int(input("\n¿Querés o no querés? ('quiero' = 1 | 'no quiero' = 2) "))
+                    while tecla != 1 and tecla != 2:
+                        tecla = int(input("Error. Ingresa tu elección nuevamente: "))
+                    if tecla == 1:
+                        os.system("cls")
+                        faltaEnvidoArt()
+                        if puntos <= puntosNPC:
+                            print(f"\n{npc} canta {puntosNPC} y se lleva los puntos!")
+                            time.sleep(2)
+                            contEllos = pmax
+                        else:
+                            print(f"\n{npc} canta {puntosNPC} pero vos le ganás con {puntos}!")
+                            time.sleep(2)
+                            contNos = pmax
+                    else:
+                        print(f"\n{npc} dice: Cinco puntitos para mi...")
+                        time.sleep(2)
+                        contEllos = 5          
+                elif puntosNPC >= 31:
+                    print(f"\n{npc} canta falta envido!")
+                    tecla = int(input("\n¿Querés o no querés? ('quiero' = 1 | 'no quiero' = 2) "))
+                    while tecla != 1 and tecla != 2:
+                        tecla = int(input("Error. Ingresa tu elección nuevamente: "))
+                    if tecla == 1:
+                        os.system("cls")
+                        faltaEnvidoArt()
+                        if puntos <= puntosNPC:
+                            print(f"\n{npc} canta {puntosNPC} y se lleva los puntos!")
+                            time.sleep(2)
+                            contEllos = pmax
+                        else:
+                            print(f"\n{npc} canta {puntosNPC} pero vos le ganás con {puntos}!")
+                            time.sleep(2)
+                            contNos = pmax
+                    else:
+                        print(f"\n{npc} dice: Cinco puntitos para mi...")
+                        time.sleep(2)
+                        contEllos = 5
+                elif puntosNPC >= 29:
+                    print(f"\n{npc} dice: Quiero!")
+                    time.sleep(0.5)
+                    os.system("cls")
+                    realEnvidoArt()
+                    if puntos <= puntosNPC:
+                        print(f"\n{npc} canta {puntosNPC} y se lleva los puntos!")
+                        time.sleep(2)
+                        contEllos = 5
+                    else:
+                        print(f"\n{npc} canta {puntosNPC} pero vos le ganás con {puntos}!")
+                        time.sleep(2)
+                        contNos = 5
+                else:
+                    print(f"\n{npc} dice: No quiero!")
+                    time.sleep(2)
+                    contNos = 2
+            else:
+                if puntosNPC >= 31:
+                    print(f"\n{npc} dice: Quiero!")
+                    time.sleep(0.5)
+                    os.system("cls")
+                    faltaEnvidoArt()
+                    if puntos <= puntosNPC:
+                        print(f"\n{npc} canta {puntosNPC} y se lleva los puntos!")
+                        time.sleep(2)
+                        contEllos = pmax
+                    else:
+                        print(f"\n{npc} canta {puntosNPC} pero vos le ganás con {puntos}!")
+                        time.sleep(2)
+                        contNos = pmax
+                else:
+                    print(f"\n{npc} dice: No quiero!")
+                    time.sleep(0.5)
+                    contNos = 2
+        elif juego == 2:
+            realEnvidoArt()
+            tecla = int(input("\n¿Querés, no querés o cantas 'falta envido'? ('quiero' = 1 | 'no quiero' = 2 | 'falta envido' = 3) "))
+            while tecla < 1 or tecla > 3:
+                tecla = int(input("Error. Ingresa tu elección nuevamente: "))
+            if tecla == 1:
+                if puntos <= puntosNPC:
+                    print(f"\n{npc} canta {puntosNPC} y se lleva los puntos!")
+                    time.sleep(2)
+                    contEllos = 3
+                else:
+                    print(f"\n{npc} canta {puntosNPC} pero vos le ganás con {puntos}!")
+                    time.sleep(2)
+                    contNos = 3
+            elif tecla == 2:
+                print(f"\n{npc} dice: Un puntito para mi...")
+                time.sleep(2)
+                contEllos = 1
+            else:
+                if puntosNPC >= 31:
+                    print(f"\n{npc} dice: Quiero!")
+                    time.sleep(0.5)
+                    os.system("cls")
+                    faltaEnvidoArt()
+                    if puntos <= puntosNPC:
+                        print(f"\n{npc} canta {puntosNPC} y se lleva los puntos!")
+                        time.sleep(2)
+                        contEllos = pmax
+                    else:
+                        print(f"\n{npc} canta {puntosNPC} pero vos le ganás con {puntos}!")
+                        time.sleep(2)
+                        contNos = pmax
+                else:
+                    print(f"\n{npc} dice: No quiero!")
+                    time.sleep(0.5)
+                    contNos = 3
+        else:
+            faltaEnvidoArt()
+            tecla = int(input("\n¿Querés o no querés? ('quiero' = 1 | 'no quiero' = 2) "))
+            while tecla != 1 and tecla != 2:
+                tecla = int(input("Error. Ingresa tu elección nuevamente: "))
+            if tecla == 1:
+                if puntos <= puntosNPC:
+                    print(f"\n{npc} canta {puntosNPC} y se lleva los puntos!")
+                    time.sleep(2)
+                    contEllos = pmax
+                else:
+                    print(f"\n{npc} canta {puntosNPC} pero vos le ganás con {puntos}!")
+                    time.sleep(2)
+                    contNos = pmax
+    return contNos, contEllos
+
+def envidoTT(flor):
+    puntos = tusPuntos()
+    contNos = 0
+    contEllos = 0
+    if jugadores[0]['cartas'][0][1] == jugadores[0]['cartas'][1][1] and jugadores[0]['cartas'][0][1] == jugadores[0]['cartas'][2][1] and flor == 1:
+        tecla = int(input("\n¿Queres cantar algo? ('flor' = 0 | 'envido' = 1 | 'real envido' = 2 | 'falta envido' = 3 | nada = 4): "))
+        while tecla != 0 and tecla != 1 and tecla != 2 and tecla != 3 and tecla != 4:
+            tecla = int(input("Error. Ingrese nuevamente su elección. "))
+    else:
+        tecla = int(input("\n¿Queres cantar algo? ('envido' = 1 | 'real envido' = 2 | 'falta envido' = 3 | nada = 4) "))
+        while tecla != 1 and tecla != 2 and tecla != 3 and tecla != 4:
+            tecla = int(input("Error. Ingrese nuevamente su elección. "))
+    if tecla == 0:
+        print("\nGanás 3 puntos por 'flor'!")
+        contNos = 3
+        time.sleep(2)
+        os.system("cls")
+        return contNos, contEllos
+    elif tecla == 4:
+        os.system("cls")
+        return contNos, contEllos
+    else:
+        os.system("cls")
+        if tecla == 1:
+            envidoArt()
+            respuesta, puntosNPC = respuestaNPC()
+            if respuesta == "miente":
+                num = random.randint(1, 2)
+                if num == 1:
+                    respuesta = "real envido!"
+                else:
+                    respuesta = "falta envido!"
+            print(f"\n{jugadores[1]['Nombre']} dice {respuesta}")
+            time.sleep(2)
+            if respuesta == "no quiero":
+                contNos = 1
+                os.system("cls")
+                return contNos, contEllos
+            elif respuesta == "quiero!":
+                print(f"\nCantaste {puntos} y {jugadores[1]['Nombre']} dice", end=" ")
+                if puntos >= puntosNPC:
+                    print("son buenas!")
+                    contNos = 2
+                    time.sleep(2)
+                    os.system("cls")
+                    return contNos, contEllos
+                else:
+                    print(f"{puntosNPC} son mejores!")
+                    contEllos = 2
+                    time.sleep(2)
+                    os.system("cls")
+                    return contNos, contEllos
+            elif respuesta == "real envido!":
+                tecla = int(input("\n¿Querés, no querés o cantas 'falta envido'? ('quiero' = 1 | 'no quiero' = 2 | 'falta envido' = 3) "))
+                while tecla < 1 or tecla > 3:
+                    tecla = int(input("Error. Ingresa tu elección nuevamente: "))
+                if tecla == 1:
+                    os.system("cls")
+                    realEnvidoArt()
+                    print(f"\nCantaste {puntos} y {jugadores[1]['Nombre']} dice:", end=" ")
+                    if puntos >= puntosNPC:
+                        print("Son buenas!")
+                        contNos = 5
+                        time.sleep(2)
+                        os.system("cls")
+                        return contNos, contEllos
+                    else:
+                        print(f"{puntosNPC} son mejores!")
+                        contEllos = 5
+                        time.sleep(2)
+                        os.system("cls")
+                        return contNos, contEllos
+                elif tecla == 2:
+                    print(f"{jugadores[1]['Nombre']} dice: Me robo un par de puntitos...")
+                    time.sleep(2)
+                    contEllos = 2
+                    os.system("cls")
+                    return contNos, contEllos
+                else:
+                    if puntosNPC >= 31:
+                        print(f"\n{jugadores[1]['Nombre']} dice: Quiero!")
+                        time.sleep(1)
+                        os.system("cls")
+                        faltaEnvidoArt()
+                        print(f"\nCantaste {puntos} y {jugadores[1]['Nombre']} dice:", end=" ")
+                        if puntos >= puntosNPC:
+                            print("Son buenas!")
+                            contNos = pmax
+                            time.sleep(2)
+                            os.system("cls")
+                            return contNos, contEllos
+                        else:
+                            print(f"{puntosNPC} son mejores!")
+                            contEllos = pmax
+                            time.sleep(2)
+                            os.system("cls")
+                            return contNos, contEllos
+                    else:
+                        print(f"\n{jugadores[1]['Nombre']} dice: No quiero")
+                        time.sleep(2)
+                        contNos = 5
+                        os.system("cls")
+                        return contNos, contEllos
+            else:
+                tecla = int(input("\n¿Querés, no querés? ('quiero' = 1 | 'no quiero' = 2) "))
+                while tecla != 1 and tecla != 2:
+                    tecla = int(input("Error. Ingresa tu elección nuevamente: "))
+                if tecla == 1:
+                    os.system("cls")
+                    faltaEnvidoArt()
+                    print(f"\nCantaste {puntos} y {jugadores[1]['Nombre']} dice:", end=" ")
+                    if puntos >= puntosNPC:
+                        print("Son buenas!")
+                        contNos = pmax
+                        time.sleep(2)
+                        os.system("cls")
+                        return contNos, contEllos
+                    else:
+                        print(f"{puntosNPC} son mejores!")
+                        contEllos = pmax
+                        time.sleep(2)
+                        os.system("cls")
+                        return contNos, contEllos
+                elif tecla == 2:
+                    print(f"{jugadores[1]['Nombre']} dice: Me robo tres puntitos...")
+                    time.sleep(2)
+                    contEllos = 3
+                    os.system("cls")
+                    return contNos, contEllos
+        elif tecla == 2:
+            realEnvidoArt()
+            respuesta, puntosNPC = respuestaNPC()
+            if respuesta == "miente":
+                respuesta = "falta envido!"
+            if respuesta == "real envido!":
+                    respuesta = "quiero!"
+            print(f"\n{jugadores[1]['Nombre']} dice {respuesta}")
+            time.sleep(2)
+            if respuesta == "no quiero":
+                contNos = 1
+                os.system("cls")
+                return contNos, contEllos
+            elif respuesta == "quiero!":
+                print(f"\nCantaste {puntos} y {jugadores[1]['Nombre']} dice", end=" ")
+                if puntos >= puntosNPC:
+                    print("son buenas!")
+                    contNos = 3
+                    time.sleep(2)
+                    os.system("cls")
+                    return contNos, contEllos
+                else:
+                    print(f"{puntosNPC} son mejores!")
+                    contEllos = 3
+                    time.sleep(2)
+                    os.system("cls")
+                    return contNos, contEllos
+            else:
+                tecla = int(input("\n¿Querés, no querés? ('quiero' = 1 | 'no quiero' = 2) "))
+                while tecla != 1 and tecla != 2:
+                    tecla = int(input("Error. Ingresa tu elección nuevamente: "))
+                if tecla == 1:
+                    os.system("cls")
+                    faltaEnvidoArt()
+                    print(f"\nCantaste {puntos} y {jugadores[1]['Nombre']} dice:", end=" ")
+                    if puntos >= puntosNPC:
+                        print("Son buenas!")
+                        contNos = pmax
+                        time.sleep(2)
+                        os.system("cls")
+                        return contNos, contEllos
+                    else:
+                        print(f"{puntosNPC} son mejores!")
+                        contEllos = pmax
+                        time.sleep(2)
+                        os.system("cls")
+                        return contNos, contEllos
+                elif tecla == 2:
+                    print(f"\n{jugadores[1]['Nombre']} dice: Me robo tres puntitos...")
+                    time.sleep(2)
+                    contEllos = 3
+                    os.system("cls")
+                    return contNos, contEllos
+        elif tecla == 3:
+            faltaEnvidoArt()
+            puntosNPC = puntosAI()
+            if puntosNPC >= 31:
+                respuesta = "quiero!"
+            else:
+                respuesta = "no quiero"
+            print(f"\n{jugadores[1]['Nombre']} dice {respuesta}")
+            time.sleep(2)
+            if respuesta == "no quiero":
+                contNos = 1
+                os.system("cls")
+                return contNos, contEllos
+            else:
+                print(f"\nCantaste {puntos} y {jugadores[1]['Nombre']} dice:", end=" ")
+                if puntos >= puntosNPC:
+                    print("Son buenas!")
+                    contNos = pmax
+                    time.sleep(2)
+                    os.system("cls")
+                    return contNos, contEllos
+                else:
+                    print(f"{puntosNPC} son mejores!")
+                    contEllos = pmax
+                    time.sleep(2)
+                    os.system("cls")
+                    return contNos, contEllos
+
+def tusPuntos():
+    puntos = 0
+    if int(jugadores[0]['cartas'][0][0]) == 10 or int(jugadores[0]['cartas'][0][0]) == 11 or int(jugadores[0]['cartas'][0][0]) == 12:
+        carta1 = 0
+    else:
+        carta1 = int(jugadores[0]['cartas'][0][0]) 
+    if int(jugadores[0]['cartas'][1][0]) == 10 or int(jugadores[0]['cartas'][1][0]) == 11 or int(jugadores[0]['cartas'][1][0]) == 12:
+        carta2 = 0
+    else:
+        carta2 = int(jugadores[0]['cartas'][1][0]) 
+    if int(jugadores[0]['cartas'][2][0]) == 10 or int(jugadores[0]['cartas'][2][0]) == 11 or int(jugadores[0]['cartas'][2][0]) == 12:
+        carta3 = 0
+    else:
+        carta3 = int(jugadores[0]['cartas'][2][0]) 
+    if jugadores[0]['cartas'][0][1] == jugadores[0]['cartas'][1][1] and jugadores[0]['cartas'][0][1] == jugadores[0]['cartas'][2][1]:
+        puntos = 20
+        comp1 = carta1 + carta2
+        comp2 = carta1 + carta3
+        comp3 = carta2 + carta3
+        puntos += max(comp1, comp2, comp3)
+        return puntos
+
+    palo = None
+
+    if jugadores[0]['cartas'][0][1] == jugadores[0]['cartas'][1][1] or jugadores[0]['cartas'][0][1] == jugadores[0]['cartas'][2][1]:
+        palo = jugadores[0]['cartas'][0][1]
+    elif jugadores[0]['cartas'][1][1] == jugadores[0]['cartas'][2][1]:
+        palo = jugadores[0]['cartas'][1][1]
+
+    if jugadores[0]['cartas'][0][1] == palo and jugadores[0]['cartas'][1][1] == palo:
+        puntos = 20 + carta1 + carta2
+        return puntos
+    elif jugadores[0]['cartas'][0][1] == palo and jugadores[0]['cartas'][2][1] == palo:
+        puntos = 20 + carta1 + carta3
+        return puntos
+    elif jugadores[0]['cartas'][1][1] == palo and jugadores[0]['cartas'][2][1] == palo:
+        puntos = 20 + carta2 + carta3
+        return puntos
+
+    if puntos == 0:
+        cAlta = 0 
+        for i in range(len(jugadores[0]['cartas'])):
+            if int(jugadores[0]['cartas'][i][0]) > cAlta:
+                cAlta = int(jugadores[0]['cartas'][i][0])
+        return cAlta  
+
+def puntosAI():
+    if int(jugadores[1]['cartas'][0][0]) == 10 or int(jugadores[1]['cartas'][0][0]) == 11 or int(jugadores[1]['cartas'][0][0]) == 12:
+        carta1 = 0
+    else:
+        carta1 = int(jugadores[1]['cartas'][0][0]) 
+    if int(jugadores[1]['cartas'][1][0]) == 10 or int(jugadores[1]['cartas'][1][0]) == 11 or int(jugadores[1]['cartas'][1][0]) == 12:
+        carta2 = 0
+    else:
+        carta2 = int(jugadores[1]['cartas'][1][0]) 
+    if int(jugadores[1]['cartas'][2][0]) == 10 or int(jugadores[1]['cartas'][2][0]) == 11 or int(jugadores[1]['cartas'][2][0]) == 12:
+        carta3 = 0
+    else:
+        carta3 = int(jugadores[1]['cartas'][2][0]) 
+    if jugadores[1]['cartas'][0][1] == jugadores[1]['cartas'][1][1] and jugadores[1]['cartas'][0][1] == jugadores[1]['cartas'][2][1]:
+        puntos = 20
+        comp1 = carta1 + carta2
+        comp2 = carta1 + carta3
+        comp3 = carta2 + carta3
+        puntos += max(comp1, comp2, comp3)
+        return puntos
+    palo = None
+    if jugadores[1]['cartas'][0][1] == jugadores[1]['cartas'][1][1] or jugadores[1]['cartas'][0][1] == jugadores[1]['cartas'][2][1]:
+        palo = jugadores[1]['cartas'][0][1]
+    elif jugadores[1]['cartas'][1][1] == jugadores[1]['cartas'][2][1]:
+        palo = jugadores[1]['cartas'][1][1]
+    if palo != None:
+        total = 20
+        for i in range(len(jugadores[1]['cartas'])):
+            if jugadores[1]['cartas'][i][1] == palo:
+                if int(jugadores[1]['cartas'][i][0]) == 12:
+                    total += 0
+                elif int(jugadores[1]['cartas'][i][0]) == 11:
+                    total += 0
+                elif int(jugadores[1]['cartas'][i][0]) == 10:
+                    total += 0
+                else:
+                    total += int(jugadores[1]['cartas'][i][0])
+        return total
+    else:
+        cAlta = 0 
+        for i in range(len(jugadores[1]['cartas'])):
+            if int(jugadores[1]['cartas'][i][0]) > cAlta:
+                cAlta = int(jugadores[1]['cartas'][i][0])
+        return cAlta  
+  
+#####################
+# Visuales 'envido' #
+#####################
+
+def envidoArt():
+    print("")                                                                                                
+    print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+    print("█                                                                                                                                                              █")
+    print("█                                                                                                                                                              █")
+    print("█                                                                                                          dddddddd                                            █")
+    print("█                        EEEEEEEEEEEEEEEEEEEEEE                                          iiii              d::::::d                                            █ ") 
+    print("█                        E::::::::::::::::::::E                                         i::::i             d::::::d                                            █ ")
+    print("█                        E::::::::::::::::::::E                                          iiii              d::::::d                                            █ ")
+    print("█                        EE::::::EEEEEEEEE::::E                                                            d:::::d                                             █ ")
+    print("█                          E:::::E       EEEEEEnnnn  nnnnnnnn vvvvvvv           vvvvvvviiiiiii     ddddddddd:::::d    ooooooooooo                              █ ")
+    print("█                          E:::::E             n:::nn::::::::nnv:::::v         v:::::v i:::::i   dd::::::::::::::d  oo:::::::::::oo                            █ ")
+    print("█                          E::::::EEEEEEEEEE   n::::::::::::::nnv:::::v       v:::::v   i::::i  d::::::::::::::::d o:::::::::::::::o                           █")
+    print("█                          E:::::::::::::::E   nn:::::::::::::::nv:::::v     v:::::v    i::::i d:::::::ddddd:::::d o:::::ooooo:::::o                           █")
+    print("█                          E:::::::::::::::E     n:::::nnnn:::::n v:::::v   v:::::v     i::::i d::::::d    d:::::d o::::o     o::::o                           █")
+    print("█                          E::::::EEEEEEEEEE     n::::n    n::::n  v:::::v v:::::v      i::::i d:::::d     d:::::d o::::o     o::::o                           █")
+    print("█                          E:::::E               n::::n    n::::n   v:::::v:::::v       i::::i d:::::d     d:::::d o::::o     o::::o                           █")
+    print("█                          E:::::E       EEEEEE  n::::n    n::::n    v:::::::::v        i::::i d:::::d     d:::::d o::::o     o::::o                           █ ")
+    print("█                        EE::::::EEEEEEEE:::::E  n::::n    n::::n     v:::::::v        i::::::id::::::ddddd::::::ddo:::::ooooo:::::o                           █  ")
+    print("█                        E::::::::::::::::::::E  n::::n    n::::n      v:::::v         i::::::i d:::::::::::::::::do:::::::::::::::o                           █   ")
+    print("█                        E::::::::::::::::::::E  n::::n    n::::n       v:::v          i::::::i  d:::::::::ddd::::d oo:::::::::::oo                            █  ")
+    print("█                        EEEEEEEEEEEEEEEEEEEEEE  nnnnnn    nnnnnn        vvv           iiiiiiii   ddddddddd   ddddd   ooooooooooo                              █  ")
+    print("█                                                                                                                                                              █")
+    print("█                                                                                                                                                              █")
+    print("█                                                                                                                                                              █")
+    print("█                                                                                                                                                              █")
+    print("█                                                                                                                                                              █")                                                                                                                                                             
+    print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+    time.sleep(1)
+
+def realEnvidoArt():
+    print("")                                                                                                
+    print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+    print("█                                                              RRRRRR   EEEEEEE   AAAAA   LL                                                                   █")
+    print("█                                                              RR  RRR  EEE      AAA AAA  LL                                                                   █")
+    print("█                                                              RRRRRR   EE       AA   AA  LL                                                                   █")
+    print("█                                                              RR RR    EEEEEEE  AAAAAAA  LL                                                                   █") 
+    print("█                                                              RR  RR   EE       AA   AA  LL                                                                   █")
+    print("█                                                              RR   RR  EEE      AA   AA  LLLLLLL                                                              █")
+    print("█                                                              RR    RR EEEEEEE  AA   AA  LLLLLLL          dddddddd                                            █")
+    print("█                        EEEEEEEEEEEEEEEEEEEEEE                                                            d::::::d                                            █ ") 
+    print("█                        E::::::::::::::::::::E                                         iiiii              d::::::d                                            █ ")
+    print("█                        E::::::::::::::::::::E                                         iiiii              d::::::d                                            █ ")
+    print("█                        EE::::::EEEEEEEEE::::E                                                            d:::::d                                             █ ")
+    print("█                          E:::::E       EEEEEEnnnn  nnnnnnnn vvvvvvv           vvvvvvviiiiiii     ddddddddd:::::d    ooooooooooo                              █ ")
+    print("█                          E:::::E             n:::nn::::::::nnv:::::v         v:::::v i:::::i   dd::::::::::::::d  oo:::::::::::oo                            █ ")
+    print("█                          E::::::EEEEEEEEEE   n::::::::::::::nnv:::::v       v:::::v   i::::i  d::::::::::::::::d o:::::::::::::::o                           █")
+    print("█                          E:::::::::::::::E   nn:::::::::::::::nv:::::v     v:::::v    i::::i d:::::::ddddd:::::d o:::::ooooo:::::o                           █")
+    print("█                          E:::::::::::::::E     n:::::nnnn:::::n v:::::v   v:::::v     i::::i d::::::d    d:::::d o::::o     o::::o                           █")
+    print("█                          E::::::EEEEEEEEEE     n::::n    n::::n  v:::::v v:::::v      i::::i d:::::d     d:::::d o::::o     o::::o                           █")
+    print("█                          E:::::E               n::::n    n::::n   v:::::v:::::v       i::::i d:::::d     d:::::d o::::o     o::::o                           █")
+    print("█                          E:::::E       EEEEEE  n::::n    n::::n    v:::::::::v        i::::i d:::::d     d:::::d o::::o     o::::o                           █ ")
+    print("█                        EE::::::EEEEEEEE:::::E  n::::n    n::::n     v:::::::v        i::::::id::::::ddddd::::::ddo:::::ooooo:::::o                           █  ")
+    print("█                        E::::::::::::::::::::E  n::::n    n::::n      v:::::v         i::::::i d:::::::::::::::::do:::::::::::::::o                           █   ")
+    print("█                        E::::::::::::::::::::E  n::::n    n::::n       v:::v          i::::::i  d:::::::::ddd::::d oo:::::::::::oo                            █  ")
+    print("█                        EEEEEEEEEEEEEEEEEEEEEE  nnnnnn    nnnnnn        vvv           iiiiiiii   ddddddddd   ddddd   ooooooooooo                              █  ")
+    print("█                                                                                                                                                              █")                                                                                                                                                            
+    print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+    time.sleep(1)
+
+def faltaEnvidoArt():
+    print("")                                                                                                
+    print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+    print("█                                                          FFFFFFF  AAAAA  LL   TTTTTTTTTT AAAAA                                                               █")
+    print("█                                                          FFF     AA   AA LL       TT    AA   AA                                                              █")
+    print("█                                                          FFF     AA   AA LL       TT    AA   AA                                                              █")
+    print("█                                                          FFFFFF  AAAAAAA LL       TT    AAAAAAA                                                              █") 
+    print("█                                                          FFF     AA   AA LL       TT    AA   AA                                                              █")
+    print("█                                                          FF      AA   AA LLLLLL   TT    AA   AA                                                              █")
+    print("█                                                          FF      AA   AA LLLLLLL  TT    AA   AA          dddddddd                                            █")
+    print("█                        EEEEEEEEEEEEEEEEEEEEEE                                                            d::::::d                                            █ ") 
+    print("█                        E::::::::::::::::::::E                                         iiiii              d::::::d                                            █ ")
+    print("█                        E::::::::::::::::::::E                                         iiiii              d::::::d                                            █ ")
+    print("█                        EE::::::EEEEEEEEE::::E                                                            d:::::d                                             █ ")
+    print("█                          E:::::E       EEEEEEnnnn  nnnnnnnn vvvvvvv           vvvvvvviiiiiii     ddddddddd:::::d    ooooooooooo                              █ ")
+    print("█                          E:::::E             n:::nn::::::::nnv:::::v         v:::::v i:::::i   dd::::::::::::::d  oo:::::::::::oo                            █ ")
+    print("█                          E::::::EEEEEEEEEE   n::::::::::::::nnv:::::v       v:::::v   i::::i  d::::::::::::::::d o:::::::::::::::o                           █")
+    print("█                          E:::::::::::::::E   nn:::::::::::::::nv:::::v     v:::::v    i::::i d:::::::ddddd:::::d o:::::ooooo:::::o                           █")
+    print("█                          E:::::::::::::::E     n:::::nnnn:::::n v:::::v   v:::::v     i::::i d::::::d    d:::::d o::::o     o::::o                           █")
+    print("█                          E::::::EEEEEEEEEE     n::::n    n::::n  v:::::v v:::::v      i::::i d:::::d     d:::::d o::::o     o::::o                           █")
+    print("█                          E:::::E               n::::n    n::::n   v:::::v:::::v       i::::i d:::::d     d:::::d o::::o     o::::o                           █")
+    print("█                          E:::::E       EEEEEE  n::::n    n::::n    v:::::::::v        i::::i d:::::d     d:::::d o::::o     o::::o                           █ ")
+    print("█                        EE::::::EEEEEEEE:::::E  n::::n    n::::n     v:::::::v        i::::::id::::::ddddd::::::ddo:::::ooooo:::::o                           █  ")
+    print("█                        E::::::::::::::::::::E  n::::n    n::::n      v:::::v         i::::::i d:::::::::::::::::do:::::::::::::::o                           █   ")
+    print("█                        E::::::::::::::::::::E  n::::n    n::::n       v:::v          i::::::i  d:::::::::ddd::::d oo:::::::::::oo                            █  ")
+    print("█                        EEEEEEEEEEEEEEEEEEEEEE  nnnnnn    nnnnnn        vvv           iiiiiiii   ddddddddd   ddddd   ooooooooooo                              █  ")
+    print("█                                                                                                                                                              █")                                                                                                                                                            
+    print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+    time.sleep(1)
 
 #########################
 # Funciones de arranque #
 #########################
 
-"""
-
 def menu():
-    menuLogin()
-    repetir = True
+    os.system("cls")
+    ejecutar()
+    '''repetir = True
     while repetir:
-        """
-        limpia la pantalla 
-        """
-        os.system("cls") 
+        os.system("cls") #limpia la pantalla
         usuario1 = f"{usuario:12s}"
         print("")
         print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
@@ -1766,7 +2323,7 @@ def menu():
             else: 
                 os.system("cls")
                 input("Parece que ingresaste una opción no válida. ¡Presiona 'ENTER' y volvé a intentarlo!")
-        except:
+        except TypeError:
               os.system("cls")                                                                                                   
               print("")                                                                                                
               print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
@@ -1795,15 +2352,12 @@ def menu():
               print("█                                                                                                                                                              █")
               print("█                                                                                                                                                              █")                                                                                                                                                             
               print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")                                                                              
-              input()
+              input()'''
 
 def ejecutar():
     nos = 0
     ellos = 0
-    """
-    se crean los jugadores
-    """
-    creandoJugadores() 
+    creandoJugadores() # Crear los jugadores
     juego(nos, ellos)
 
 def inicio():
@@ -1838,4 +2392,5 @@ def inicio():
     time.sleep(3)
     print("\nPresione una tecla...", end="")
     input()
+    menuLogin()
     menu()
