@@ -150,7 +150,6 @@ def mentiras():
 '''
 LOG-IN
 '''
-
 LogginState = False
 
 def encriptar_contraseña(contraseña):
@@ -195,7 +194,6 @@ def registrar_usuario():
     print("")
     usuario = input("Ingrese su nombre de usuario: ")
     
-    # Validar el nombre de usuario
     while not es_valido(usuario) or verificar_usuario_existe(usuario) or len(usuario) > 10:
         print("\nEl nombre de usuario no está disponible. Intente nuevamente... ")
         time.sleep(1.5)
