@@ -12,12 +12,9 @@ Mazo
 ruta_carpeta = os.path.dirname(__file__)
 ruta_cartas = os.path.join(ruta_carpeta, "cartas.txt")
 
-# Abre el archivo usando la ruta completa
 with open(ruta_cartas, "r") as archivo:
     cartas = json.load(archivo)
     cartas = [tuple(carta) for carta in cartas]
-
-
 
 '''
 Mezclar el mazo de forma aleatoria
@@ -536,6 +533,41 @@ def tusCartas2(cartas):
 
     return jugadores[0]['cartas']
 
+def tusCartas3(num, palo):
+    cartas_formateadas = f"{num} de {palo}"
+    ancho_carta = 14
+
+    carta1 = cartas_formateadas.center(ancho_carta)
+
+    print("")
+    print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+    print("█                                                                                                                                                              █")
+    print("█                                                                                                                                                              █")
+    print("█                                                                                                                                                              █")
+    print("█                                                                    ¡Estas son tus cartas!                                                                    █")
+    print("█                                                                                                                                                              █")
+    print("█                                                                                                                                                              █")
+    print("█                                                                                                                                                              █")
+    print("█                                                                       ________________                                                                       █")
+    print("█                                                                      |Carta           |                                                                      █")
+    print("█                                                                      |                |                                                                      █")
+    print("█                                                                      |                |                                                                      █")
+    print(f"█                                                                      | {carta1} |                                                                      █")
+    print("█                                                                      |                |                                                                      █")
+    print("█                                                                      |                |                                                                      █")
+    print("█                                                                      |                |                                                                      █")
+    print("█                                                                      |________________|                                                                      █")
+    print("█                                                                                                                                                              █")
+    print("█                                                                                                                                                              █")
+    print("█                                                                                                                                                              █")
+    print("█                                                                                                                                                              █")
+    print("█                                                                                                                                                              █")
+    print("█                                                                                                                                                              █")
+    print("█                                                                                                                                                              █")
+    print("█                                                                                                                                                              █")
+    print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+
+    return jugadores[0]['cartas']
 '''    
 Número de ronda (visual)
 '''
@@ -884,6 +916,9 @@ Lógica de una mano
 '''
 
 def mano(flor):
+    puntos = 0
+    trucoCanto = False
+
     ronda = 1
     
     ganadorPR = 0
@@ -915,8 +950,31 @@ def mano(flor):
                 if contNos >= pmax or contEllos >= pmax:
                     return contNos, contEllos
                 os.system("cls")
+                tusCartas()
+                puntos, trucNos, trucEllos = truco(2, jugadores[1]['cartas'])
+                if trucNos != 0 or trucEllos != 0:
+                    contNos += trucNos
+                    contEllos += trucEllos
+                    os.system("cls")
+                    return contNos, contEllos
+                if puntos != 0:
+                    trucoCanto = True
+                os.system("cls")
                 cartaMaq = estrategiaNPC(ronda, tuCarta, ganadorPR)
                 cartaRival(cartaMaq)
+                if trucoCanto == False:
+                    tecla = int(input("\nQueres cantar 'truco'? ('Si' = 1 | 'No' = 2) "))
+                    while tecla < 1 or tecla > 2:
+                        tecla = int(input("Error. Ingresa tu elección nuevamente: "))
+                    if tecla == 1:
+                        puntos, trucNos, trucEllos = truco(1, jugadores[1]['cartas'])
+                        if trucNos != 0 or trucEllos != 0:
+                            contNos += trucNos
+                            contEllos += trucEllos
+                            os.system("cls")
+                            return contNos, contEllos
+                        if puntos != 0:
+                            trucoCanto = True
                 carta = int(input("\n¿Que carta querés jugar? (1, 2 o 3) "))
                 while carta != 1 and carta != 2 and carta != 3:
                     carta = int(input("Error. ¿Que carta querés jugar? (1, 2 o 3) "))
@@ -932,11 +990,33 @@ def mano(flor):
                     contEllos += envEllos
                 if contNos >= pmax or contEllos >= pmax:
                     return contNos, contEllos
+                os.system("cls")
                 tusCartas()
+                tecla = int(input("\nQueres cantar 'truco'? ('Si' = 1 | 'No' = 2) "))
+                while tecla < 1 or tecla > 2:
+                    tecla = int(input("Error. Ingresa tu elección nuevamente: "))
+                if tecla == 1:
+                    puntos, trucNos, trucEllos = truco(1, jugadores[1]['cartas'])
+                    if trucNos != 0 or trucEllos != 0:
+                        contNos += trucNos
+                        contEllos += trucEllos
+                        os.system("cls")
+                        return contNos, contEllos
+                    if puntos != 0:
+                        trucoCanto = True
                 carta = int(input("\n¿Que carta querés jugar? (1, 2 o 3) "))
                 while carta != 1 and carta != 2 and carta != 3:
                     carta = int(input("Error. ¿Que carta querés jugar? (1, 2 o 3) "))
                 carta -= 1
+                if trucoCanto == False:
+                    puntos, trucNos, trucEllos = truco(2, jugadores[1]['cartas'])
+                    if trucNos != 0 or trucEllos != 0:
+                        contNos += trucNos
+                        contEllos += trucEllos
+                        os.system("cls")
+                        return contNos, contEllos
+                    if puntos != 0:
+                        trucoCanto = True
                 os.system("cls")
                 tuCarta = jugadores[0]['cartas'][carta]
                 cartaMaq = estrategiaNPC(ronda, tuCarta, ganadorPR)
@@ -965,8 +1045,32 @@ def mano(flor):
             
         elif ronda == 2:
             if ganadorPR == 2:
+                tusCartas2(cartas)
+                if trucoCanto == False:
+                    puntos, trucNos, trucEllos = truco(2, jugadores[1]['cartas'])
+                    if trucNos != 0 or trucEllos != 0:
+                        contNos += trucNos
+                        contEllos += trucEllos
+                        os.system("cls")
+                        return contNos, contEllos
+                    if puntos != 0:
+                        trucoCanto = True
                 cartaMaq = estrategiaNPC(ronda, tuCarta, ganadorPR)
+                os.system("cls")
                 cartaRival2(cartaMaq, cartas)
+                if trucoCanto == False:
+                    tecla = int(input("\nQueres cantar 'truco'? ('Si' = 1 | 'No' = 2) "))
+                    while tecla < 1 or tecla > 2:
+                        tecla = int(input("Error. Ingresa tu elección nuevamente: "))
+                    if tecla == 1:
+                        puntos, trucNos, trucEllos = truco(1, jugadores[1]['cartas'])
+                        if trucNos != 0 or trucEllos != 0:
+                            contNos += trucNos
+                            contEllos += trucEllos
+                            os.system("cls")
+                            return contNos, contEllos
+                        if puntos != 0:
+                            trucoCanto = True
                 carta = int(input("\n¿Que carta querés jugar? (1 o 2) "))
                 while carta != 1 and carta != 2:
                     carta = int(input("Error. ¿Que carta querés jugar? (1 o 2) "))
@@ -974,15 +1078,59 @@ def mano(flor):
                 os.system("cls")
             elif ganadorPR == 1:
                 tusCartas2(cartas)
+                if trucoCanto == False:
+                    tecla = int(input("\nQueres cantar 'truco'? ('Si' = 1 | 'No' = 2) "))
+                    while tecla < 1 or tecla > 2:
+                        tecla = int(input("Error. Ingresa tu elección nuevamente: "))
+                    if tecla == 1:
+                        puntos, trucNos, trucEllos = truco(1, jugadores[1]['cartas'])
+                        if trucNos != 0 or trucEllos != 0:
+                            contNos += trucNos
+                            contEllos += trucEllos
+                            os.system("cls")
+                            return contNos, contEllos
+                        if puntos != 0:
+                            trucoCanto = True
                 carta = int(input("\n¿Que carta querés jugar? (1 o 2) "))
                 while carta != 1 and carta != 2:
                     carta = int(input("Error. ¿Que carta querés jugar? (1 o 2) "))
                 carta -= 1
+                if trucoCanto == False:
+                    puntos, trucNos, trucEllos = truco(2, jugadores[1]['cartas'])
+                    if trucNos != 0 or trucEllos != 0:
+                        contNos += trucNos
+                        contEllos += trucEllos
+                        os.system("cls")
+                        return contNos, contEllos
+                    if puntos != 0:
+                        trucoCanto = True
                 os.system("cls")
                 tuCarta = jugadores[0]['cartas'][carta]
                 cartaMaq = estrategiaNPC(ronda, tuCarta, ganadorPR)
             else:
                 if tuTurno:
+                    if trucoCanto == False:
+                        tecla = int(input("\nQueres cantar 'truco'? ('Si' = 1 | 'No' = 2) "))
+                        while tecla < 1 or tecla > 2:
+                            tecla = int(input("Error. Ingresa tu elección nuevamente: "))
+                        if tecla == 1:
+                            puntos, trucNos, trucEllos = truco(1, jugadores[1]['cartas'])
+                            if trucNos != 0 or trucEllos != 0:
+                                contNos += trucNos
+                                contEllos += trucEllos
+                                os.system("cls")
+                                return contNos, contEllos
+                            if puntos != 0:
+                                trucoCanto = True
+                    if trucoCanto == False:
+                        puntos, trucNos, trucEllos = truco(2, jugadores[1]['cartas'])
+                        if trucNos != 0 or trucEllos != 0:
+                            contNos += trucNos
+                            contEllos += trucEllos
+                            os.system("cls")
+                            return contNos, contEllos
+                        if puntos != 0:
+                            trucoCanto = True
                     carta = int(input("\n¿Que carta querés jugar? (1 o 2) "))
                     while carta != 1 and carta != 2:
                         carta = int(input("Error. ¿Que carta querés jugar? (1 o 2) "))
@@ -990,8 +1138,30 @@ def mano(flor):
                     os.system("cls")
                     cartaMaq = estrategiaNPC(ronda, jugadores[0]['cartas'][carta], ganadorPR)
                 else:
+                    if trucoCanto == False:
+                        puntos, trucNos, trucEllos = truco(2, jugadores[1]['cartas'])
+                        if trucNos != 0 or trucEllos != 0:
+                            contNos += trucNos
+                            contEllos += trucEllos
+                            os.system("cls")
+                            return contNos, contEllos
+                        if puntos != 0:
+                            trucoCanto = True
                     cartaMaq = estrategiaNPC(ronda, tuCarta, 0)
                     cartaRival2(cartaMaq, cartas)
+                    if trucoCanto == False:
+                        tecla = int(input("\nQueres cantar 'truco'? ('Si' = 1 | 'No' = 2) "))
+                        while tecla < 1 or tecla > 2:
+                            tecla = int(input("Error. Ingresa tu elección nuevamente: "))
+                        if tecla == 1:
+                            puntos, trucNos, trucEllos = truco(1, jugadores[1]['cartas'])
+                            if trucNos != 0 or trucEllos != 0:
+                                contNos += trucNos
+                                contEllos += trucEllos
+                                os.system("cls")
+                                return contNos, contEllos
+                            if puntos != 0:
+                                trucoCanto = True
                     carta = int(input("\n¿Que carta querés jugar? (1 o 2) "))
                     while carta != 1 and carta != 2:
                         carta = int(input("Error. ¿Que carta querés jugar? (1 o 2) "))
@@ -1013,50 +1183,169 @@ def mano(flor):
             if contRondasEllos == 2 and contRondasNos != 2:
                 print(f"\n{jugadores[1]['Nombre']} gana la mano!\n")
                 comentariosJugadores(1)
-                contEllos += 1
+                if trucoCanto:
+                    contEllos += puntos
+                else:
+                    contEllos += 1
                 ronda = 4
             elif contRondasNos == 2 and contRondasEllos != 2:
                 print("\nVos ganás la mano!\n")
                 comentariosJugadores(2)
-                contNos += 1
+                if trucoCanto:
+                    contNos += puntos
+                else:
+                    contNos += 1
                 ronda = 4
             else:
                 cartas.pop(carta)
         elif ronda == 3:
+            tusCartas3(cartas[0][0], cartas[0][1])
             cartaMaq = estrategiaNPC(ronda, jugadores[0]['cartas'][0], ganadorPR)
+            if ganadorPR == 1:
+                if trucoCanto == False:
+                    tecla = int(input("\nQueres cantar 'truco'? ('Si' = 1 | 'No' = 2) "))
+                    while tecla < 1 or tecla > 2:
+                        tecla = int(input("Error. Ingresa tu elección nuevamente: "))
+                    if tecla == 1:
+                        puntos, trucNos, trucEllos = truco(1, jugadores[1]['cartas'])
+                        if trucNos != 0 or trucEllos != 0:
+                            contNos += trucNos
+                            contEllos += trucEllos
+                            os.system("cls")
+                            return contNos, contEllos
+                        if puntos != 0:
+                            trucoCanto = True
+                if trucoCanto == False:
+                    puntos, trucNos, trucEllos = truco(2, jugadores[1]['cartas'])
+                    if trucNos != 0 or trucEllos != 0:
+                        contNos += trucNos
+                        contEllos += trucEllos
+                        os.system("cls")
+                        return contNos, contEllos
+                    if puntos != 0:
+                        trucoCanto = True
+            elif ganadorPR == 2:
+                if trucoCanto == False:
+                    puntos, trucNos, trucEllos = truco(2, jugadores[1]['cartas'])
+                    if trucNos != 0 or trucEllos != 0:
+                        contNos += trucNos
+                        contEllos += trucEllos
+                        os.system("cls")
+                        return contNos, contEllos
+                    if puntos != 0:
+                        trucoCanto = True
+                if trucoCanto == False:
+                    tecla = int(input("\nQueres cantar 'truco'? ('Si' = 1 | 'No' = 2) "))
+                    while tecla < 1 or tecla > 2:
+                        tecla = int(input("Error. Ingresa tu elección nuevamente: "))
+                    if tecla == 1:
+                        puntos, trucNos, trucEllos = truco(1, jugadores[1]['cartas'])
+                        if trucNos != 0 or trucEllos != 0:
+                            contNos += trucNos
+                            contEllos += trucEllos
+                            os.system("cls")
+                            return contNos, contEllos
+                        if puntos != 0:
+                            trucoCanto = True
+            else:
+                if tuTurno:
+                    if trucoCanto == False:
+                        tecla = int(input("\nQueres cantar 'truco'? ('Si' = 1 | 'No' = 2) "))
+                        while tecla < 1 or tecla > 2:
+                            tecla = int(input("Error. Ingresa tu elección nuevamente: "))
+                        if tecla == 1:
+                            puntos, trucNos, trucEllos = truco(1, jugadores[1]['cartas'])
+                            if trucNos != 0 or trucEllos != 0:
+                                contNos += trucNos
+                                contEllos += trucEllos
+                                os.system("cls")
+                                return contNos, contEllos
+                            if puntos != 0:
+                                trucoCanto = True
+                    if trucoCanto == False:
+                        puntos, trucNos, trucEllos = truco(2, jugadores[1]['cartas'])
+                        if trucNos != 0 or trucEllos != 0:
+                            contNos += trucNos
+                            contEllos += trucEllos
+                            os.system("cls")
+                            return contNos, contEllos
+                        if puntos != 0:
+                            trucoCanto = True
+                else:
+                    if trucoCanto == False:
+                        puntos, trucNos, trucEllos = truco(2, jugadores[1]['cartas'])
+                        if trucNos != 0 or trucEllos != 0:
+                            contNos += trucNos
+                            contEllos += trucEllos
+                            os.system("cls")
+                            return contNos, contEllos
+                        if puntos != 0:
+                            trucoCanto = True
+                    if trucoCanto == False:
+                        tecla = int(input("\nQueres cantar 'truco'? ('Si' = 1 | 'No' = 2) "))
+                        while tecla < 1 or tecla > 2:
+                            tecla = int(input("Error. Ingresa tu elección nuevamente: "))
+                        if tecla == 1:
+                            puntos, trucNos, trucEllos = truco(1, jugadores[1]['cartas'])
+                            if trucNos != 0 or trucEllos != 0:
+                                contNos += trucNos
+                                contEllos += trucEllos
+                                os.system("cls")
+                                return contNos, contEllos
+                            if puntos != 0:
+                                trucoCanto = True
+            os.system("cls")
             cartasVersus(cartas[0], cartaMaq)
             
             if cartas[0][2] < cartaMaq[2]:
                 print(f"\n{jugadores[1]['Nombre']} gana la mano!\n")
                 comentariosJugadores(1)
-                contEllos += 1
+                if trucoCanto:
+                    contEllos += puntos
+                else:
+                    contEllos += 1
                 ronda = 4
             elif cartas[0][2] > cartaMaq[2]:
                 print("\nVos ganás la mano!\n")
                 comentariosJugadores(2)
-                contNos += 1
+                if trucoCanto:
+                    contNos += puntos
+                else:
+                    contNos += 1
                 ronda = 4
             elif cartas[0][2] == cartaMaq[2]:
                 if ganadorPR == 1:
                     print("\nVos ganás la mano!\n")
                     comentariosJugadores(2)
-                    contNos += 1
+                    if trucoCanto:
+                        contNos += puntos
+                    else:
+                        contNos += 1
                     ronda = 4
                 elif ganadorPR == 2:
-                    print(f"{jugadores[1]['Nombre']} gana la mano!\n")
+                    print(f"\n{jugadores[1]['Nombre']} gana la mano!\n")
                     comentariosJugadores(1)
-                    contEllos += 1
+                    if trucoCanto:
+                        contEllos += puntos
+                    else:
+                        contEllos += 1
                     ronda = 4
                 elif ganadorPR == 0:
                     if tuTurno:
                         print("\nVos ganás la mano!\n")
                         comentariosJugadores(2)
-                        contNos += 1
+                        if trucoCanto:
+                            contNos += puntos
+                        else:
+                            contNos += 1
                         ronda = 4
                     elif tuTurno == False:
                         print(f"\n{jugadores[1]['Nombre']} gana la mano!\n")
                         comentariosJugadores(1)
-                        contEllos += 1
+                        if trucoCanto:
+                            contEllos += puntos
+                        else:
+                            contEllos += 1
                         ronda = 4
                 
         ronda += 1
@@ -1506,8 +1795,40 @@ def tablero(nos, ellos):
 Truco
 '''
 
-def truco():
-    pass
+def truco(jugadorN, cartasNPC):
+    contNos = 0
+    contEllos = 0
+    puntos = 0
+
+    suma = 0
+    for i in range(len(cartasNPC)):
+        suma += cartasNPC[i][2]
+    if len(cartasNPC) == 3:
+        max = 39.0
+    elif len(cartasNPC) == 2:
+        max = 27.0
+    else:
+        max = 14.0
+
+    if jugadorN == 1:
+        print(f"\nCantaste 'truco' y {jugadores[1]['Nombre']} dice", end=" ")
+        if 0.6*max <= suma:
+            print("quiero!")
+            puntos = 2
+        else:
+            print("no quiero!")
+            contNos = 1
+        time.sleep(2)
+    else:
+        if 0.6*max <= suma:
+            tecla = int(input(f"\n{jugadores[1]['Nombre']} cantó truco! ('quiero' = 1 | 'no quiero' = 2) "))
+            while tecla < 1 or tecla > 2:
+                tecla = int(input("Error. Ingresa tu elección nuevamente: "))
+            if tecla == 1:
+                puntos = 2
+            else:
+                contEllos = 1
+    return puntos, contNos, contEllos
 
 '''
 Envido
@@ -1720,7 +2041,6 @@ def envidoTT(flor):
         os.system("cls")
         return contNos, contEllos
     elif tecla == 4:
-        os.system("cls")
         return contNos, contEllos
     else:
         os.system("cls")
@@ -1953,7 +2273,7 @@ def tusPuntos():
     if puntos == 0:
         cAlta = 0 
         for i in range(len(jugadores[0]['cartas'])):
-            if int(jugadores[0]['cartas'][i][0]) > cAlta:
+            if int(jugadores[0]['cartas'][i][0]) > cAlta and (int(jugadores[0]['cartas'][i][0]) != 10 and int(jugadores[0]['cartas'][i][0]) != 11 and int(jugadores[0]['cartas'][i][0]) != 12):
                 cAlta = int(jugadores[0]['cartas'][i][0])
         return cAlta  
 
@@ -1999,7 +2319,7 @@ def puntosAI():
     else:
         cAlta = 0 
         for i in range(len(jugadores[1]['cartas'])):
-            if int(jugadores[1]['cartas'][i][0]) > cAlta:
+            if int(jugadores[1]['cartas'][i][0]) > cAlta and (int(jugadores[1]['cartas'][i][0]) != 10 and int(jugadores[1]['cartas'][i][0]) != 11 and int(jugadores[1]['cartas'][i][0]) != 12):
                 cAlta = int(jugadores[1]['cartas'][i][0])
         return cAlta  
 
