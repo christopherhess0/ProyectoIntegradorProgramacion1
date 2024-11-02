@@ -26,12 +26,14 @@ def mezclarMazo():
     random.shuffle(mazo)
 
 def comentariosJugadores(num):
-    # num == 1 --> ronda ganada por el npc
-    # num == 2 --> ronda perdida por el npc
-    # num == 3 --> partida ganada por el npc
-    # num == 4 --> partida perdida por el npc
+    '''
+    num == 1 --> ronda ganada por el npc
+    num == 2 --> ronda perdida por el npc
+    num == 3 --> partida ganada por el npc
+    num == 4 --> partida perdida por el npc
 
-    # Comentarios personalizados para cada NPC
+    Comentarios personalizados para cada NPC
+    '''
     comentarios_por_npc = {
         "Enrique": {
             'a': ["Otra ronda ganada, ¡ya es cuestión de tiempo para llevarme la partida!", "Así se juega, aprendé un poco observándome."],
@@ -460,8 +462,7 @@ Funciones que muestran tus cartas (visual)
 '''
 
 def tusCartas():
-    cartas = jugadores[0]['cartas']
-    cartas_formateadas = [f"{numero} de {palo}" for numero, palo, _ in cartas]
+    cartas_formateadas = [f"{numero} de {palo}" for numero, palo, _ in cartasJugador]
     ancho_carta = 14
 
     carta1 = cartas_formateadas[0].center(ancho_carta)
@@ -835,7 +836,7 @@ def cartaRival(eleccion):
     carta = f"{eleccion[0]} de {eleccion[1]}"
     ancho_carta = 14
 
-    cartas = jugadores[0]['cartas']
+    cartas = cartasJugador
     cartas_formateadas = [f"{numero} de {palo}" for numero, palo, _ in cartas]
     ancho_carta = 14
 
@@ -929,6 +930,11 @@ def mano(flor):
     contRondasNos = 0
     contRondasEllos = 0
 
+    global cartasJugador, cartasNPC
+
+    cartasNPC = jugadores[1]['cartas']
+    cartasJugador = jugadores[0]['cartas']
+
     while ronda <= 3:
         os.system("cls")
         rondArt(ronda)
@@ -942,15 +948,11 @@ def mano(flor):
                 envNos, envEllos = envidoST(flor)
                 contNos += envNos
                 contEllos += envEllos
-                if envNos == 0 and envEllos == 0:
-                    print(f"\n{jugadores[1]['Nombre']} no cantó.")
-                    envNos, envEllos = envidoTT(flor)
-                    contNos += envNos
-                    contEllos += envEllos
                 if contNos >= pmax or contEllos >= pmax:
                     return contNos, contEllos
-                os.system("cls")
-                tusCartas()
+                if envNos != 0 or envEllos != 0:
+                    os.system("cls")
+                    tusCartas()
                 puntos, trucNos, trucEllos = truco(2, jugadores[1]['cartas'])
                 if trucNos != 0 or trucEllos != 0:
                     contNos += trucNos
@@ -962,6 +964,16 @@ def mano(flor):
                 os.system("cls")
                 cartaMaq = estrategiaNPC(ronda, tuCarta, ganadorPR)
                 cartaRival(cartaMaq)
+                if envNos == 0 and envEllos == 0:
+                    print(f"\n{jugadores[1]['Nombre']} no cantó.")
+                    envNos, envEllos = envidoTT(flor)
+                    contNos += envNos
+                    contEllos += envEllos
+                if contNos >= pmax or contEllos >= pmax:
+                    return contNos, contEllos
+                if envNos != 0 or envEllos != 0:
+                    os.system("cls")
+                    tusCartas()
                 if trucoCanto == False:
                     tecla = int(input("\nQueres cantar 'truco'? ('Si' = 1 | 'No' = 2) "))
                     while tecla < 1 or tecla > 2:
@@ -984,14 +996,11 @@ def mano(flor):
                 envNos, envEllos = envidoTT(flor)
                 contNos += envNos
                 contEllos += envEllos
-                if envNos == 0 and envEllos == 0:
-                    envNos, envEllos = envidoST(flor)
-                    contNos += envNos
-                    contEllos += envEllos
                 if contNos >= pmax or contEllos >= pmax:
                     return contNos, contEllos
-                os.system("cls")
-                tusCartas()
+                if envNos != 0 or envEllos != 0:
+                    os.system("cls")
+                    tusCartas()
                 tecla = int(input("\nQueres cantar 'truco'? ('Si' = 1 | 'No' = 2) "))
                 while tecla < 1 or tecla > 2:
                     tecla = int(input("Error. Ingresa tu elección nuevamente: "))
@@ -1008,6 +1017,15 @@ def mano(flor):
                 while carta != 1 and carta != 2 and carta != 3:
                     carta = int(input("Error. ¿Que carta querés jugar? (1, 2 o 3) "))
                 carta -= 1
+                if envNos == 0 and envEllos == 0:
+                    envNos, envEllos = envidoST(flor)
+                    contNos += envNos
+                    contEllos += envEllos
+                if contNos >= pmax or contEllos >= pmax:
+                    return contNos, contEllos
+                if envNos != 0 or envEllos != 0:
+                    os.system("cls")
+                    tusCartas()
                 if trucoCanto == False:
                     puntos, trucNos, trucEllos = truco(2, jugadores[1]['cartas'])
                     if trucNos != 0 or trucEllos != 0:
@@ -1842,7 +1860,7 @@ def envidoST(flor):
     contEllos = 0
     npc = jugadores[1]['Nombre']
 
-    if jugadores[1]['cartas'][0][1] == jugadores[1]['cartas'][1][1] and jugadores[1]['cartas'][0][1] == jugadores[1]['cartas'][2][1] and flor == 1:
+    if cartasNPC[0][1] == cartasNPC[1][1] and cartasNPC[0][1] == cartasNPC[2][1] and flor == 1:
         print(f"\n{npc} canta flor!")
         juego = 0
         contEllos = 3
@@ -2026,7 +2044,7 @@ def envidoTT(flor):
     puntos = tusPuntos()
     contNos = 0
     contEllos = 0
-    if jugadores[0]['cartas'][0][1] == jugadores[0]['cartas'][1][1] and jugadores[0]['cartas'][0][1] == jugadores[0]['cartas'][2][1] and flor == 1:
+    if cartasJugador[0][1] == cartasJugador[1][1] and cartasJugador[0][1] == cartasJugador[2][1] and flor == 1:
         tecla = int(input("\n¿Queres cantar algo? ('flor' = 0 | 'envido' = 1 | 'real envido' = 2 | 'falta envido' = 3 | nada = 4): "))
         while tecla != 0 and tecla != 1 and tecla != 2 and tecla != 3 and tecla != 4:
             tecla = int(input("Error. Ingrese nuevamente su elección. "))
@@ -2145,7 +2163,7 @@ def envidoTT(flor):
                         os.system("cls")
                         return contNos, contEllos
                 elif tecla == 2:
-                    print(f"{jugadores[1]['Nombre']} dice: Me robo tres puntitos...")
+                    print(f"\n{jugadores[1]['Nombre']} dice: Me robo tres puntitos...")
                     time.sleep(2)
                     contEllos = 3
                     os.system("cls")
@@ -2233,19 +2251,19 @@ def envidoTT(flor):
 
 def tusPuntos():
     puntos = 0
-    if int(jugadores[0]['cartas'][0][0]) == 10 or int(jugadores[0]['cartas'][0][0]) == 11 or int(jugadores[0]['cartas'][0][0]) == 12:
+    if int(cartasJugador[0][0]) == 10 or int(cartasJugador[0][0]) == 11 or int(cartasJugador[0][0]) == 12:
         carta1 = 0
     else:
-        carta1 = int(jugadores[0]['cartas'][0][0]) 
-    if int(jugadores[0]['cartas'][1][0]) == 10 or int(jugadores[0]['cartas'][1][0]) == 11 or int(jugadores[0]['cartas'][1][0]) == 12:
+        carta1 = int(cartasJugador[0][0]) 
+    if int(cartasJugador[1][0]) == 10 or int(cartasJugador[1][0]) == 11 or int(cartasJugador[1][0]) == 12:
         carta2 = 0
     else:
-        carta2 = int(jugadores[0]['cartas'][1][0]) 
-    if int(jugadores[0]['cartas'][2][0]) == 10 or int(jugadores[0]['cartas'][2][0]) == 11 or int(jugadores[0]['cartas'][2][0]) == 12:
+        carta2 = int(cartasJugador[1][0]) 
+    if int(cartasJugador[2][0]) == 10 or int(cartasJugador[2][0]) == 11 or int(cartasJugador[2][0]) == 12:
         carta3 = 0
     else:
-        carta3 = int(jugadores[0]['cartas'][2][0]) 
-    if jugadores[0]['cartas'][0][1] == jugadores[0]['cartas'][1][1] and jugadores[0]['cartas'][0][1] == jugadores[0]['cartas'][2][1]:
+        carta3 = int(cartasJugador[2][0]) 
+    if cartasJugador[0][1] == cartasJugador[1][1] and cartasJugador[0][1] == cartasJugador[2][1]:
         puntos = 20
         comp1 = carta1 + carta2
         comp2 = carta1 + carta3
@@ -2255,43 +2273,43 @@ def tusPuntos():
 
     palo = None
 
-    if jugadores[0]['cartas'][0][1] == jugadores[0]['cartas'][1][1] or jugadores[0]['cartas'][0][1] == jugadores[0]['cartas'][2][1]:
-        palo = jugadores[0]['cartas'][0][1]
-    elif jugadores[0]['cartas'][1][1] == jugadores[0]['cartas'][2][1]:
-        palo = jugadores[0]['cartas'][1][1]
+    if cartasJugador[0][1] == cartasJugador[1][1] or cartasJugador[0][1] == cartasJugador[2][1]:
+        palo = cartasJugador[0][1]
+    elif cartasJugador[1][1] == cartasJugador[2][1]:
+        palo = cartasJugador[1][1]
 
-    if jugadores[0]['cartas'][0][1] == palo and jugadores[0]['cartas'][1][1] == palo:
+    if cartasJugador[0][1] == palo and cartasJugador[1][1] == palo:
         puntos = 20 + carta1 + carta2
         return puntos
-    elif jugadores[0]['cartas'][0][1] == palo and jugadores[0]['cartas'][2][1] == palo:
+    elif cartasJugador[0][1] == palo and cartasJugador[2][1] == palo:
         puntos = 20 + carta1 + carta3
         return puntos
-    elif jugadores[0]['cartas'][1][1] == palo and jugadores[0]['cartas'][2][1] == palo:
+    elif cartasJugador[1][1] == palo and cartasJugador[2][1] == palo:
         puntos = 20 + carta2 + carta3
         return puntos
 
     if puntos == 0:
         cAlta = 0 
-        for i in range(len(jugadores[0]['cartas'])):
-            if int(jugadores[0]['cartas'][i][0]) > cAlta and (int(jugadores[0]['cartas'][i][0]) != 10 and int(jugadores[0]['cartas'][i][0]) != 11 and int(jugadores[0]['cartas'][i][0]) != 12):
-                cAlta = int(jugadores[0]['cartas'][i][0])
+        for i in range(len(cartasJugador)):
+            if int(cartasJugador[i][0]) > cAlta and (int(cartasJugador[i][0]) != 10 and int(cartasJugador[i][0]) != 11 and int(cartasJugador[i][0]) != 12):
+                cAlta = int(cartasJugador[i][0])
         return cAlta  
 
 def puntosAI():
-    if int(jugadores[1]['cartas'][0][0]) == 10 or int(jugadores[1]['cartas'][0][0]) == 11 or int(jugadores[1]['cartas'][0][0]) == 12:
+    if int(cartasNPC[0][0]) == 10 or int(cartasNPC[0][0]) == 11 or int(cartasNPC[0][0]) == 12:
         carta1 = 0
     else:
-        carta1 = int(jugadores[1]['cartas'][0][0]) 
-    if int(jugadores[1]['cartas'][1][0]) == 10 or int(jugadores[1]['cartas'][1][0]) == 11 or int(jugadores[1]['cartas'][1][0]) == 12:
+        carta1 = int(cartasNPC[0][0]) 
+    if int(cartasNPC[1][0]) == 10 or int(cartasNPC[1][0]) == 11 or int(cartasNPC[1][0]) == 12:
         carta2 = 0
     else:
-        carta2 = int(jugadores[1]['cartas'][1][0]) 
-    if int(jugadores[1]['cartas'][2][0]) == 10 or int(jugadores[1]['cartas'][2][0]) == 11 or int(jugadores[1]['cartas'][2][0]) == 12:
+        carta2 = int(cartasNPC[1][0]) 
+    if int(cartasNPC[2][0]) == 10 or int(cartasNPC[2][0]) == 11 or int(cartasNPC[2][0]) == 12:
         carta3 = 0
     else:
-        carta3 = int(jugadores[1]['cartas'][2][0])
+        carta3 = int(cartasNPC[2][0])
 
-    if jugadores[1]['cartas'][0][1] == jugadores[1]['cartas'][1][1] and jugadores[1]['cartas'][0][1] == jugadores[1]['cartas'][2][1]:
+    if cartasNPC[0][1] == cartasNPC[1][1] and cartasNPC[0][1] == cartasNPC[2][1]:
         puntos = 20
         comp1 = carta1 + carta2
         comp2 = carta1 + carta3
@@ -2299,28 +2317,28 @@ def puntosAI():
         puntos += max(comp1, comp2, comp3)
         return puntos
     palo = None
-    if jugadores[1]['cartas'][0][1] == jugadores[1]['cartas'][1][1] or jugadores[1]['cartas'][0][1] == jugadores[1]['cartas'][2][1]:
-        palo = jugadores[1]['cartas'][0][1]
-    elif jugadores[1]['cartas'][1][1] == jugadores[1]['cartas'][2][1]:
-        palo = jugadores[1]['cartas'][1][1]
+    if cartasNPC[0][1] == cartasNPC[1][1] or cartasNPC[0][1] == cartasNPC[2][1]:
+        palo = cartasNPC[0][1]
+    elif cartasNPC[1][1] == cartasNPC[2][1]:
+        palo = cartasNPC[1][1]
     if palo != None:
         total = 20
-        for i in range(len(jugadores[1]['cartas'])):
-            if jugadores[1]['cartas'][i][1] == palo:
-                if int(jugadores[1]['cartas'][i][0]) == 12:
+        for i in range(len(cartasNPC)):
+            if cartasNPC[i][1] == palo:
+                if int(cartasNPC[i][0]) == 12:
                     total += 0
-                elif int(jugadores[1]['cartas'][i][0]) == 11:
+                elif int(cartasNPC[i][0]) == 11:
                     total += 0
-                elif int(jugadores[1]['cartas'][i][0]) == 10:
+                elif int(cartasNPC[i][0]) == 10:
                     total += 0
                 else:
-                    total += int(jugadores[1]['cartas'][i][0])
+                    total += int(cartasNPC[i][0])
         return total
     else:
         cAlta = 0 
-        for i in range(len(jugadores[1]['cartas'])):
-            if int(jugadores[1]['cartas'][i][0]) > cAlta and (int(jugadores[1]['cartas'][i][0]) != 10 and int(jugadores[1]['cartas'][i][0]) != 11 and int(jugadores[1]['cartas'][i][0]) != 12):
-                cAlta = int(jugadores[1]['cartas'][i][0])
+        for i in range(len(cartasNPC)):
+            if int(cartasNPC[i][0]) > cAlta and (int(cartasNPC[i][0]) != 10 and int(cartasNPC[i][0]) != 11 and int(cartasNPC[i][0]) != 12):
+                cAlta = int(cartasNPC[i][0])
         return cAlta  
 
 def respuestaNPC(): 
