@@ -255,7 +255,6 @@ def iniciar_sesion():
         print("")
         usuario = input("Ingrese su nombre de usuario: ")
         
-        # Validar el nombre de usuario
         while not es_valido(usuario):
             print("\nEl nombre de usuario contiene caractéres inválidos. Intente nuevamente... ")
             time.sleep(1.5)
@@ -391,7 +390,7 @@ def repartir_cartas_alternadamente(jugadores):
     for i in range(2):
         jugadores[i]['cartas'].clear()
     if tuTurno:
-        jugador_index = 0  # Comienza con el primer jugador
+        jugador_index = 0 
         cont = 0
         while cont < 6:
             jugadores[jugador_index]['cartas'].append(mazo[cont])
@@ -401,7 +400,7 @@ def repartir_cartas_alternadamente(jugadores):
                 jugador_index = 0
             cont += 1
     elif tuTurno == False:
-        jugador_index = 1  # Comienza con el segundo jugador
+        jugador_index = 1  
         cont = 0
         while cont < 6:
             jugadores[jugador_index]['cartas'].append(mazo[cont])
@@ -930,11 +929,6 @@ def mano(flor):
     contRondasNos = 0
     contRondasEllos = 0
 
-    global cartasJugador, cartasNPC
-
-    cartasNPC = jugadores[1]['cartas']
-    cartasJugador = jugadores[0]['cartas']
-
     while ronda <= 3:
         os.system("cls")
         rondArt(ronda)
@@ -1386,9 +1380,14 @@ def juego(nos, ellos):
     elif num == 2:
         tuTurno = False
 
-    mezclarMazo() # Mezclar el mazo
-    repartir_cartas_alternadamente(jugadores)  # Repartir las cartas  
+    mezclarMazo() 
+    repartir_cartas_alternadamente(jugadores)   
     flor, pmax = config()
+
+    global cartasJugador, cartasNPC
+
+    cartasNPC = tuple(jugadores[1]['cartas'])
+    cartasJugador = tuple(jugadores[0]['cartas'])
 
     while nos < pmax and ellos < pmax:
         tablero(nos, ellos)
@@ -1400,8 +1399,8 @@ def juego(nos, ellos):
         nos += nos_val
         ellos += ellos_val
         tuTurno = not(tuTurno)
-        mezclarMazo() # Mezclar el mazo
-        repartir_cartas_alternadamente(jugadores)  # Repartir las cartas  
+        mezclarMazo()
+        repartir_cartas_alternadamente(jugadores)  
 
     if nos >= pmax:
         os.system("cls")
@@ -1776,9 +1775,9 @@ def tablero(nos, ellos):
     
     nos_str = f"{nos:2d}"
     ellos_str= f"{ellos:2d}"
-    nombre1= f"{jugadores[0]['Nombre']:11s}"# Esto garantiza que tanto números de un dígito como de dos dígitos ocupen siempre 2 espacios.
-    nombre2 = f"{jugadores[1]['Nombre']:7s}" # siempre ocupe 12 espacios
-    puntosNos= f"{puntosNos:6s}" # siempre ocupe 6 espacios
+    nombre1= f"{jugadores[0]['Nombre']:11s}"
+    nombre2 = f"{jugadores[1]['Nombre']:7s}" 
+    puntosNos= f"{puntosNos:6s}"
     puntosEllos= f"{puntosEllos:6s}"
 
     print("")
@@ -2462,7 +2461,7 @@ def menu():
     os.system("cls")
     repetir = True
     while repetir:
-        os.system("cls") #limpia la pantalla
+        os.system("cls")
         usuario1 = f"{usuario:12s}"
         print("")
         print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
@@ -2692,7 +2691,7 @@ def menu():
 def ejecutar():
     nos = 0
     ellos = 0
-    creandoJugadores() # Crear los jugadores
+    creandoJugadores() 
     juego(nos, ellos)
 
 def inicio():
