@@ -929,6 +929,11 @@ def mano(flor):
     contRondasNos = 0
     contRondasEllos = 0
 
+    global cartasJugador, cartasNPC
+
+    cartasNPC = tuple(jugadores[1]['cartas'])
+    cartasJugador = tuple(jugadores[0]['cartas'])
+
     while ronda <= 3:
         os.system("cls")
         rondArt(ronda)
@@ -1383,11 +1388,6 @@ def juego(nos, ellos):
     mezclarMazo() 
     repartir_cartas_alternadamente(jugadores)   
     flor, pmax = config()
-
-    global cartasJugador, cartasNPC
-
-    cartasNPC = tuple(jugadores[1]['cartas'])
-    cartasJugador = tuple(jugadores[0]['cartas'])
 
     while nos < pmax and ellos < pmax:
         tablero(nos, ellos)
@@ -1863,6 +1863,7 @@ def envidoST(flor):
         print(f"\n{npc} canta flor!")
         juego = 0
         contEllos = 3
+        return contNos, contEllos
     elif miente:
         num = random.randint(1, 3)
         if num == 1:
