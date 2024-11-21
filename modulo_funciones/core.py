@@ -1402,8 +1402,9 @@ def juego(nos, ellos):
         mezclarMazo()
         repartir_cartas_alternadamente(jugadores)  
 
+    os.system("cls")
+    
     if nos >= pmax:
-        os.system("cls")
         nos = pmax
         tablero(nos, ellos)
         print("\nGanaste!\n")
